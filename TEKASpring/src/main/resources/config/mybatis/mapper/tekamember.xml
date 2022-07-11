@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tekamember">
+
+	<!-- 회원가입시 id 중복 방지용 id에 해당되는 1건 데이터 조회 O-->
+	<select id="memberListById" parameterType="String" resultType="member">
+		select * from tekamember where m_id=#{m_id}
+	</select>
+	
+	<!-- 회원가입시 nickname 중복 방지용 nickname에 해당되는 1건 데이터 조회 O-->
+	<select id="memberListByNickname" parameterType="String" resultType="member">
+		select * from tekamember where m_nickname=#{m_nickname}
+	</select>
+	
+	<!-- 회원가입시 email 중복 방지용 email에 해당되는 1건 데이터 조회 O-->
+	<select id="memberListByEmail" parameterType="String" resultType="member">
+		select * from tekamember where m_email=#{m_email}
+	</select>
+	
+	<!-- 회원가입 O-->
+	<insert id="insert" parameterType="member">
+		insert into tekamember(m_id, m_pwd, m_nickname, m_email, m_grade) values
+		(
+			#{m_id},
+			#{m_pwd},
+			#{m_nickname},
+			#{m_email},
+			default
+		)
+	</insert>
+	
+	
+</mapper>

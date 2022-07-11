@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="card">
+
+	<!-- 카드조회 -->	
+	<!-- 전체 카드 조회 O-->
+	<select id="selectAll" resultType="vo.ViewVo">
+		select * from likedCard	order by c_regdate desc
+	</select>
+	
+	<!--특정 카드 조회 O-->
+	<select id="selectBySubject" parameterType="java.lang.String" resultType="vo.ViewVo">
+		select * from subjectCard 
+		where s_name=#{s_name}
+	</select>
+	
+	<!-- 이미 추가된 카드인지 확인하기 O-->
+	<select id="selectCheckMyCard" parameterType="vo.MyCardSetVo" resultType="vo.MyCardSetVo">
+		select * from mycardset where c_idx=#{c_idx} and m_idx=#{m_idx}
+	</select>
+	
+	<!-- 카드 검색 O-->
+	<select id="cardCondition" parameterType="java.util.Map" resultType="vo.ViewVo">
+		select * from cardCondition
+		
+		<trim prefix="where" prefixOverrides="or">
+			<if test="c_title!=null">
+				 c_title like '%' || #{c_title} || '%'
+			</if>
+			
+			<if test="c_content!=null">
+				 or c_content like '%' || #{c_content} || '%'
+			</if>
+
+			<if test="m_nickname!=null">
+				 or m_nickname like '%' || #{m_nickname} || '%'
+			</if>
+		</trim>
+ 		order by c_regdate desc
+	</select>
+	
+	<!-- 미리보기 팝업 리스트 전체 조회 O-->
+	<select id="preview" resultType="vo.ViewVo">
+		select * from previewPopup
+	</select>
+
+	<!-- 카드제목으로 c_idx 구하기 O-->
+	<select id="selectCidx" parameterType="String" resultType="vo.ViewVo" >
+		select * from card where c_title=#{c_title}
+	</select>
+	
+	<!-- c_idx로 닉네임 / 카드제목 / 소개글 조회 O-->
+	<select id="previewSelectThree" parameterType="int" resultType="vo.ViewVo">
+		select m_nickname, c_title, c_content from previewPopup where c_idx=#{c_idx}
+	</select>
+	
+	
+	<!-- DML -->
+	<!-- 카드테이블 insert O-->	
+	<insert id="cardInsert" parameterType="vo.ViewVo">
+		insert into card(c_title, c_content, c_isPublic ,s_idx, m_idx, c_regdate, c_qCnt) 
+		values(#{c_title}, #{c_content}, default, #{s_idx}, #{m_idx}, now(), #{c_qCnt})
+	</insert>
+	
+	<!-- like insert O-->
+	<insert id="insertLiked" parameterType="vo.ViewVo">
+		insert into likey(l_like, c_idx, m_idx) values(default, #{c_idx}, #{m_idx})
+	</insert>
+
+	<!-- 질문답변테이블 insert O-->	
+	<insert id="qnaInsert" parameterType="vo.ViewVo">
+		insert into qna(c_idx, q_question, q_answer, q_correct) values(#{c_idx}, #{q_question}, #{q_answer}, default)
+	</insert>
+	
+	<!-- 나의 학습세트에 카드 추가하기 O-->
+	<insert id="insertMyCard" parameterType="vo.MyCardSetVo">
+		insert into mycardset(s_idx, m_idx, c_idx) values(#{s_idx}, #{m_idx}, #{c_idx})
+	</insert>
+	
+	<!-- 내학습세트 insert -->	
+	<insert id="myCardSetInsert" parameterType="vo.ViewVo">
+		insert into mycardset(s_idx, m_idx, c_idx) values(#{s_idx}, #{m_idx}, #{c_idx})
+	</insert>	
+	
+	
+	<!--나의 학습세트에 추가된 학습 카드 조회하기 O-->
+	<select id="selectMyCardList" parameterType="int" resultType="vo.ViewVo">
+		select * from studyCard where m_idx=#{m_idx}
+	</select>
+	
+	
+	<!-- c_idx / m_idx로 현재 l_like 조회 O-->
+	<select id="selectLike" parameterType="vo.ViewVo" resultType="vo.ViewVo">
+		select l_like from likey where c_idx=#{c_idx} and m_idx=#{m_idx}
+	</select>
+	
+	<!-- l_like + 1 (좋아요 버튼 클릭 시) -->
+	<update id="liked" parameterType="vo.ViewVo">
+		update likey set l_like=1 where c_idx=#{c_idx} and m_idx=#{m_idx}	
+	</update>
+	
+	<!-- 좋아요 취소 : 다시 0으로 변경 -->
+	<update id="deleteLike" parameterType="vo.ViewVo">
+		update likey set l_like=0 where c_idx=#{c_idx} and m_idx=#{m_idx}
+	</update>
+	
+	<!-- c_idx의 전체 좋아요 개수 구하기 O-->
+	<select id="totalLike" parameterType="vo.ViewVo" resultType="vo.ViewVo">
+		select sum(l_like) as l_like from likey where c_idx=#{c_idx}
+	</select>
+	
+	<!-- 좋아요 수 체크하기 O-->
+	<select id="likeCheck" parameterType="int" resultType="vo.ViewVo">
+		select * from likey where m_idx=#{m_idx} and l_like>0
+	</select>
+	
+	<!-- 나의학습세트에서 삭제하기 O-->
+	<delete id="deleteMyCard" parameterType="vo.MyCardSetVo">
+		delete from mycardset where c_idx=#{c_idx} and m_idx=#{m_idx}
+	</delete>
+	
+</mapper>

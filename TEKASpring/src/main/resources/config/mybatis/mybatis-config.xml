@@ -9,10 +9,12 @@
 	</settings>
 	
 	<typeAliases>
-		
+		<typeAlias type="vo.TekaMemberVo" alias="member"/>
 	</typeAliases>
 	
 	<mappers>
-		<mapper resource="config/mybatis/mapper/sample.xml" />
+		<mapper resource="config/mybatis/mapper/card.xml" />
+		<mapper resource="config/mybatis/mapper/studyCard.xml" />
+		<mapper resource="config/mybatis/mapper/tekamember.xml" />
 	</mappers>
 </configuration>
