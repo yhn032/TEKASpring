@@ -1,0 +1,154 @@
+@charset "UTF-8";
+
+*{
+	margin  : 0px;
+	padding : 0px;
+}
+
+/* card css */
+.card {	
+	width        : 100%;
+	height       : 450px;
+	border-radius: 15px;
+}
+.card-inner {
+	position   : relative;
+	width      : 100%;
+	height     : 100%;
+	text-align : center;
+	transition : transform 0.8s;
+	transform-style : preserve-3d; 	
+	border-radius: 20px;
+	
+}
+.card.flipped .card-inner {
+	transform: rotateX(180deg);
+}
+.card-front, .card-back {
+	position : absolute;
+	top      : 0%;
+	bottom   : 0%;
+	width    : 100%;
+	height   : 100%;
+	background-color : white;
+	border-radius    : 10px;
+	border			 : 2px solid black;
+	box-shadow       : 1px 1px 4px black;
+	box-sizing       : border-box;
+	-webkit-backface-visibility: hidden; /* Safari */
+	backface-visibility: hidden;
+	font-weight     : bold;
+	font-size       : 30px;
+	display         : flex;
+	align-items     : center;
+	justify-content : center;
+	line-height     : 30px;
+	white-space : normal;
+	color: white;
+	background: #2e3856;
+}
+.card-back {
+	transform: rotateX(180deg);
+}
+/* study menu */
+.studyMenu{
+	display: flex;
+	justify-content: space-between;
+}
+
+.studyItem{
+	border: 1px solid black;
+	width: 23%;
+	height: 50px;
+	border-radius    : 5px;
+	border			 : 2px solid black;
+	box-shadow       : 1px 1px 4px black;
+	box-sizing       : border-box;
+	text-align: left;
+	line-height: 50px;
+	font-size: 25px;
+	font-weight: 600;
+}
+
+/* slide css */
+
+/* 라디오 버튼 숨김 */
+.section [id*=slide]{
+	display : none;
+}
+
+.section .slideBox{
+	max-width  : 800px;
+	height     : 700px;
+	margin     : auto;
+	margin-top : 100px;
+	overflow   : hidden;
+}
+
+.section .slideList{
+	white-space : nowrap;
+	font-size   : 0;
+	position    : relative;
+	width       : 800px;
+	height      : 450px;
+	margin-top: 30px;
+}
+
+.section .slideList > li{
+	display        : inline-block;
+	vertical-align : middle;
+	width	       : 100%;
+	height         : 450px;
+	transition     : 0.3s; /* 슬라이드 속도 설정 */
+}
+
+.section .slideList label{
+	position  : absolute;
+	/* z-index   : 10; */
+	top       : 50%;
+	padding   : 25px;
+	cursor    : pointer; /* 마우스가 올라갔을 때, 커서 -> 포인터 변경 */
+	border    : 4px solid #3ccfcf;
+}
+
+
+.section .slideList .left{
+	left : 150px;
+	top: 460px;
+}
+.section .slideList .right{
+	right : 150px;
+	top: 460px;
+}
+
+/* 초기위치 설정값 */
+ .section [id="slide1"]:checked ~ .slideBox .slideList > li {
+	transform:translateX(0%);
+}
+
+#progress{
+	position: relative;
+	width: 100%;
+	height: 3px;
+	background-color: white;
+	border-radius: 5px;
+}
+#myBar{
+	position: absolute;
+	width: 0%;
+	height: 100%;
+	background-color: navy;
+}
+
+.studyMenu a{
+	text-decoration: none;
+	color: white;
+}
+
+.studyMenu i{
+	color: white;
+}
+
+.studyItem{
+	background-color: purple;
+}

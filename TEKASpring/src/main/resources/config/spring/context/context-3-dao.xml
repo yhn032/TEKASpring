@@ -4,5 +4,23 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
-		
+	<bean id="card_dao" class="dao.CardDaoImpl">
+		<constructor-arg ref="sqlSession"/>
+	</bean>
+	
+	<bean id="member_dao" class="dao.TekaMemberDaoImpl">
+		<constructor-arg ref="sqlSession"/>
+	</bean>
+	
+	<bean id="studyCard_dao" class="dao.StudyCardDaoImpl">
+		<constructor-arg ref="sqlSession"/>
+	</bean>
+	
+	<bean id="view_dao" class="dao.ViewDaoImpl">
+		<constructor-arg ref="sqlSession"/>
+	</bean>
+	
+	<bean id="likey_dao" class="dao.LikeyDaoImpl">
+		<constructor-arg ref="sqlSession"/>
+	</bean>
 </beans>

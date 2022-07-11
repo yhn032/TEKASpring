@@ -1,0 +1,13 @@
+@charset "UTF-8";
+/* main_insert_card */
+#top_content{
+	height     : 390px;
+	margin     : auto;
+	margin-top : 87px;
+}
+
+#bottom_content{
+	min-height : 200px;
+	margin     : auto;
+	margin-top : 60px;
+}

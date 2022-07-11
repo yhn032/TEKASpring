@@ -1,0 +1,121 @@
+@charset "UTF-8";
+
+::after ::before{
+	box-sizing: inherit;
+	font-family: 윤고딕700;
+}
+
+#container{
+	min-height:1000px;
+	margin-top:50px;
+}
+
+#box, .list{
+	text-align: center;
+	margin-left : 160px;
+	width  : 900px;
+	margin-top: 30px;
+	height : 250px;
+	border-radius: 15px;
+}
+
+.list{
+	counter-reset: number 0; /* 카운트환경 셋팅 */
+	margin-bottom: 30px;
+}
+
+.row{
+	margin-top: 30px;
+	height : 250px; 
+	box-shadow: 1px 1px 3px black;
+	counter-increment: number 1; /* 카운트 증가 */
+	/* display: table-row; */
+}
+/* 카운트증가 */
+.cnt::before{
+	content      : counter(number); /* 증가한 카운터 보여주기 */
+	display      : inline-block;
+    text-align   : center;
+    line-height  : 1.5;
+    width        : 25px;
+    height       : 25px;
+    margin-right : 10px;
+    font-size    : 16px;
+    font-weight  : 700;
+}
+.cnt{
+	float:left;
+}
+
+.qArea{
+	float: left;
+	text-align: left;
+	margin-right: 30px;	
+	margin-left: 50px;	
+	width: 30%;
+	margin-top : 27px;
+}
+
+.aArea{
+	float: left;
+	text-align: left;	
+	width: 60%;
+}
+
+p{
+	font-size: 16px;
+}
+#insert_btn, #cardSet_btn{
+	
+	width:100px;
+	height:60px;
+	text-align: center;
+	margin : auto;
+	margin-top : 50px;
+	cursor: pointer;
+}
+
+#cardBtn, #setBtn{
+	cursor: pointer;
+	margin-top: 50px;
+	font-size: 18px;
+	color:black;
+	text-decoration: none;
+}
+
+#makeCard{
+	
+	width:50px;
+	border : 1px solie black;
+	
+}
+
+
+
+#delBtn{
+	float: right; /* 우측정렬 */
+	text-decoration: none;
+	cursor: pointer;
+	color:gray;
+	margin-top:8px;
+	margin-right:8px;
+	font-size: 15px;
+}
+
+textarea {
+	resize: none;
+}
+.tArea{
+	margin : auto;
+}
+
+
+#makeCard{
+	
+	margin-top:100px;
+	
+}
+
+#footer{
+	clear: both;
+}
