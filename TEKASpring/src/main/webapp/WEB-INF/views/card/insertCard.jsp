@@ -9,49 +9,9 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <!-- css파일 연결 -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mainmenuHeader.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources//css/mainInsertCard.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources//css/addCardRow.css">
-<style type="text/css">
-#choose{
-	margin:auto;
-	width : 1350px;
-	height:400px;
-	font-family: 윤고딕700;
-	color:gray;
-}
-
-#subjectSelect{
-	
-	margin-top:100px;
-	margin-left:65px;
-	float : left;
-	width : 20%;
-	height: 250px;
-	font-size: 17px;
-}
-
-#cardTitle{
-	margin-top:100px;
-	float : left;
-	width : 33%;
-}
-
-#cardInfo{
-	margin-top:100px;
-	float : left;
-	width : 42%;
-}
-
-p{
-	font-size: 20px;	
-	font-weight:700;
-}
-
-textarea{
-	width:80%;
-	resize: none;
-}
-</style>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mainInsertCard.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/addCardRow.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/insertCard.css">
 <!-- 자바스크립트 -->
 <script type="text/javascript">
 
@@ -94,8 +54,9 @@ textarea{
 		f.submit();
 	}
 </script>
+
 </head>
-<body>
+<body style="background-color: #0a092d;">
 <!-- header -->
 <div id="header">
 	<%@include file="../header/mainmenu.jsp" %>
@@ -105,8 +66,7 @@ textarea{
 	<!-- 주제/카드제목/소개 입력 -->
 	<!-- 주제, 카드제목, 카드소개글 -->
 	<div id="choose">
-		<!-- 주제선택 -->
-		<hr>
+		<br><br><!-- 주제선택 -->
 		<div id="subjectSelect" class="radio">
 			<p>학습세트 주제선택</p>
 			<!-- 주제선택 라디오버튼(단일선택) : 체크된 항목 전송-->
@@ -117,23 +77,23 @@ textarea{
 			<label for="5"><input type="radio" name="s_idx" value="5" id="5">자바</label><br>
 			<label for="6"><input type="radio" name="s_idx" value="6" id="6">스프링</label><br>
 		</div>
-		<!-- 카드제목  -->
-		<div id="cardTitle">
-		  <label for="title"><p>내 학습세트 제목</p></label>
-	      <textarea rows="5" col="30" id="title" name="c_title"></textarea>
-		</div>
-		<!-- 카드소개글  -->
-		<div id="cardInfo">
-		  <label for="info"><p>내 학습세트 소개</p></label>
-	      <textarea rows="10" id="info" name="c_content"></textarea>
-		</div>
-	</div>
-<hr>
+		<table id="cardTitle">
+			<tr class="trHeight">
+				<th class="inputText"><label for="title"><p>학습세트 제목</p></label></th>
+				<td><textarea rows="2" col="30" id="title" name="c_title"></textarea></td>
+			</tr>
+			<tr class="trHeight">	
+				<th class="inputText"><label for="info"><p>학습세트 소개</p></label></th>
+				<td><textarea rows="3" col="50" id="info" name="c_content" ></textarea></td>
+			</tr>	
+		</table>
+	</div><!-- end : choose -->
+		
+<hr class="dashed">
 	
 	<div id="insertCard">
 		<%@include file="addCardRow.jsp"%>
 	</div>
 </form>	
-
 </body>
 </html>
