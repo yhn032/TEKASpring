@@ -135,7 +135,7 @@ public class TekaMemberController {
 	public String logout() {
 		session.removeAttribute("user");
 		//request.getSession().removeAttribute("RSA_WEB_KEY");
-		return "../card/mainList.do";
+		return "redirect:../card/mainList.do";
 	}
 	
 	//회원가입 폼
