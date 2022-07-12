@@ -423,9 +423,9 @@ public class CardController {
 					ret = -1;
 				}
 			} else if(order.equals("mostLiked")) {
-				if (o1.getL_like() > o2.getL_like()) {
+				if (o1.getL_like() < o2.getL_like()) {
 					ret = 1;
-				} else if (o1.getL_like() < o2.getL_like()) {
+				} else if (o1.getL_like() > o2.getL_like()) {
 					ret = -1;
 				}
 			} else if(order.equals("newest")) {
