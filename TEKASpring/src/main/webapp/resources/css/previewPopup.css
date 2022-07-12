@@ -1,0 +1,85 @@
+@charset "UTF-8";
+
+#popupBox{
+	margin-bottom : 100px;
+	width :1350px;
+	height:750px;
+	overflow : auto;
+	border : 3px solid black;
+	display : none;
+	position   : absolute;
+	background-color : white;
+	z-index : 100;
+	position:fixed;
+	top:150px;
+	left:30px;
+	box-shadow : rgba(0,0,0,0.7) 0 0 0 9999px, rgba(0,0,0,0.7) 2px 2px 2px 3px;
+	border-radius: 10px;
+}
+
+#container{
+	margin-left:8px;
+	font-family: 윤고딕700;
+}
+
+#preTitle{
+	margin-top:30px;
+	font-size: 30px;
+	height : 80px;
+}
+
+.madeBy {
+	font-size: 25px;
+	text-align: left;
+	font-weight:500;
+	margin-bottom : 60px;
+	margin-top : 60px;
+	margin-left : 25px;
+	width : 80%;
+}
+
+th{
+	width : 10%;
+	height : 30px;
+}
+
+td{
+	width : 60%;
+	font-size: 20px;
+}
+
+#m_nickname{
+	margin-left:26px;
+	font-size:18px;
+}
+
+#btnArea{
+	margin-bottom : 30px;
+}
+
+#hideBtn{
+	cursor : pointer;
+	text-decoration: none;
+	font-size: 30px;
+	color : gray;
+	position : fixed;
+	/* fixed는 뷰포인트로 위치지정 */
+	right : 140px;
+	top : 85px;
+}
+.qnaText{
+	font-size: 18px;
+	text-align: left;
+	color:#C2B0DA;
+}	
+
+.question{
+	width:100%;
+	margin-left : 10px;
+	margin-top : 30px;
+	margin-bottom : 30px;
+}
+/* 클릭시 포커스 없애기 */
+textarea:focus{
+	outline: none;
+}

@@ -31,7 +31,7 @@ height: 80px;
 			return;
 		}
 		
-		var url_insert = "http://localhost:9090/TEKA/card/insertCardForm.do"
+		var url_insert = "http://localhost:9090/teka/card/insertCardForm.do"
 		
 		location.href="../tekamember/loginForm.do?url=" + encodeURIComponent(url_insert);
 	}

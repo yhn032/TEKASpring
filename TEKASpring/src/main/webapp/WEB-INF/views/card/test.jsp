@@ -11,7 +11,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <!-- css연결 -->
-<link rel="stylesheet" href="../css/test.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/test.css">
 <!-- 스크립트 -->
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -37,7 +37,7 @@
 	}
 	
 	function send(){
-		if(!confirm('아쉽네요... 다음번엔 QuizTIS와 함께해주세요')) return;
+		if(!confirm('아쉽네요... 다음번엔 TEKA와 함께해주세요')) return;
 		location.href="main.do";
 	}
 </script>
@@ -49,7 +49,7 @@
 <!-- 카드 보여주기 cardView -->
 	<div id="cardView" style="background-color: #222222;">
 		<div class="text">
-			<p style="color:white; font-weight:500;">QuizTIS 학습세트를 직접 만들어보세요.<br><br>카드를 클릭해보세요!</p><br><br>
+			<p style="color:white; font-weight:500;">TEKA 학습세트를 직접 만들어보세요.<br><br>카드를 클릭해보세요!</p><br><br>
 		</div>
 		<div class="card">
 			<div class="card-inner">
@@ -97,10 +97,10 @@
 			<p class="count">&nbsp;셋.</p><br>
 			<p class="ment">다른 사람의 학습세트를 공부할 수 있어요.</p><br>
 <!-- 사진 수정예정 -->
-			<input type="image" src="../image/will_modify.png" style="width:70%; margin:auto;">
+<!-- <input type="image" src="../image/will_modify.png" style="width:70%; margin:auto;"> -->
 		</div>
 		<div class="text" style="margin-top:380px;">
-			<p style="font-weight:550;">자, 이제 QuizTIS에서 학습할 준비가 끝났어요.<br><br>
+			<p style="font-weight:550;">자, 이제 TEKA에서 학습할 준비가 끝났어요.<br><br>
 										멋진 학습세트를 만들어보세요!</p><br><br>
 			<div id="lastBtn">
 				<input type="button" value="홈화면으로 돌아가기" class="btn btn-default btn-lg" onclick="send();">

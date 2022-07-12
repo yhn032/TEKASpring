@@ -6,17 +6,17 @@
 }
 
 #container{
-	min-height:1000px;
-	margin-top:50px;
+	min-height:100%;
+	margin-top:100px;
 }
 
 #box, .list{
 	text-align: center;
-	margin-left : 160px;
-	width  : 900px;
+	margin-left : 60px;
+	width  : 1350px;
 	margin-top: 30px;
-	height : 250px;
-	border-radius: 15px;
+	height : 300px;
+	color : white;
 }
 
 .list{
@@ -26,10 +26,12 @@
 
 .row{
 	margin-top: 30px;
-	height : 250px; 
-	box-shadow: 1px 1px 3px black;
+	height : 300px; 
+	border : 3px solid white;
+	border-radius: 15px;
 	counter-increment: number 1; /* 카운트 증가 */
 	/* display: table-row; */
+	background-color: #2E3856;
 }
 /* 카운트증가 */
 .cnt::before{
@@ -49,24 +51,23 @@
 
 .qArea{
 	float: left;
-	text-align: left;
-	margin-right: 30px;	
 	margin-left: 50px;	
-	width: 30%;
+	width: 31%;
 	margin-top : 27px;
 }
 
 .aArea{
 	float: left;
-	text-align: left;	
+	margin-top : 27px;
 	width: 60%;
 }
 
 p{
 	font-size: 16px;
+	text-align: left;
 }
-#insert_btn, #cardSet_btn{
-	
+
+#insert_btn{
 	width:100px;
 	height:60px;
 	text-align: center;
@@ -74,48 +75,59 @@ p{
 	margin-top : 50px;
 	cursor: pointer;
 }
-
-#cardBtn, #setBtn{
+#cardSet_btn{
+	width:100px;
+	height:60px;
+	text-align: center;
+	margin : right;
+	margin-top : 50px;
 	cursor: pointer;
-	margin-top: 50px;
-	font-size: 18px;
-	color:black;
-	text-decoration: none;
 }
-
-#makeCard{
-	
-	width:50px;
-	border : 1px solie black;
-	
-}
-
-
 
 #delBtn{
 	float: right; /* 우측정렬 */
 	text-decoration: none;
 	cursor: pointer;
-	color:gray;
 	margin-top:8px;
 	margin-right:8px;
-	font-size: 15px;
+	font-size: 30px;
 }
 
 textarea {
-	resize: none;
+	resize:none;
+	font-size:18px;
+	background-color: #2E3856;
+	font-weight: bold;
+	color:white;
+	border:none;
+	border-bottom: thick double white; 
 }
 .tArea{
 	margin : auto;
 }
 
-
-#makeCard{
-	
-	margin-top:100px;
-	
+#makeCard, #cardBtn{
+	margin-top:20px;
+	color:black;
+	width : 200px;
+	height : 100px;
+	border-radius: 15px;
+	font-weight: bold;
+	font-size: 20px;
+	margin-bottom:100px;
 }
 
-#footer{
-	clear: both;
+#makeCard{
+	margin-left:1220px;
+}
+
+#footer {
+	margin-top: 50px;
+	padding: 10px;
+	text-decoration: none;
+	float : left;
+	background-color: #0a092d;
+	color : white;
+	text-align: left;
+	left : 0;
 }
