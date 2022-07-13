@@ -41,4 +41,7 @@
 		<beans:constructor-arg ref="studyCard_dao"></beans:constructor-arg>
 	</beans:bean>
 	
+	<beans:bean class="controller.MyPageController">
+	</beans:bean>
+	
 </beans:beans>

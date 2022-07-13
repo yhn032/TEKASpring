@@ -27,7 +27,7 @@ height: 80px;
 	//로그인 하지 않고 카드만들기 하려는 경우 -> 로그인 후에 카드 만들기를 바로 하러 가도록 세션 트래킹
 	function insertCard(){
 		
-		if(!confirm('로그인 후 이용가능합니다.\로그인 하시겠습니까?')) {
+		if(!confirm('로그인 후 이용가능합니다.\n로그인 하시겠습니까?')) {
 			return;
 		}
 		
@@ -127,9 +127,17 @@ height: 80px;
 				<a class="navbar-brand" href="../card/main.do" style="font-size: x-large; font-weight: bolder;">TEKA</a>
 			</div>
 			
-			
 			<ul class="nav navbar-nav">
 				<li><a href="../card/main.do">홈페이지</a></li>
+				<li><a href="../card/mainList.do">모든 학습세트</a></li>
+				<li>
+					<c:if test="${empty user}">
+						<a href="#" onclick="myCardSet();">내 학습세트</a>
+					</c:if>
+					<c:if test="${!empty user}">
+						<a href="../card/myCardList.do">내 학습세트</a>
+					</c:if>
+				</li>
 				<li class="dropDown"><a class="dropDownToggle" href="#" style="width: 150px;height: 65px;">주제 <span class="caret"></span></a>
 					<ul class="dropDownMenu">
 						<li><a href="../card/mainList.do?subject=os">운영체제</a></li>
@@ -140,15 +148,6 @@ height: 80px;
 						<li><a href="../card/mainList.do?subject=spring">Spring</a></li>
 
 					</ul>
-				<li><a href="../card/mainList.do">모든 학습세트</a></li>
-				<li>
-					<c:if test="${empty user}">
-						<a href="#" onclick="myCardSet();">내 학습세트</a>
-					</c:if>
-					<c:if test="${!empty user}">
-						<a href="../card/myCardList.do">내 학습세트</a>
-					</c:if>
-				</li>
 			</ul>
 			
 			<!-- 회원가입 전 -->
@@ -179,7 +178,7 @@ height: 80px;
 					<li><a href="../tekamember/loginForm.do"><span class="glyphicon glyphicon-log-in"></span>로그인</a></li>
 				</c:if>
 				<c:if test="${!empty user }">
-					<li><a href="#"><span class="glyphicon glyphicon-user"></span>${user.m_nickname }님</a></li>
+					<li><a href="../me/mypage.do"><span class="glyphicon glyphicon-user"></span>${user.m_nickname }님</a></li>
 					<li><a href="../tekamember/logout.do"><span class="glyphicon glyphicon-log-in"></span>로그아웃</a></li>
 				</c:if>
 			</ul>
