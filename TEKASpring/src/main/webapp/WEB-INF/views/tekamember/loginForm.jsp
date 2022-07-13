@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
 <!-- BootStrap 3.x -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -262,8 +263,8 @@ a {
 					<h1>Sign-in</h1>
 				</div>
 				<div class="socialContainer">
-					<a href="#" class="social"><i class="fa fa-facebook fa-2x"></i></a>
-					<a href="#" class="social"><i class="fa fa-google fa-2x"></i></a>
+					<a href="${naverUrl }" class="social"><i class="fab fa-neos"></i></a>
+					<a href="#" class="social"><i class="fab fa-google"></i></a>
 				</div>
 				<span>or use your account</span> 
 				<input type="text"     id="m_id"  name="m_id"    placeholder="id" /> 

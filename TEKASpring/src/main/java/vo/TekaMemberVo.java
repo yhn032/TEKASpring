@@ -7,7 +7,14 @@ public class TekaMemberVo {
 	String m_nickname;
 	String m_email;
 	String m_grade;
+	String m_naverId;
 	
+	public String getM_naverId() {
+		return m_naverId;
+	}
+	public void setM_naverId(String m_naverId) {
+		this.m_naverId = m_naverId;
+	}
 	public int getM_idx() {
 		return m_idx;
 	}

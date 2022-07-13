@@ -29,4 +29,16 @@ public class TekaMemberDaoImpl implements TekaMemberDao{
 		// TODO Auto-generated method stub
 		return sqlSession.insert("tekamember.insert", vo);
 	}
+
+	@Override
+	public TekaMemberVo selectOneBySocial(String m_naverId) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("tekamember.selectOneBySocial", m_naverId);
+	}
+
+	@Override
+	public int insertSocial(TekaMemberVo vo) {
+		// TODO Auto-generated method stub
+		return sqlSession.insert("tekamember.insertSocial", vo);
+	}
 }
