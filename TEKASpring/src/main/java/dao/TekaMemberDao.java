@@ -8,4 +8,6 @@ public interface TekaMemberDao {
 	public TekaMemberVo selectOneByNickname(String m_nickname);
 	public TekaMemberVo selectOneByEmail(String m_email);
 	public int insertMember(TekaMemberVo vo);
+	public TekaMemberVo selectOneBySocial(String m_naverId);
+	public int insertSocial(TekaMemberVo vo);
 }

@@ -16,8 +16,14 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.ict.teka.login.SocialLogin;
+import com.ict.teka.login.SocialValue;
 
 import dao.TekaMemberDao;
 import vo.TekaMemberVo;
@@ -33,10 +39,47 @@ public class TekaMemberController {
 	HttpSession session;
 	
 	TekaMemberDao member_dao;
+	
+	SocialValue naverSocial;
 
-	public TekaMemberController(TekaMemberDao member_dao) {
+	public TekaMemberController(TekaMemberDao member_dao, SocialValue naverSocial) {
 		super();
 		this.member_dao = member_dao;
+		this.naverSocial = naverSocial;
+	}
+	
+	//소셜 callback
+	@RequestMapping(value="login/{service}/callback", method= {RequestMethod.GET, RequestMethod.POST})
+	public String socialLoginCallback(@PathVariable String service, Model model, @RequestParam String code ) throws Exception {
+		SocialValue social = null;
+		if(service.equals("naver")) {
+			social = naverSocial;
+		}else {//다른 소셜 로그인 추가하는 경우 추가하자.
+			
+		}
+		
+		//사용자가 소셜 로그인을 성공하면 code를 받아오는데, 이 코르들 이용해서 액세스 토큰을 받아야 한다. 
+		SocialLogin socialLogin = new SocialLogin(social);
+		TekaMemberVo userprofile = socialLogin.getUserProfile(code);
+		
+		//DB에 존재하는 이메일인지 확인하기.
+		TekaMemberVo vo = member_dao.selectOneBySocial(userprofile.getM_naverId());
+		if(vo == null) {//새로 사이트를 방문한 소셜 로그인 유저 
+			//회원가입 폼으로 리다이렉트 시킨 후에 필요 정보만 받고 가입 시킨다.
+			//리다이렉트 파라미터
+			
+			int res = member_dao.insertSocial(userprofile);
+			TekaMemberVo vo2 = member_dao.selectOneBySocial(userprofile.getM_naverId());
+			session.setAttribute("user", vo2);
+			
+			return "redirect:../../../card/mainList.do";
+			
+		}else {//이미 가입한 소셜 로그인 유저. 세션에 값을 담아서 보낸다. 
+			
+			session.setAttribute("user", vo);
+			return "redirect:../../../card/mainList.do";
+		}
+		
 	}
 	
 	//로그인 폼
@@ -62,6 +105,10 @@ public class TekaMemberController {
 			if(url != null && !url.isEmpty()) {
 				request.setAttribute("url", url);
 			}
+			
+			//네이버 소셜 로그인
+			SocialLogin snsLogin = new SocialLogin(naverSocial);
+			model.addAttribute("naverUrl", snsLogin.getNaverAuthURL());
 			
 			model.addAttribute("RSAModulus", publicKeyModulus);
 			model.addAttribute("RSAExponent", publicKeyExponenet);
@@ -134,7 +181,6 @@ public class TekaMemberController {
 	@RequestMapping("logout.do")
 	public String logout() {
 		session.removeAttribute("user");
-		//request.getSession().removeAttribute("RSA_WEB_KEY");
 		return "redirect:../card/mainList.do";
 	}
 	
