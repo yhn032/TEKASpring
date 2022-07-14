@@ -23,4 +23,8 @@
 	<bean id="likey_dao" class="dao.LikeyDaoImpl">
 		<constructor-arg ref="sqlSession"/>
 	</bean>
+	
+	<bean id="attend_dao" class="dao.AttendDaoImpl">
+		<constructor-arg ref="sqlSession"/>
+	</bean>
 </beans>

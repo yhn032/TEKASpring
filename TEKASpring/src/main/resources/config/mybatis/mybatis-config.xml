@@ -16,5 +16,6 @@
 		<mapper resource="config/mybatis/mapper/card.xml" />
 		<mapper resource="config/mybatis/mapper/studyCard.xml" />
 		<mapper resource="config/mybatis/mapper/tekamember.xml" />
+		<mapper resource="config/mybatis/mapper/attend.xml" />
 	</mappers>
 </configuration>
