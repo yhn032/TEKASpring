@@ -49,4 +49,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		)
 	</insert>
 	
+	<!-- m_idx에 해당하는 사용자 조회하기 -->
+	<select id="selectOneByIdx" parameterType="int" resultType="member">
+		select * from tekamember where m_idx=#{m_idx}
+	</select>
+	
+	<!-- 비밀번호 변경하기 -->
+	<select id="updatePwd" parameterType="member">
+		update tekamember set m_pwd=#{m_pwd} where m_idx=#{m_idx}
+	</select>
+	
 </mapper>

@@ -10,4 +10,6 @@ public interface TekaMemberDao {
 	public int insertMember(TekaMemberVo vo);
 	public TekaMemberVo selectOneBySocial(String m_naverId);
 	public int insertSocial(TekaMemberVo vo);
+	public TekaMemberVo selectOneByIdx(int m_idx);
+	public int updatePwd(TekaMemberVo vo);
 }
