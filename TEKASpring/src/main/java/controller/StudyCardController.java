@@ -1,5 +1,6 @@
 package controller;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -184,4 +186,47 @@ public class StudyCardController {
 		model.addAttribute("type", type);
 		return "studyCard/studyCardWord";
 	}
+	
+	//김다정_20220713 : c_idx에 해당하는 전체 q_question 반환 (studyCardTest.jsp)
+	@RequestMapping( value="selectQuestion.do", produces="text/json; charset=utf-8;" )
+	@ResponseBody
+	public String selectQuestion(int c_idx) {
+		
+		List<ViewVo> list = studyCard_dao.selectCard(c_idx);
+		
+		//질문만 담을 List
+		List<String> q_question = new ArrayList<>();
+		
+		for(ViewVo vo : list) {
+			
+			q_question.add(vo.getQ_question());
+		}
+		
+		//q_question의 순서를 섞기위해 생성한 복사본 
+		List<String> suffle = new ArrayList<>();	
+		
+		
+		//삼지선다이기 때문에, q_question을 3번 조회
+		for(int i=0; i<3; i++) {
+			
+			Collections.shuffle(q_question);
+			
+			//복사하기
+			for(String str : q_question) {
+				
+				suffle.add(str);
+			}
+		} // end : for
+		
+		//복사본 List의 순서 섞기
+		Collections.shuffle(suffle);
+		
+		JSONObject json = new JSONObject();
+		
+		json.put("q_question", q_question); //원본   List
+		json.put("suffle", suffle); 		//복사본 List
+		
+		return json.toJSONString();
+	}
+	
 }
