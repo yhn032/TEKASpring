@@ -35,6 +35,7 @@
 	
 	<beans:bean class="controller.TekaMemberController">
 		<beans:constructor-arg ref="member_dao"></beans:constructor-arg>
+		<beans:constructor-arg ref="naverSns"></beans:constructor-arg>
 	</beans:bean>
 	
 	<beans:bean class="controller.StudyCardController">

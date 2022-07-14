@@ -50,10 +50,10 @@ $(document).ready(function(){
 	});
 	
 	
-	$(".card").click(function(){
+	/* $(".card").click(function(){
 		$(this).toggleClass("flipped");
 	});
-	
+	 */
 	card = $("input[name=slide]").length;
 	
 	$("#status").html(index +" / " + card);
@@ -201,7 +201,81 @@ function slideCard(){
 	$("#myBar").css("width", per+"%");
 }
 </script>
+<!-- 김다정_20220713 : q_question 요소 랜덤으로 섞기 -->
+<script type="text/javascript">
+	
+	var q = 0;
+	
+	$(function(){
+		
+		classList = $(".chooseCorrect");
+		
+		//쿼리의 c_idx를 이용해서 q_question 전체 조회
+		$.ajax({
+			url     : 'selectQuestion.do',
+			data    : {"c_idx":"${param.c_idx}"},
+			dataType: 'json',
+			success : function(res) {
 
+				//오답 질문 출력
+				for(var i=0; i<res.suffle.length; i++) {
+					
+					q = classList[i].id;
+					
+					$("#" + q).val(res.suffle[i]);
+				} //end : for
+			}
+		}); //end : ajax
+	}); //end : function
+	
+	
+	function submitCorrect() {
+		
+		
+		alert('정답입니다.');
+		
+	} //end : submitCorrect
+	
+	
+	
+/* function suffle(arr) { //인자값 배열의 요소 섞기 
+	for(var idx=arr.length-1; idx>0; idx--) {
+		//랜덤 idx 값 생성 (idx>0)
+		const rdPosition = Math.floor(Math.random() * (idx+1));
+		//임시로 원본값 저장 -> rdPostition으로 요소 섞기
+		const temp = arr[idx];
+		arr[idx] = arr[rdPosition];
+		arr[rdPosition] = temp;
+	} //end : for
+	return arr;			
+} //end : suffle */
+</script>
+<!-- 구현 완료 후, css폴더로 옮길 예정 -->
+<style type="text/css">
+.correctArea {
+	position:fixed;
+	top:420px;
+	right:105px;
+}
+.chooseCorrect {
+	display: block;
+	width: 700px;
+	height: 50px;
+	background-color: #2E3856;
+	font-size:20px;
+	text-align: left;
+	color:white;
+	border: none;
+	border-radius: 10px;
+	cursor:pointer; 
+}
+
+.chooseCorrect:hover{
+	background-color: green;
+}
+
+
+</style>
 </head>
 <body style="background-color: #0a092d;">
 
@@ -227,24 +301,32 @@ function slideCard(){
 				<!-- 이전 페이지로 이동한다.  -->
 				<div class="checked"><input class="checkBtn" id="star${qna.q_idx }" type="button" value="☆" name="${qna.q_idx }"></div>
 				<span style="z-index: 11;"><label for="slide${i.index}" class="left"></label>◀</span>
-				<div class="card">
+				<div class="card" style="font-size: 10px;">
 					<div class="card-inner">
-						<div class="card-front">${qna.q_question }</div>
-						<div class="card-back">${qna.q_answer }</div>
+						<div class="card-front" style="font-size:20px; ">${qna.q_answer }</div>
+						<div class="card-back"><%-- ${qna.q_question } --%></div>
+					</div>
+					
+					<!-- 김다정_20220713 : 삼지선다 영역 -->
+					<div class="correctArea">
+						<input type="button" class="chooseCorrect" id="q_${3*i.index+1}" onclick="submitCorrect();">
+						<input type="button" class="chooseCorrect" id="q_${3*i.index+2}" onclick="submitCorrect();">
+						<input type="button" class="chooseCorrect" id="q_${3*i.index+3}" onclick="submitCorrect();">
 					</div>
 				</div>
 				<span><label for="slide${i.count+1 }" class="right"></label>▶</span>
 			</li>
-		</c:forEach>
+			</c:forEach>
 		<!-- 슬라이드 영역 종료 -->	
 		</ul>
 	</div>
+	
 </div><!-- section end -->
-<span id="msg"></span>
+<%-- <span id="msg"></span>
 <div id="btnBox">
 	<input type="button" value="▶ 자동재생" id="playCard" >
 	<input type="button" value="∥ 재생정지" id="stopCard">
 	<input type="button" value="∞ 순서섞기" id="shuffleCard" onclick="location.href='?c_idx=${param.c_idx}&opt=random'">
-</div>
+</div> --%>
 </body>
 </html>
