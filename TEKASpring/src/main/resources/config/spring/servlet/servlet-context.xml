@@ -44,6 +44,7 @@
 	</beans:bean>
 	
 	<beans:bean class="controller.MyPageController">
+		<beans:constructor-arg ref="attend_dao"></beans:constructor-arg>
 	</beans:bean>
 	
 </beans:beans>
