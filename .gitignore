@@ -1,6 +1,5 @@
 *.iml
 .gradle
-.classpath
 /local.properties
 /.idea/caches/build_file_checksums.ser
 /.idea/libraries
@@ -91,3 +90,8 @@ replay_pid*
 
 # End
 *.sql
+
+TEKASpring/target/
+.classpath
+.xml
+.springBeans
