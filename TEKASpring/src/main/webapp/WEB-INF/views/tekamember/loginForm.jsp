@@ -199,6 +199,14 @@ a {
 			alert('로그인해주세요.');
 			return;
 		}
+		
+		if("${param.reason eq 'social'}" == "true"){
+			if(!confirm("이미 가입한 계정이 있습니다.\n아이디를 찾으시겠습니까?")) return;
+		
+			location.href="findID.do";
+		}
+		
+		
 	}
 
 	function checkValidate(){
@@ -269,7 +277,7 @@ a {
 				<span>or use your account</span> 
 				<input type="text"     id="m_id"  name="m_id"    placeholder="id" /> 
 				<input type="password" id="m_pwd" name="m_pwd"   placeholder="Password" /> 
-				<a href="#">Forgot your password?</a>
+				<a href="findID.do">Forgot your id or password?</a>
 				<input id="loginBtn" type="button" value="Sign In" onclick="checkValidate(); return false;" />
 			</form>
 			

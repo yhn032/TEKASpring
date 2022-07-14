@@ -8,12 +8,17 @@ import java.security.PublicKey;
 import java.security.spec.RSAPublicKeySpec;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import javax.crypto.Cipher;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,11 +46,14 @@ public class TekaMemberController {
 	TekaMemberDao member_dao;
 	
 	SocialValue naverSocial;
+	
+	JavaMailSender mailSender;
 
-	public TekaMemberController(TekaMemberDao member_dao, SocialValue naverSocial) {
+	public TekaMemberController(TekaMemberDao member_dao, SocialValue naverSocial, JavaMailSender mailSender) {
 		super();
 		this.member_dao = member_dao;
 		this.naverSocial = naverSocial;
+		this.mailSender = mailSender;
 	}
 	
 	//소셜 callback
@@ -58,16 +66,17 @@ public class TekaMemberController {
 			
 		}
 		
-		//사용자가 소셜 로그인을 성공하면 code를 받아오는데, 이 코르들 이용해서 액세스 토큰을 받아야 한다. 
+		//사용자가 소셜 로그인을 성공하면 code를 받아오는데, 이 코드를 이용해서 액세스 토큰을 받아야 한다. 
 		SocialLogin socialLogin = new SocialLogin(social);
 		TekaMemberVo userprofile = socialLogin.getUserProfile(code);
 		
-		//DB에 존재하는 이메일인지 확인하기.
-		TekaMemberVo vo = member_dao.selectOneBySocial(userprofile.getM_naverId());
+		//이메일을 통해서 DB에 존재하는 이메일인지 확인하기.
+		//TekaMemberVo vo = member_dao.selectOneBySocial(userprofile.getM_naverId());
+		TekaMemberVo vo = member_dao.selectOneByEmail(userprofile.getM_email());
+		
 		if(vo == null) {//새로 사이트를 방문한 소셜 로그인 유저 
-			//회원가입 폼으로 리다이렉트 시킨 후에 필요 정보만 받고 가입 시킨다.
-			//리다이렉트 파라미터
 			
+			//회원정보를 입력해서 바로 가입시킨다.(m_id=naverUser, m_pwd=null, m_nickname=사용자이름, m_email=사용자주소, naverId=암호화된 네이버아이디)
 			int res = member_dao.insertSocial(userprofile);
 			TekaMemberVo vo2 = member_dao.selectOneBySocial(userprofile.getM_naverId());
 			session.setAttribute("user", vo2);
@@ -76,8 +85,18 @@ public class TekaMemberController {
 			
 		}else {//이미 가입한 소셜 로그인 유저. 세션에 값을 담아서 보낸다. 
 			
-			session.setAttribute("user", vo);
-			return "redirect:../../../card/mainList.do";
+			//등록된 이메일이 소셜로그인을 통한 이메일인지, 회원가입을 통한 이메일인지 확인한다.
+			TekaMemberVo isSocial = member_dao.selectOneBySocial(userprofile.getM_naverId());
+			
+			if(isSocial == null) {//그냥 일반 가입자이다. -> id/pwd찾게해야한다. 이메일 중복 불가
+				model.addAttribute("reason", "social");
+				return "redirect:../../../tekamember/loginForm.do";
+				
+			}else {//소셜로 로그인한 가입자이다. -> 바로 로그인
+				session.setAttribute("user", vo);
+				return "redirect:../../../card/mainList.do";
+			}
+			
 		}
 		
 	}
@@ -154,7 +173,7 @@ public class TekaMemberController {
 				} //pwd체크
 				
 				if(!user.getM_pwd().equals(m_pwd)) {//아이디는 맞지만 비밀번호 오류
-					model.addAttribute("reason", "failId");
+					model.addAttribute("reason", "failPwd");
 					return "redirect:loginForm.do";
 				}
 				
@@ -255,6 +274,136 @@ public class TekaMemberController {
 		// 로그인 하도록 유도
 		return "redirect:loginForm.do";
 	}
+	
+	//비밀번호 찾기 
+	@RequestMapping("findPWD.do")
+	public String findPWD() {
+		return "tekamember/findPwd";
+	}
+	
+	//이메일 발송을 위한 정보 받기 
+	@RequestMapping("findAuth.do")
+	@ResponseBody
+	public Map findAuth(TekaMemberVo vo, Model model) {
+		
+		Map map = new HashMap();
+		
+		//사용자가 작성한 아이디를 기준으로 존재하는 사용자인지 확인한다.(id는 회원가입시 중복 체크를 했기 때문에 유니크하다.)
+		TekaMemberVo isUser = member_dao.selectOneById(vo.getM_id());
+		
+		if(isUser != null) {//회원가입이 되어있는, 존재하는 사용자라면
+			Random r = new Random();
+			int num = r.nextInt(999999); //랜덤 난수 
+			
+			StringBuilder sb = new StringBuilder();
+			
+			// DB에 저장된 email            입력받은 email
+			if(isUser.getM_email().equals(vo.getM_email())) {//이메일 정보 또한 동일하다면 
+				
+				String setFrom = "yhn990410@naver.com";//발신자 이메일
+				String tomail = isUser.getM_email();//수신자 이메일
+				String title = "[TEKA] 비밀번호 변경 인증 이메일입니다.";
+				sb.append(String.format("안녕하세요 %s님\n", isUser.getM_nickname()));
+				sb.append(String.format("TEKA 비밀번호 찾기(변경) 인증번호는 %d입니다.", num));
+				String content = sb.toString();
+				
+				try {
+					MimeMessage msg = mailSender.createMimeMessage();
+					MimeMessageHelper msgHelper = new MimeMessageHelper(msg, true, "utf-8");
+					
+					msgHelper.setFrom(setFrom);
+					msgHelper.setTo(tomail);
+					msgHelper.setSubject(title);
+					msgHelper.setText(content);
+					
+					//메일 전송
+					mailSender.send(msg);
+					
+				}catch (Exception e) {
+					// TODO: handle exception
+					System.out.println(e.getMessage());
+				}
+				
+				//성공적으로 메일을 보낸 경우
+				map.put("status", true);
+				map.put("num", num);
+				map.put("m_idx", isUser.getM_idx());
+				return map;
+				
+			}else {//존재하지 않는 이메일인 경우 -> 가입되지 않은 사용자 -> 회원가입 할래?
+				
+				map.put("status", false);
+				map.put("reason", "failEmail");
+				
+				return map;
+				
+			}
+		}else {//가입되어 있지 않은 사용자 -> 아이디가 존재하지 않음
+			map.put("status", false);
+			map.put("reason", "failId");
+			return map;
+		}
+		
+	}
+	
+	//아이디 찾기 폼
+	@RequestMapping("findID.do")
+	public String FindID() {
+		return "tekamember/findId";
+	}
+	
+	//아이디를 찾기 위해 이메일로 회원조회하기
+	@RequestMapping("checkEmailForId.do")
+	public String checkEmailForId(String m_email, Model model) {
+		
+		TekaMemberVo user = member_dao.selectOneByEmail(m_email);
+		
+		if(user == null) {//존재하지 않는 사용자
+			model.addAttribute("reason", "failEmail");
+			return "redirect:findID.do";
+		}else {//존재 하는 사용자
+			String m_id = user.getM_id();
+			
+			if(m_id.equalsIgnoreCase("naverUser")) {//소셜 로그인 유저라면 아이디가 없음
+				model.addAttribute("reason", "social");
+				return "redirect:findID.do";
+			}
+			
+			model.addAttribute("m_id", m_id);
+			return "tekamember/findIdResult";
+		}
+		
+		
+		
+	}
+	
+	//비밀번호 찾기 결고 확인
+	@RequestMapping("resPWD.do")
+	public String resPWD(int m_idx, Model model) {
+		
+		TekaMemberVo user = member_dao.selectOneByIdx(m_idx);
+		model.addAttribute("vo", user);
+		
+		return "tekamember/findPwdResult";
+	}
+	
+	//비밀번호 변경 폼
+	@RequestMapping("newPWD.do")
+	public String newPWD(int m_idx, Model model) {
+		
+		TekaMemberVo user = member_dao.selectOneByIdx(m_idx);
+		model.addAttribute("vo", user);
+		
+		return "tekamember/newPwd";
+	}
+	
+	//비밀번호 변경하기
+	@RequestMapping("updatePwd.do")
+	public String updatePwd(TekaMemberVo vo) {
+		int res = member_dao.updatePwd(vo);
+		return "redirect:loginForm.do";
+	}
+	
 	
 	
 	private String decryptRSA(PrivateKey privateKey, String m_id) {

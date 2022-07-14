@@ -41,4 +41,16 @@ public class TekaMemberDaoImpl implements TekaMemberDao{
 		// TODO Auto-generated method stub
 		return sqlSession.insert("tekamember.insertSocial", vo);
 	}
+
+	@Override
+	public TekaMemberVo selectOneByIdx(int m_idx) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("tekamember.selectOneByIdx", m_idx);
+	}
+
+	@Override
+	public int updatePwd(TekaMemberVo vo) {
+		// TODO Auto-generated method stub
+		return sqlSession.update("tekamember.updatePwd", vo);
+	}
 }
