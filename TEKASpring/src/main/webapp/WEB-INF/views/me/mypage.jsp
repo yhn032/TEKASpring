@@ -56,8 +56,8 @@ var attendList = [];
 		   	  locale: 'ko',
 		      initialView: 'dayGridMonth',
 		      events: attendList,
-		      color: purple,
-		      font: white
+		      color: 'purple',
+		      font: 'white'
 		    });
 		    
 		    calendar.render();
