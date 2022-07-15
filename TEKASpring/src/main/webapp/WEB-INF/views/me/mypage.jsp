@@ -22,41 +22,48 @@
 	src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/locales-all.min.js'></script>
 <script type="text/javascript"></script>
 <script>
-var attendList = new Array();
+var attendList = [];
 	
 	$(function(){ // 로딩되면 처리 
+		if("${empty user}"=="true"){
+			alert('로그인 해주세요');
+			location.href="../tekamember/loginForm.do";
+		}
+		
 		$.ajax({
 			type : "GET",
 			url : "attendList.do",
 			data : {"m_idx" : "${user.m_idx}"},
 			dataType : 'json',
+			//async: false,
 			success : function(resData){
-				for(i = 0; i < resData.length; i++){
-					attendList[i] = "{ 'title' : '출석!', 'start' :"+ resData.i +"}";
-					
-				}
-				
+				console.log('ajax: '+resData);
+				attendList = resData;
+				showCalendar();
 			},
 			error : function(err){
-				alert(err.responseText);
 			}
-		})// ajax
+		});// ajax
+		
 		
 	});
 	
-	document.addEventListener('DOMContentLoaded', function() {
+	function showCalendar(){
+		//document.addEventListener('DOMContentLoaded', function() {
+			console.log('showCalendar'+attendList);
+		    var calendarEl = document.getElementById('calendar');
+		    var calendar = new FullCalendar.Calendar(calendarEl, {
+		   	  locale: 'ko',
+		      initialView: 'dayGridMonth',
+		      events: attendList,
+		      color: purple,
+		      font: white
+		    });
+		    
+		    calendar.render();
+		//  });
+	}
 	
-    var calendarEl = document.getElementById('calendar');
-    var calendar = new FullCalendar.Calendar(calendarEl, {
-   	  locale: 'ko',
-      initialView: 'dayGridMonth',
-      events: [{
-    	  attendList
-      }],
-    });
-    
-    calendar.render();
-  });
 		    
 </script>
 
