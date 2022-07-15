@@ -300,7 +300,7 @@ public class TekaMemberController {
 			// DB에 저장된 email            입력받은 email
 			if(isUser.getM_email().equals(vo.getM_email())) {//이메일 정보 또한 동일하다면 
 				
-				String setFrom = "yhn990410@naver.com";//발신자 이메일
+				String setFrom = "ict04@naver.com";//발신자 이메일
 				String tomail = isUser.getM_email();//수신자 이메일
 				String title = "[TEKA] 비밀번호 변경 인증 이메일입니다.";
 				sb.append(String.format("안녕하세요 %s님\n", isUser.getM_nickname()));

@@ -1,5 +1,6 @@
 package controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,19 +48,24 @@ public class MyPageController {
 	// ajax 달력내용 불러오기
 	@RequestMapping("attendList.do")
 	@ResponseBody
-	public Map<Integer, String> getAttendList(int m_idx) {
+	public List<Map<String, String>> getAttendList(int m_idx) {
+		List<Map<String, String>> list = new ArrayList<Map<String, String>>();
+		Map<String, String> map = new HashMap<String, String>();
 
 		// dao에서 날짜 가져오기
 		List<AttendVo> attendList = attend_dao.selectAttendList(m_idx);
-		Map<Integer, String> map = new HashMap<Integer, String>();
-		
-		// map에 날짜만 담아서 포장하기
+
+		// json으로 포장해서 리턴해야함 1~attendList.length {'title' : '출석', 'start' : '2022-07-14'}
 		for (int i = 0; i < attendList.size(); i++) {
-			map.put(i,attendList.get(i).getAttend_date());
-			System.out.println(map.get(i));
+			map = new HashMap<String, String>();
+			map.put("start", attendList.get(i).getAttend_date());
+			map.put("title", "출석");
+			list.add(map);
 		}
-		
-		return map;
+
+		//System.out.println(list.toString());
+
+		return list;
 
 	}
 
