@@ -6,7 +6,7 @@ import vo.AttendVo;
 
 public interface AttendDao {
 	
-	public int insertAttend(AttendVo vo);
+	public int insertAttend(int m_idx);
 	public int deleteAttend(int m_idx);
 	public List<AttendVo> selectAttendList(int m_idx);
 

@@ -31,7 +31,7 @@
 	border-radius : 10px;
 	background: linear-gradient(45deg, Violet, Orange);
 }
-#attendbtn{
+#attendbtndiv{
 	margin-bottom: 10px;
 	margin-top: 10px;
 	padding-top: 90px;
@@ -42,6 +42,12 @@
 
 <script>
 	var attendList = [];
+	var date = new Date();
+	var y = date.getFullYear();
+	var m = String(date.getMonth()+1).padStart(2, "0");
+	var d = String(date.getDate()).padStart(2, "0");
+	let today = y+"-"+m+"-"+d;
+	
 	
 	$(function(){ // 로딩되면 처리 
 		if("${empty user}"=="true"){
@@ -56,6 +62,11 @@
 			dataType : 'json',
 			success : function(resData){
 				attendList = resData;
+				// 오늘 날짜가 마지막 출석 입력일이랑 같으면 버튼 비활성화
+				if(attendList[attendList.length-1].start==today){
+					$("#attendbtn").attr("disabled",true);
+					$("#attendbtn").val('출석 완료!');
+				}
 				showCalendar();
 			},
 			error : function(err){
@@ -70,18 +81,8 @@
 		    var calendar = new FullCalendar.Calendar(calendarEl, {
 		   	  locale: 'ko',
 		      initialView: 'dayGridMonth',
-		      events: attendList,
-		      customButtons: {
-			        custom2: {
-			          text: '출석체크하기',
-			          id: 'check',
-			          click: function() {
-		                    // ajax 통신으로 출석 정보 저장하기 
-		                    // POST "/users/attend" -> { status: "success", date:"2018-07-01"}
-		                    // 통신 성공시 버튼 바꾸고, property disabled 만들기 
-			          }
-			        }
-			    }
+		      events: attendList
+		      
 		    });
 		    
 		    calendar.render();
@@ -96,11 +97,11 @@
 		$.ajax({
 			type: 'GET',
 			url: 'attend.do',
-			data: {'user' : "${user.m_idx}"},
+			data: {'m_idx' : "${user.m_idx}"},
 			success: function(resData){
 				if(resData == 1){
 					alert('출석체크 완료!!');
-					location.href="#";
+					location.href="mypage.do";
 				} else{
 					alert('실패했습니다...');
 					return;
@@ -128,8 +129,8 @@
 		<%@ include file="../header/mainmenu.jsp"%>
 	</div>
 	<div id="page">
-	<div id="attendbtn">
-	<input class="btn btn-danger" type="button" value="출석체크하기!" onclick="insertAttend();">
+	<div id="attendbtndiv">
+	<input id="attendbtn" class="btn btn-danger" type="button" value="출석체크하기!" onclick="insertAttend();">
 	</div>
 	<div id='calendar'>
 	</div>

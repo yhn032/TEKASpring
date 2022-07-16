@@ -38,8 +38,8 @@ public class MyPageController {
 	// TODO: ajax 출석체크기능
 	@RequestMapping("attend.do")
 	@ResponseBody
-	public int attend(AttendVo vo) {
-		int res = attend_dao.insertAttend(vo);
+	public int attend(int m_idx) {
+		int res = attend_dao.insertAttend(m_idx);
 		return res;
 	}
 
