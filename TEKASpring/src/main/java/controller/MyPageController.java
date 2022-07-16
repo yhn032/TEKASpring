@@ -39,9 +39,7 @@ public class MyPageController {
 	@RequestMapping("attend.do")
 	@ResponseBody
 	public int attend(AttendVo vo) {
-
 		int res = attend_dao.insertAttend(vo);
-
 		return res;
 	}
 
@@ -59,12 +57,10 @@ public class MyPageController {
 		for (int i = 0; i < attendList.size(); i++) {
 			map = new HashMap<String, String>();
 			map.put("start", attendList.get(i).getAttend_date());
-			map.put("title", "출석");
+			map.put("title", "★★출석★★");
 			list.add(map);
 		}
-
 		//System.out.println(list.toString());
-
 		return list;
 
 	}
