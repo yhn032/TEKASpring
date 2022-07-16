@@ -4,8 +4,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="attend">
 
-	<insert id="insert" parameterType="vo.AttendVo">
-		insert into attend(m_idx, attend_date) values(#{m_idx}, date_format(now(),'%Y-%M-%d'))
+	<insert id="insert" parameterType="int">
+		insert into attend(m_idx, attend_date) values(#{m_idx}, date_format(now(),'%Y-%m-%d'))
 	</insert>
 	
 	<delete id="delete" parameterType="int">

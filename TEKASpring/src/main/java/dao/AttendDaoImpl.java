@@ -16,8 +16,8 @@ public class AttendDaoImpl implements AttendDao {
 	}
 
 	@Override
-	public int insertAttend(AttendVo vo) {
-		return sqlSession.insert("attend.insert", vo);
+	public int insertAttend(int m_idx) {
+		return sqlSession.insert("attend.insert", m_idx);
 	}
 
 	@Override
