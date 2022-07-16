@@ -10,8 +10,7 @@
 #footer{
 	margin-top: 50px;
 	padding: 10px;
-	background-color: white;
-	color: black;
+	color: white;
 	text-decoration: none;
 	clear: both;
 }
