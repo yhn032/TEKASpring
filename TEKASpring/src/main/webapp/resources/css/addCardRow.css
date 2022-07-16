@@ -65,6 +65,7 @@
 p{
 	font-size: 16px;
 	text-align: left;
+	color:#586380;
 }
 
 #insert_btn{
@@ -100,7 +101,7 @@ textarea {
 	font-weight: bold;
 	color:white;
 	border:none;
-	border-bottom: 1px solid #586380; 
+	border-bottom: 3px solid #586380; 
 }
 .tArea{
 	margin : auto;
@@ -108,13 +109,14 @@ textarea {
 
 #makeCard, #cardBtn{
 	margin-top:20px;
-	color:black;
+	color:white;
 	width : 200px;
 	height : 100px;
 	border-radius: 15px;
 	font-weight: bold;
 	font-size: 20px;
 	margin-bottom:100px;
+	background-color: #586380;
 }
 
 #makeCard{

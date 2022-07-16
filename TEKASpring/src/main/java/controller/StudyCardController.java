@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -194,38 +195,42 @@ public class StudyCardController {
 		
 		List<ViewVo> list = studyCard_dao.selectCard(c_idx);
 		
-		//질문만 담을 List
+		//문제의 정답 List
 		List<String> q_question = new ArrayList<>();
-		
-		JSONObject json = new JSONObject();
+		//문제의 오답 List
+		List<String> shuffle     = new ArrayList<>();
 		
 		for(ViewVo vo : list) {
-			
+
 			q_question.add(vo.getQ_question());
+			shuffle.add(vo.getQ_question());
+		}
+
+		//q_question의 요소 섞기
+		Collections.shuffle(shuffle);
+		
+		//1번, 2번, 3번 보기를 담는 각 리스트 선언
+		List<String> one = new ArrayList<>();
+		List<String> two = new ArrayList<>();
+		List<String> three = new ArrayList<>();
+		
+		
+		for(int i=0; i<q_question.size(); i++) {
+			
+			one.add(q_question.get(i));
+			two.add(shuffle.get(i));
+			
+			//순서 한 번 더 섞기
+			Collections.shuffle(shuffle);
+			three.add(shuffle.get(i));
 		}
 		
-		json.put("q_question", q_question); //원본 List
+		//JSONArray  jsonArr = new JSONArray();
+		JSONObject json    = new JSONObject();
 		
-		//q_question의 순서를 섞기위해 생성한 복사본 
-		List<String> suffle = new ArrayList<>();	
-		
-		
-		//삼지선다이기 때문에, q_question을 3번 조회
-		for(int i=0; i<3; i++) {
-			
-			Collections.shuffle(q_question);
-			
-			//복사하기
-			for(String str : q_question) {
-				
-				suffle.add(str);
-			}
-		} // end : for
-		
-		//복사본 List의 순서 섞기
-		Collections.shuffle(suffle);
-		
-		json.put("suffle", suffle); //복사본 List
+		json.put("one", one);
+		json.put("two", two);
+		json.put("three", three);
 		
 		return json.toJSONString();
 	}

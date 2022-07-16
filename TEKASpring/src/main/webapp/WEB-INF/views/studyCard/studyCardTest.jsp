@@ -199,42 +199,44 @@ function slideCard(){
 <!-- 김다정_20220713 : q_question 요소 랜덤으로 섞기 -->
 <script type="text/javascript">
 	
-	var q   = 0;
-	var len = "${fn:length(list)*3-1}";
+	var len = "${fn:length(list)*3}";
 	
 	$(function(){
 		
-		classList = $(".chooseCorrect");
-		
-		//쿼리의 c_idx를 이용해서 q_question 전체 조회
 		$.ajax({
 			url     : 'selectQuestion.do',
 			data    : {"c_idx":"${param.c_idx}"},
 			dataType: 'json',
 			success : function(res) {
 				
-				//오답 질문 출력
-				for(var i=0; i<res.suffle.length; i++) {
+				for(var i=0; i<len/3; i++) {
 					
-					q = classList[i].id;
+					var q1 = 3*i+1;
+					var q2 = 3*i+2;
+					var q3 = 3*i+3;
 					
-					if( (i%3)==0 ) {
-
-						$("#" + q).val(res.q_question[i]);
+					$("#q_" + q1).val(res.one[i]);
+					$("#q_" + q2).val(res.two[i]);
+					$("#q_" + q3).val(res.three[i]);
+					
+					$("#q_" + q1).click(function(){
 						
-						$("#" + q).click(function(){
-							
-							alert('정답입니다.');
-							
-						})
+						alert('정답입니다.');
 						
-						continue;
-					} 
+						slideCard();
+						
+					});
 					
-					$("#" + q).val(res.suffle[i]);
-					$("#" + q).click(function(){
+					$("#q_" + q2).click(function(){
 						
 						alert('오답입니다.');
+						
+					})
+					
+					$("#q_" + q3).click(function(){
+						
+						alert('오답입니다.');
+						
 					})
 					
 				} //end : for
@@ -471,7 +473,6 @@ function slideCard(){
 </style>
 </head>
 <body style="background-color: #0a092d;">
-
 <div id="header">
 	<%@include file="../header/studyCardHeader.jsp" %>
 </div>
@@ -499,11 +500,11 @@ function slideCard(){
 						<div class="card-front" style="font-size:20px; ">${qna.q_answer }</div>
 					</div>
 					
-					<!-- 김다정_20220713 : 삼지선다 영역 -->
+					<!-- 김다정_20220713 : 삼지선다 영역 3*i.index+1 -->
 					<div class="correctArea">
-						<input type="button" class="chooseCorrect" id="q_${3*i.index+1}" >
-						<input type="button" class="chooseCorrect" id="q_${3*i.index+2}" >
-						<input type="button" class="chooseCorrect" id="q_${3*i.index+3}" >
+						<input type="button" class="chooseCorrect" id="q_${3*i.index+1}" name="${qna.q_idx}">
+						<input type="button" class="chooseCorrect" id="q_${3*i.index+2}" name="${qna.q_idx}">
+						<input type="button" class="chooseCorrect" id="q_${3*i.index+3}" name="${qna.q_idx}">
 					</div>
 				</div>
 				<span><label for="slide${i.count+1 }" class="right"></label>▶</span>

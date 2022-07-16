@@ -41,7 +41,8 @@
 	font-weight     : bold;
 	font-size       : 30px;
 	display         : flex;
-	align-items     : center;
+	align-items     : top;
+	padding:110px;
 	justify-content : center;
 	line-height     : 30px;
 	white-space: normal;
@@ -220,5 +221,5 @@
 }
 
 .chooseCorrect:hover{
-	background-color: green;
+	background-color: #586380;
 }
