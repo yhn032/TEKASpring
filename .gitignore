@@ -98,3 +98,4 @@ replay_pid*
 TEKASpring/src/main/resources/config/spring/context/context-7-socialLogin.xml
 TEKASpring/src/main/resources/config/spring/context/context-8-emailAuth.xml
 TEKASpring/src/main/resources/config/mybatis/db.properties
+TEKASpring/target/
