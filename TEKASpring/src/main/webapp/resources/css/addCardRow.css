@@ -27,7 +27,7 @@
 .row{
 	margin-top: 30px;
 	height : 300px; 
-	border : 3px solid white;
+	border:3px solid #586380;
 	border-radius: 15px;
 	counter-increment: number 1; /* 카운트 증가 */
 	/* display: table-row; */
@@ -100,7 +100,7 @@ textarea {
 	font-weight: bold;
 	color:white;
 	border:none;
-	border-bottom: thick double white; 
+	border-bottom: 1px solid #586380; 
 }
 .tArea{
 	margin : auto;

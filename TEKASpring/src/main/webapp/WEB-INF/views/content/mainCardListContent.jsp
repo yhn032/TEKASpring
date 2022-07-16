@@ -225,9 +225,9 @@ function filter(){
 					var jsonDiv = {
 									 table : "<table class=\"question\">",
 									 q : "<tr><th><textarea cols=\"45\" readonly=\"readonly\" class=\"q_question" + i + "\"",	
-									 qCss: "style=\"border:none; border-bottom: 3px solid #C2B0DA; resize:none; font-size:17px;\"></textarea></th>",
+									 qCss: "style=\"border:none; background:#2e3856; border-bottom: 1px solid #586380; resize:none; font-size:17px;\"></textarea></th>",
 									 a : "<th><textarea cols=\"80\" readonly=\"readonly\" class=\"q_answer" + i + "\"",
-									 aCss:"style=\"border:none; border-bottom: 3px solid #C2B0DA; resize:none; font-size:17px; vertical-align: bottom;\"></textarea></th></tr>",
+									 aCss:"style=\"border:none; background:#2e3856; border-bottom: 1px solid #586380; resize:none; font-size:17px; vertical-align: bottom;\"></textarea></th></tr>",
 									 qText:	"<tr><th class=\"qnaText\">질문</th>",
 									 aText: "<th class=\"qnaText\">답변</th></tr></table>"
 								  };

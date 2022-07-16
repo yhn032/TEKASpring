@@ -197,10 +197,14 @@ public class StudyCardController {
 		//질문만 담을 List
 		List<String> q_question = new ArrayList<>();
 		
+		JSONObject json = new JSONObject();
+		
 		for(ViewVo vo : list) {
 			
 			q_question.add(vo.getQ_question());
 		}
+		
+		json.put("q_question", q_question); //원본 List
 		
 		//q_question의 순서를 섞기위해 생성한 복사본 
 		List<String> suffle = new ArrayList<>();	
@@ -221,10 +225,7 @@ public class StudyCardController {
 		//복사본 List의 순서 섞기
 		Collections.shuffle(suffle);
 		
-		JSONObject json = new JSONObject();
-		
-		json.put("q_question", q_question); //원본   List
-		json.put("suffle", suffle); 		//복사본 List
+		json.put("suffle", suffle); //복사본 List
 		
 		return json.toJSONString();
 	}
