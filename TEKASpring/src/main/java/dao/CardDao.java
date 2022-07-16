@@ -9,6 +9,7 @@ import vo.ViewVo;
 public interface CardDao {
 
 	public List<ViewVo> selectList();
+	public List<ViewVo> selectAllList(Map map);
 	public List<ViewVo> selectBySubject(String subject);
 	public int insertMyCard(MyCardSetVo vo);
 	public MyCardSetVo selectCheckMyCard(MyCardSetVo check);
@@ -16,4 +17,5 @@ public interface CardDao {
 	public List<ViewVo> cardCondition(Map map);
 	public int like(String c_title);
 	public int deleteMyCard(MyCardSetVo vo);
+	public int selectTotalMain();
 }

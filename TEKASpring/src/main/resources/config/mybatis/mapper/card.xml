@@ -6,8 +6,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<!-- 카드조회 -->	
 	<!-- 전체 카드 조회 O-->
-	<select id="selectAll" resultType="vo.ViewVo">
-		select * from likedCard	order by c_regdate desc
+	<select id="selectAllList" parameterType="java.util.Map" resultType="vo.ViewVo">
+		select 
+			c.*,
+			rank() over(order by c_regdate desc) as no
+		from
+			(select * from likedCard) as c limit #{block_list} offset #{page}
 	</select>
 	
 	<!--특정 카드 조회 O-->
@@ -120,5 +124,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<delete id="deleteMyCard" parameterType="vo.MyCardSetVo">
 		delete from mycardset where c_idx=#{c_idx} and m_idx=#{m_idx}
 	</delete>
+	
+	<!-- 전체 카드 개수 조회하기 -->
+	<select id="selectTotalMain" resultType="int">
+		select nvl(count(*), 0) from likedCard;
+	</select>
 	
 </mapper>

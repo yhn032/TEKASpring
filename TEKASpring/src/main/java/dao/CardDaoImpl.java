@@ -53,6 +53,18 @@ public class CardDaoImpl implements CardDao {
 		// TODO Auto-generated method stub
 		return sqlSession.delete("card.deleteMyCard", vo);
 	}
-	
+
+	//전체 카드 개수 조회하기
+	@Override
+	public int selectTotalMain() {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("card.selectTotalMain");
+	}
+
+	@Override
+	public List<ViewVo> selectAllList(Map map) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("card.selectAllList", map);
+	}
 	
 }

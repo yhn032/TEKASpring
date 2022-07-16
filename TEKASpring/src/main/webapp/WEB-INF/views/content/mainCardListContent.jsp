@@ -14,7 +14,7 @@
 	margin: auto;
 	width: 640px;
 	height: 300px;
-	background-color: #d3d3d3;
+	background: linear-gradient(to right, #b25858, #9a3dff);
 	border-radius: 10px;
 	display: flex;
 }
@@ -54,16 +54,10 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-}
-
-/* Style the front side (fallback if image is missing) */
-.card-front {
 	background-color: white;
 }
 
-/* Style the back side */
 .card-back {
-	background-color: white;
 	transform: rotateX(180deg);
 }
 
@@ -116,6 +110,46 @@
 	width: 100%;
 	height: 60px;
 	margin-top: 40px;
+}
+
+.w-btn {
+    position: relative;
+    border: none;
+    display: inline-block;
+    border-radius: 15px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.25s;
+}
+
+.w-btn-gra3 {
+    background: linear-gradient(
+        45deg,
+        #002bff,
+        #7a00ff,
+        #ff00c8,
+        #ff0000
+    );
+    color: white;
+}
+
+.w-btn-gra-anim {
+    background-size: 400% 400%;
+    animation: gradient1 5s ease infinite;
+}
+
+/* button animation */
+@keyframes gradient1 {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 </style>
 
@@ -299,19 +333,18 @@ function filter(){
 <body id="box">
 	<c:if test="${!empty subject }">
 		<div id="title">
-			<i class="fas fa-award" style="color: navy;"></i>&nbsp<b>${subject }</b>
+			<i class="fas fa-award" style="color: navy;"></i>&nbsp;<b>${subject }</b>
 		</div>
 
 	</c:if>
 	<div id="filter">
-		<b>여기에서는 검색 필터를 지정할 수 있습니다.</b> <select id="order"
-			style="height: 40px;">
+		<b style="color: white;">여기에서는 검색 필터를 지정할 수 있습니다.</b> 
+		<select id="order" style="height: 40px; border-radius: 15px;">
 			<option value="">검색조건</option>
 			<option value="newest">최신순</option>
 			<option value="mostLiked">추천순</option>
 			<option value="oldest">오래된순</option>
-		</select> <input type="button" value="검색" style="height: 40px; width: 80px;"
-			onclick="filter();">
+		</select> <input type="button" class="w-btn" value="검색" style="height: 40px; width: 80px;" onclick="filter();">
 		<hr>
 	</div>
 	<div id="grid_container">
@@ -347,7 +380,7 @@ function filter(){
 						추천 <span class="badge">${card.l_like}</span>
 					</button>
 					<input type="button" value="🤍" id="liked${card.c_idx}"
-						disabled="disabled"><br>
+						disabled="disabled" style="background: transparent;"><br>
 					
 					<!-- 주제별로 다른 레이블 색상 -->
 					<c:if test="${card.s_name eq '운영체제' }">
@@ -375,16 +408,15 @@ function filter(){
 							style="background-color: purple;">${card.s_name }</div>
 					</c:if>
 					
-					<span class="badge">${card.m_nickname }</span><br> <input
-						type="button" class="plusCard btn" value="미리보기"
-						onclick="previewPopup(${card.c_idx});"> <input
-						type="button" id="addelete" class="plusCard btn"
-						value="내 학습세트에 추가"
-						onclick="addOrDeleteMyCards(${card.c_idx},${card.s_idx });">
+					<span class="badge">${card.m_nickname }</span><br> 
+					<input type="button" class="plusCard w-btn w-btn-gra3 w-btn-gra-anim" value="미리보기" onclick="previewPopup(${card.c_idx});"> 
+					<input type="button" id="addelete" class="plusCard w-btn w-btn-gra3 w-btn-gra-anim" value="내 학습세트에 추가" onclick="addOrDeleteMyCards(${card.c_idx},${card.s_idx });">
 				</div>
 			</div>
 		</c:forEach>
-
+	</div>	
+	<div style="text-align: center; font-size: 25px; margin-top: 100px; color: white;">
+		${pageMenu }
 	</div>
 </body>
 </html>

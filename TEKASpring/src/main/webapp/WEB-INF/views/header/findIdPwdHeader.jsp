@@ -19,13 +19,17 @@
 	height: 80px;
 	background-color: #222222;
 	display: flex;
-	justify-content: center;
-	color: white;
+	justify-content: flex-end;
 }
 
 html, body, hr{
 	margin: 0;
 	padding: 0;
+}
+
+a{
+	text-decoration-line: none;
+	color:white;
 }
 
 #cancelBtn{
@@ -38,18 +42,29 @@ html, body, hr{
 	background-color: #b0adad;
 	color: black;
 	font-size: 20px;
+	align-content: right;
 }
 
 .findBtn{
 	line-height: 80px;
+	width: 100px;
+	text-align:center;
+	border: 2px solid #222222;
+	background-color: #222222;
+	border-radius: 10px;
+	box-shadow: 1px 3px 1px black;
 }
 </style>
 
 </head>
 <body>
 <div id="headContainer">
-	<div class="findBtn"><a href="findID.do">아이디찾기</a></div>
-	<div class="findBtn"><a href="findPWD.do">비밀번호찾기</a></div>
+	<div class="findBtn" style="margin-right: 10px;">
+		<a href="findID.do">아이디찾기</a>
+	</div>
+	<div class="findBtn" style="margin-right: 40%;">
+		<a href="findPWD.do">비밀번호찾기</a>
+	</div>
 	<div id="cancel">
 		<input id="cancelBtn" type="button" value="x" onclick="location.href='../tekamember/loginForm.do'">
 	</div>

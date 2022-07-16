@@ -18,9 +18,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import constant.MyConstant;
 import dao.CardDao;
 import dao.LikeyDao;
 import dao.ViewDao;
+import utils.Paging;
 import vo.MyCardSetVo;
 import vo.TekaMemberVo;
 import vo.ViewVo;
@@ -58,11 +60,12 @@ public class CardController {
 	String sub;
 	//모든 학습세트 보기
 	@RequestMapping("mainList.do")
-	public String mainList(String subject, String order, Model model) {
+	public String mainList(String subject, String order, Model model, @RequestParam(value="page", required = false, defaultValue = "1") int nowPage) {
 		// url 종류
 		// http://localhost:9090/TEKA/card/list.do
 		// http://localhost:9090/TEKA/card/list.do?subject=
 		// http://localhost:9090/TEKA/card/list.do?subject=?&order=?
+		
 
 		if (subject != null && !subject.isEmpty()) {// 특정 주제를 원하는 경우에는 특정 주제에 부합하는 내용만을 읽어오기
 
@@ -81,9 +84,21 @@ public class CardController {
 			return "card/mainList";
 
 		} else { // 주제가 없으면 전체 리스트 보기
-
+			
+			//현재 페이지를 이용해서 게시물의 start/end계산
+			Map map = new HashMap();
+			map.put("block_list", MyConstant.Card.BLOCK_LIST);
+			map.put("page", (nowPage-1)*MyConstant.Card.BLOCK_LIST);
+			
+			//전체 카드 개수 조회하기 
+			int totalCard = card_dao.selectTotalMain();
+			
+			//페이징 메뉴 만들기
+			String pageMenu = Paging.getPaging("mainList.do", nowPage, totalCard, MyConstant.Card.BLOCK_LIST, MyConstant.Card.BLOCK_PAGE);
+		
+			
 			// 전체 리스트 가져오기
-			List<ViewVo> list = card_dao.selectList();
+			List<ViewVo> list = card_dao.selectAllList(map);
 			
 			// 필터가 있으면 정렬
 			if (order != null && !order.isEmpty()) {
@@ -92,6 +107,7 @@ public class CardController {
 			
 			// 리퀘스트 바인딩
 			model.addAttribute("list", list);
+			model.addAttribute("pageMenu", pageMenu);
 			
 			return "card/mainList";
 		}
@@ -173,10 +189,19 @@ public class CardController {
 	}
 	
 	@RequestMapping("cardSearch.do")
-	public String cardSearch(Model model, String selectSearch, @RequestParam(required = false) String text) {
+	public String cardSearch(Model model, String selectSearch, @RequestParam(required = false) String text, @RequestParam(value="page", required = false, defaultValue = "1")int nowPage ) {
 		//요청 url : /card/cardSearch.do?selectSearch=all&text=
 		//          /card/cardSearch.do?selectSearch=c_title&text=길동
 		
+		Map map = new HashMap();
+		map.put("block_list", MyConstant.Card.BLOCK_LIST);
+		map.put("page", (nowPage-1)*MyConstant.Card.BLOCK_LIST);
+		
+		//전체 카드 개수 조회하기 
+		int totalCard = card_dao.selectTotalMain();
+		
+		//페이징 메뉴 만들기
+		String pageMenu = Paging.getPaging("mainList.do", nowPage, totalCard, MyConstant.Card.BLOCK_LIST, MyConstant.Card.BLOCK_PAGE);
 		
 		//selectSearch가 null / 비어있으면 검색필터 = 전체
 		if(selectSearch==null || selectSearch.isEmpty()) {
@@ -185,7 +210,6 @@ public class CardController {
 		
 		List<ViewVo> searchList = null;
 		
-		Map map = new HashMap();
 		
 		//전체검색이 아닌 경우 검색조건
 		if(!selectSearch.equals("all")) {
@@ -202,17 +226,20 @@ public class CardController {
 				
 				map.put("m_nickname", text);	
 			}
+			
+			searchList = card_dao.cardCondition(map);
+			
+			model.addAttribute("list", searchList);
+			
+			return "card/mainList";
 		}else {
 			
-			//전체카드 조회??
-			searchList = card_dao.selectList();
+			//전체카드 조회
+			
+			searchList = card_dao.selectAllList(map);
+			
+			return "card/mainList";
 		}
-		
-		searchList = card_dao.cardCondition(map);
-		
-		model.addAttribute("list", searchList);
-		
-		return "card/mainList";
 	}
 	
 	@RequestMapping("insertCard.do")
