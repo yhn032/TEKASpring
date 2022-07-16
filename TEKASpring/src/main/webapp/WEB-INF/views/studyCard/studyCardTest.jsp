@@ -14,7 +14,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <!-- css -->
-<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/studyCardWord.css">
+<%-- <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/studyCardWord.css"> --%>
 <!-- FontAwesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"/>
 
@@ -49,11 +49,6 @@ $(document).ready(function(){
 		
 	});
 	
-	
-	/* $(".card").click(function(){
-		$(this).toggleClass("flipped");
-	});
-	 */
 	card = $("input[name=slide]").length;
 	
 	$("#status").html(index +" / " + card);
@@ -204,54 +199,255 @@ function slideCard(){
 <!-- 김다정_20220713 : q_question 요소 랜덤으로 섞기 -->
 <script type="text/javascript">
 	
-	var q = 0;
+	var len = "${fn:length(list)*3}";
 	
 	$(function(){
 		
-		classList = $(".chooseCorrect");
-		
-		//쿼리의 c_idx를 이용해서 q_question 전체 조회
 		$.ajax({
 			url     : 'selectQuestion.do',
 			data    : {"c_idx":"${param.c_idx}"},
 			dataType: 'json',
 			success : function(res) {
-
-				//오답 질문 출력
-				for(var i=0; i<res.suffle.length; i++) {
+				
+				for(var i=0; i<len/3; i++) {
 					
-					q = classList[i].id;
+					var q1 = 3*i+1;
+					var q2 = 3*i+2;
+					var q3 = 3*i+3;
 					
-					$("#" + q).val(res.suffle[i]);
+					$("#q_" + q1).val(res.one[i]);
+					$("#q_" + q2).val(res.two[i]);
+					$("#q_" + q3).val(res.three[i]);
+					
+					$("#q_" + q1).click(function(){
+						
+						alert('정답입니다.');
+						
+						slideCard();
+						
+					});
+					
+					$("#q_" + q2).click(function(){
+						
+						alert('오답입니다.');
+						
+					})
+					
+					$("#q_" + q3).click(function(){
+						
+						alert('오답입니다.');
+						
+					})
+					
 				} //end : for
 			}
 		}); //end : ajax
 	}); //end : function
 	
-	
-	function submitCorrect() {
-		
-		
-		alert('정답입니다.');
-		
-	} //end : submitCorrect
-	
-	
-	
-/* function suffle(arr) { //인자값 배열의 요소 섞기 
-	for(var idx=arr.length-1; idx>0; idx--) {
-		//랜덤 idx 값 생성 (idx>0)
-		const rdPosition = Math.floor(Math.random() * (idx+1));
-		//임시로 원본값 저장 -> rdPostition으로 요소 섞기
-		const temp = arr[idx];
-		arr[idx] = arr[rdPosition];
-		arr[rdPosition] = temp;
-	} //end : for
-	return arr;			
-} //end : suffle */
 </script>
-<!-- 구현 완료 후, css폴더로 옮길 예정 -->
 <style type="text/css">
+*{
+	margin  : 0px;
+	padding : 0px;
+}
+
+/* card css */
+.card {	
+	width        : 100%;
+	height       : 100%;
+	border-radius: 15px;
+	margin-top: 10px;
+}
+
+.card-inner {
+	position   : relative;
+	width      : 100%;
+	height     : 100%;
+	text-align : center;
+	transition : transform 0.5s;
+	transform-style : preserve-3d; 	
+	border-radius: 20px;
+	
+}
+.card.flipped .card-inner {
+	transform: rotateX(180deg);
+}
+.card-front {
+	position : absolute; 
+	top      : 0%;
+	bottom   : 0%;
+	width    : 100%;
+	height   : 100%;
+	border-radius    : 10px;
+	border			 : 2px solid black;
+	box-shadow       : 1px 1px 4px black;
+	box-sizing       : border-box;
+	-webkit-backface-visibility: hidden; /* Safari */
+	backface-visibility: hidden;
+	font-weight     : bold;
+	font-size       : 30px;
+	display         : flex;
+	align-items     : top;
+	padding:110px;
+	justify-content : center;
+	line-height     : 30px;
+	white-space: normal;
+	background: #2e3856;
+	color: white;
+}
+.card-back {
+	transform: rotateX(180deg);
+}
+/* study menu */
+.studyMenu{
+	display: flex;
+	justify-content: space-between;
+}
+
+.studyItem{
+	border: 1px solid black;
+	width: 23%;
+	height: 50px;
+	border-radius    : 5px;
+	border			 : 2px solid black;
+	box-shadow       : 1px 1px 4px black;
+	box-sizing       : border-box;
+	text-align: left;
+	line-height: 50px;
+	font-size: 25px;
+	font-weight: 600;
+}
+
+/* slide css */
+
+/* 라디오 버튼 숨김 */
+.section [id*=slide]{
+	display : none;
+}
+
+.section .slideBox{
+	max-width  : 900px;
+	height     : 700px;
+	/* margin     : auto; */
+	margin-left: 200px;
+	overflow   : hidden;
+}
+
+.section .slideList{
+	white-space : nowrap;
+	font-size   : 0;
+	position    : relative;
+	width       : 900px;
+	height      : 620px;
+	margin-top: 10px;
+}
+
+.section .slideList > li{
+	display        : inline-block;
+	vertical-align : middle;
+	width	       : 100%;
+	height         : 620px;
+	transition     : 0.3s; /* 슬라이드 속도 설정 */
+}
+
+.section .slideList label{
+	position  : absolute;
+	z-index   : 1;
+	top       : 50%;
+	padding   : 27px;
+	width	  : 350px;
+	cursor    : pointer; /* 마우스가 올라갔을 때, 커서 -> 포인터 변경 */
+	border    : 4px solid #3ccfcf;
+}
+
+
+.section .slideList .left{
+	left : 50px;
+	top: 600px;
+	border-bottom-left-radius: 40px;
+	border-top-left-radius: 40px;
+}
+.section .slideList .right{
+	right : 50px;
+	top: 600px;
+	border-bottom-right-radius: 40px;
+	border-top-right-radius: 40px;
+}
+
+/* 초기위치 설정값 */
+ .section [id="slide1"]:checked ~ .slideBox .slideList > li {
+	transform:translateX(0%);
+}
+
+#progress{
+	position: relative;
+	width: 100%;
+	height: 3px;
+	background-color: black;
+	border-radius: 5px;
+	box-shadow: 1px 1px 3px 1px black;
+}
+#myBar{
+	position: absolute;
+	width: 0%;
+	height: 100%;
+	background-color: purple;
+}
+
+#btnBox{
+	margin-left: 200px;	
+	background-color: #0a092d; 
+	width: 900px; 
+	display: flex; 
+	justify-content: space-around;
+	box-shadow: 1px 1px 3px 1px #dadce0;
+	height: 80px;
+}
+
+#btnBox > input{
+	width: 30%; 
+	height: 60px;
+	border: 1px solid #282e3e; 
+	background-color: #13141b; 
+	color: #3ccfcf; 
+	border: 2px solid #3ccfcf;
+	margin-top: 10px;
+}
+
+.checked{
+	height: 55px; 
+	width: 55px;
+	font-size: 40px; 
+	text-align: right; 
+	margin-right: 15px;
+	border-radius: 35px;
+	border: 2px dotted yellow;
+	line-height: 50px;
+	box-sizing: border-box;
+}
+
+.checkBtn{
+	width: 50px;
+	height: 50px;
+	border: 2px dotted yellow;
+	background-color: transparent; 
+	border: 0;
+	line-height: 50px;
+	color: gold;
+}
+
+.checkBtn:hover{
+	background-color: #979958;
+	border-radius: 35px;
+}
+
+#msg{
+	color: white;
+	margin-left: 550px;
+	font-size: 18px; 
+	font-weight: 600;
+}
+
 .correctArea {
 	position:fixed;
 	top:420px;
@@ -271,14 +467,12 @@ function slideCard(){
 }
 
 .chooseCorrect:hover{
-	background-color: green;
+	background-color: #586380;
 }
-
 
 </style>
 </head>
 <body style="background-color: #0a092d;">
-
 <div id="header">
 	<%@include file="../header/studyCardHeader.jsp" %>
 </div>
@@ -304,14 +498,13 @@ function slideCard(){
 				<div class="card" style="font-size: 10px;">
 					<div class="card-inner">
 						<div class="card-front" style="font-size:20px; ">${qna.q_answer }</div>
-						<div class="card-back"><%-- ${qna.q_question } --%></div>
 					</div>
 					
-					<!-- 김다정_20220713 : 삼지선다 영역 -->
+					<!-- 김다정_20220713 : 삼지선다 영역 3*i.index+1 -->
 					<div class="correctArea">
-						<input type="button" class="chooseCorrect" id="q_${3*i.index+1}" onclick="submitCorrect();">
-						<input type="button" class="chooseCorrect" id="q_${3*i.index+2}" onclick="submitCorrect();">
-						<input type="button" class="chooseCorrect" id="q_${3*i.index+3}" onclick="submitCorrect();">
+						<input type="button" class="chooseCorrect" id="q_${3*i.index+1}" name="${qna.q_idx}">
+						<input type="button" class="chooseCorrect" id="q_${3*i.index+2}" name="${qna.q_idx}">
+						<input type="button" class="chooseCorrect" id="q_${3*i.index+3}" name="${qna.q_idx}">
 					</div>
 				</div>
 				<span><label for="slide${i.count+1 }" class="right"></label>▶</span>
@@ -322,11 +515,5 @@ function slideCard(){
 	</div>
 	
 </div><!-- section end -->
-<%-- <span id="msg"></span>
-<div id="btnBox">
-	<input type="button" value="▶ 자동재생" id="playCard" >
-	<input type="button" value="∥ 재생정지" id="stopCard">
-	<input type="button" value="∞ 순서섞기" id="shuffleCard" onclick="location.href='?c_idx=${param.c_idx}&opt=random'">
-</div> --%>
 </body>
 </html>
