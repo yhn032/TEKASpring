@@ -8,7 +8,14 @@ public class TekaMemberVo {
 	String m_email;
 	String m_grade;
 	String m_naverId;
+	String m_googleId;
 	
+	public String getM_googleId() {
+		return m_googleId;
+	}
+	public void setM_googleId(String m_googleId) {
+		this.m_googleId = m_googleId;
+	}
 	public String getM_naverId() {
 		return m_naverId;
 	}

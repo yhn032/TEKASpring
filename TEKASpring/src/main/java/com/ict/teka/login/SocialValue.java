@@ -1,5 +1,8 @@
 package com.ict.teka.login;
 
+import org.springframework.social.google.api.Google;
+
+import com.github.scribejava.apis.GoogleApi20;
 import com.github.scribejava.core.builder.api.DefaultApi20;
 
 public class SocialValue implements SocialUrl{
@@ -27,6 +30,9 @@ public class SocialValue implements SocialUrl{
 		if(isNaver) {
 			this.api20Instance = NaverAPI20.getInstance();
 			this.profileUrl    = NAVER_PROFILE_URL;
+		}else if(isGoogle) {
+			this.api20Instance = GoogleApi20.instance();
+			this.profileUrl = GOOGLE_PROFILE_URL;
 		}
 	}
 	

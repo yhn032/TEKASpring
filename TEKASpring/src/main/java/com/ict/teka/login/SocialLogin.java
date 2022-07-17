@@ -1,5 +1,7 @@
 package com.ict.teka.login;
 
+import java.util.Iterator;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.scribejava.core.builder.ServiceBuilder;
@@ -56,11 +58,26 @@ public class SocialLogin {
 		//json - > object 매핑
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode rootNode = mapper.readTree(body);
+		
+		if(this.social.isGoogle()) {
+			Iterator<JsonNode> iterEmails = rootNode.path("emailAddresses").elements();
+			
+			while(iterEmails.hasNext()) {
+				JsonNode emailNode = iterEmails.next();
+				user.setM_email(emailNode.get("value").asText());
+				
+				JsonNode metaNode = emailNode.path("metadata");
+				JsonNode idNode   = metaNode.path("source");
+				user.setM_googleId(idNode.get("id").asText());
+			}
+		}else if (this.social.isNaver()) {
+			
+			JsonNode resNode = rootNode.get("response");
+			user.setM_naverId(resNode.get("id").asText());
+			user.setM_email(resNode.get("email").asText());
+			user.setM_nickname(uniToKor(resNode.get("name").asText()));
+		}
 	
-		JsonNode resNode = rootNode.get("response");
-		user.setM_naverId(resNode.get("id").asText());
-		user.setM_email(resNode.get("email").asText());
-		user.setM_nickname(uniToKor(resNode.get("name").asText()));
 		return user;
 	}
 	

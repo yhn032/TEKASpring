@@ -15,6 +15,7 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.collections.set.SynchronizedSortedSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -47,13 +48,18 @@ public class TekaMemberController {
 	
 	SocialValue naverSocial;
 	
-	JavaMailSender mailSender;
+	SocialValue googleSocial;
+	
+	JavaMailSender mailSenderNaver;
+	JavaMailSender mailSenderGoogle;
 
-	public TekaMemberController(TekaMemberDao member_dao, SocialValue naverSocial, JavaMailSender mailSender) {
+	public TekaMemberController(TekaMemberDao member_dao, SocialValue naverSocial, SocialValue googleSocial, JavaMailSender mailSenderNaver, JavaMailSender mailSenderGoogle) {
 		super();
 		this.member_dao = member_dao;
 		this.naverSocial = naverSocial;
-		this.mailSender = mailSender;
+		this.googleSocial = googleSocial;
+		this.mailSenderNaver = mailSenderNaver;
+		this.mailSenderGoogle = mailSenderGoogle;
 	}
 	
 	//소셜 callback
@@ -63,7 +69,7 @@ public class TekaMemberController {
 		if(service.equals("naver")) {
 			social = naverSocial;
 		}else {//다른 소셜 로그인 추가하는 경우 추가하자.
-			
+			social = googleSocial;
 		}
 		
 		//사용자가 소셜 로그인을 성공하면 code를 받아오는데, 이 코드를 이용해서 액세스 토큰을 받아야 한다. 
@@ -71,24 +77,39 @@ public class TekaMemberController {
 		TekaMemberVo userprofile = socialLogin.getUserProfile(code);
 		
 		//이메일을 통해서 DB에 존재하는 이메일인지 확인하기.
-		//TekaMemberVo vo = member_dao.selectOneBySocial(userprofile.getM_naverId());
 		TekaMemberVo vo = member_dao.selectOneByEmail(userprofile.getM_email());
 		
-		if(vo == null) {//새로 사이트를 방문한 소셜 로그인 유저 
+		if(vo == null) {//새로 사이트를 방문한 소셜 로그인 유저 (웹 서비스에서 사용할 닉네임을 입력받고 회원 가입 시킨다.)
 			
-			//회원정보를 입력해서 바로 가입시킨다.(m_id=naverUser, m_pwd=null, m_nickname=사용자이름, m_email=사용자주소, naverId=암호화된 네이버아이디)
-			int res = member_dao.insertSocial(userprofile);
-			TekaMemberVo vo2 = member_dao.selectOneBySocial(userprofile.getM_naverId());
-			session.setAttribute("user", vo2);
+			//소셜에 따라서 닉네임을 입력받고 DB에 저장한다.
+			if(social.isNaver()) {//네이버 로그인 으로 접근 한 경우 
+				model.addAttribute("m_naverId", userprofile.getM_naverId());
+				model.addAttribute("m_email", userprofile.getM_email());
+				model.addAttribute("service", "naver");
+				
+			}else if (social.isGoogle()) {//구글 로그인으로 접근하 경우
+				model.addAttribute("m_googleId", userprofile.getM_googleId());
+				model.addAttribute("m_email", userprofile.getM_email());
+				model.addAttribute("service", "google");
+			}
 			
-			return "redirect:../../../card/mainList.do";
+			return "redirect:../../socialSignUpForm.do";
 			
 		}else {//이미 가입한 소셜 로그인 유저. 세션에 값을 담아서 보낸다. 
 			
 			//등록된 이메일이 소셜로그인을 통한 이메일인지, 회원가입을 통한 이메일인지 확인한다.
-			TekaMemberVo isSocial = member_dao.selectOneBySocial(userprofile.getM_naverId());
+			TekaMemberVo isSocial = null;
+			if(social.isNaver()) {//네이버 로그인 으로 접근 한 경우 
+				isSocial = member_dao.selectOneByNaver(userprofile.getM_naverId());
+				
+			}else if (social.isGoogle()) {//구글 로그인으로 접근하 경우
+				isSocial = member_dao.selectOneByGoogle(userprofile.getM_googleId());
+		
+			}
 			
-			if(isSocial == null) {//그냥 일반 가입자이다. -> id/pwd찾게해야한다. 이메일 중복 불가
+			
+			
+			if(isSocial == null) {//그냥 일반 가입자인데, 소셜로그인으로 접근한 경우-> id/pwd찾게해야한다. 이메일 중복 불가
 				model.addAttribute("reason", "social");
 				return "redirect:../../../tekamember/loginForm.do";
 				
@@ -126,8 +147,11 @@ public class TekaMemberController {
 			}
 			
 			//네이버 소셜 로그인
-			SocialLogin snsLogin = new SocialLogin(naverSocial);
-			model.addAttribute("naverUrl", snsLogin.getNaverAuthURL());
+			SocialLogin snsLogin1 = new SocialLogin(naverSocial);
+			model.addAttribute("naverUrl", snsLogin1.getNaverAuthURL());
+			
+			//구글 소셜 로그인 
+			model.addAttribute("googleUrl", "https://accounts.google.com/o/oauth2/v2/auth?client_id=198068799318-er96pvmv6huodj5lpvmkco7obqqsq8th.apps.googleusercontent.com&redirect_uri=http://localhost:9090/teka/tekamember/login/google/callback&response_type=code&scope=email%20profile%20openid");
 			
 			model.addAttribute("RSAModulus", publicKeyModulus);
 			model.addAttribute("RSAExponent", publicKeyExponenet);
@@ -209,6 +233,34 @@ public class TekaMemberController {
 		return "tekamember/signUpForm";
 	}
 	
+	//소셜 회원가입 폼
+	@RequestMapping("socialSignUpForm.do")
+	public String socialSignUpForm() {
+		return "tekamember/socialSignUpForm";
+	}
+	
+	//소셜 회원가입
+	@RequestMapping("socialSignUp.do")
+	public String socialSignUp(TekaMemberVo vo, String service) {
+		//소셜 id, 닉네임, 이메일이 들어온다.
+		// 삽입
+		TekaMemberVo vo2 = null;
+		if(service.equalsIgnoreCase("naver")) {
+			vo.setM_id("naverUser");
+			member_dao.insertSocialNaver(vo);
+			vo2 = member_dao.selectOneByNaver(vo.getM_naverId());
+		}else if(service.equalsIgnoreCase("google")) {
+			vo.setM_id("googleUser");
+			member_dao.insertSocialGoogle(vo);
+			vo2 = member_dao.selectOneByGoogle(vo.getM_googleId());
+		}
+		
+		session.setAttribute("user", vo2);
+		
+		// 로그인성공시키기
+		return "redirect:../card/main.do";
+	}
+	
 	//비동기 이메일 중복 체크
 	@RequestMapping("checkEmail.do")
 	@ResponseBody
@@ -281,7 +333,7 @@ public class TekaMemberController {
 		return "tekamember/findPwd";
 	}
 	
-	//이메일 발송을 위한 정보 받기 
+	//이메일 발송을 위한 정보 받기 -> 비밀번호 찾기는 일반 회원가입 사용자만이 가능하다.
 	@RequestMapping("findAuth.do")
 	@ResponseBody
 	public Map findAuth(TekaMemberVo vo, Model model) {
@@ -296,28 +348,51 @@ public class TekaMemberController {
 			int num = r.nextInt(999999); //랜덤 난수 
 			
 			StringBuilder sb = new StringBuilder();
-			
 			// DB에 저장된 email            입력받은 email
 			if(isUser.getM_email().equals(vo.getM_email())) {//이메일 정보 또한 동일하다면 
+				String email = isUser.getM_email();
+				String social = email.substring(email.indexOf('@')+1, email.indexOf('.'));
+				System.out.println(social);
+				String setFrom = "";
+				if(social.equals("naver")) {
+					setFrom = "ict04@naver.com";//발신자 이메일
+				}else if(social.equals("gmail")) {
+					setFrom = "kimbang990410@gmail.com";//발신자 이메일
+				}
 				
-				String setFrom = "ict04@naver.com";//발신자 이메일
-				String tomail = isUser.getM_email();//수신자 이메일
+				System.out.println(setFrom);
 				String title = "[TEKA] 비밀번호 변경 인증 이메일입니다.";
 				sb.append(String.format("안녕하세요 %s님\n", isUser.getM_nickname()));
 				sb.append(String.format("TEKA 비밀번호 찾기(변경) 인증번호는 %d입니다.", num));
 				String content = sb.toString();
 				
 				try {
-					MimeMessage msg = mailSender.createMimeMessage();
-					MimeMessageHelper msgHelper = new MimeMessageHelper(msg, true, "utf-8");
 					
-					msgHelper.setFrom(setFrom);
-					msgHelper.setTo(tomail);
-					msgHelper.setSubject(title);
-					msgHelper.setText(content);
-					
-					//메일 전송
-					mailSender.send(msg);
+					if(social.equals("naver")) {
+						
+						MimeMessage msg = mailSenderNaver.createMimeMessage();
+						MimeMessageHelper msgHelper = new MimeMessageHelper(msg, true, "utf-8");
+						
+						msgHelper.setFrom(setFrom);
+						msgHelper.setTo(email);
+						msgHelper.setSubject(title);
+						msgHelper.setText(content);
+						
+						//메일 전송
+						mailSenderNaver.send(msg);
+					}else if(social.equals("gmail")) {
+						MimeMessage msg = mailSenderGoogle.createMimeMessage();
+						MimeMessageHelper msgHelper = new MimeMessageHelper(msg, true, "utf-8");
+						
+						msgHelper.setFrom(setFrom);
+						msgHelper.setTo(email);
+						msgHelper.setSubject(title);
+						msgHelper.setText(content);
+						
+						//메일 전송
+						mailSenderGoogle.send(msg);
+						
+					}
 					
 				}catch (Exception e) {
 					// TODO: handle exception
@@ -365,6 +440,9 @@ public class TekaMemberController {
 			String m_id = user.getM_id();
 			
 			if(m_id.equalsIgnoreCase("naverUser")) {//소셜 로그인 유저라면 아이디가 없음
+				model.addAttribute("reason", "social");
+				return "redirect:findID.do";
+			}else if (m_id.equalsIgnoreCase("googleUser")) {
 				model.addAttribute("reason", "social");
 				return "redirect:findID.do";
 			}

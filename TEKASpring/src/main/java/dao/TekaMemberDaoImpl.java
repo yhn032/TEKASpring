@@ -31,18 +31,6 @@ public class TekaMemberDaoImpl implements TekaMemberDao{
 	}
 
 	@Override
-	public TekaMemberVo selectOneBySocial(String m_naverId) {
-		// TODO Auto-generated method stub
-		return sqlSession.selectOne("tekamember.selectOneBySocial", m_naverId);
-	}
-
-	@Override
-	public int insertSocial(TekaMemberVo vo) {
-		// TODO Auto-generated method stub
-		return sqlSession.insert("tekamember.insertSocial", vo);
-	}
-
-	@Override
 	public TekaMemberVo selectOneByIdx(int m_idx) {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne("tekamember.selectOneByIdx", m_idx);
@@ -52,5 +40,29 @@ public class TekaMemberDaoImpl implements TekaMemberDao{
 	public int updatePwd(TekaMemberVo vo) {
 		// TODO Auto-generated method stub
 		return sqlSession.update("tekamember.updatePwd", vo);
+	}
+
+	@Override
+	public int insertSocialNaver(TekaMemberVo vo) {
+		// TODO Auto-generated method stub
+		return sqlSession.insert("tekamember.insertSocialNaver", vo);
+	}
+
+	@Override
+	public int insertSocialGoogle(TekaMemberVo vo) {
+		// TODO Auto-generated method stub
+		return sqlSession.insert("tekamember.insertSocialGoogle", vo);
+	}
+
+	@Override
+	public TekaMemberVo selectOneByNaver(String m_naverId) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("tekamember.selectOneByNaver", m_naverId);
+	}
+
+	@Override
+	public TekaMemberVo selectOneByGoogle(String m_googleId) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("tekamember.selectOneByGoogle", m_googleId);
 	}
 }
