@@ -85,13 +85,15 @@ p{
 	cursor: pointer;
 }
 
-#delBtn{
+.delBtn{
 	float: right; /* 우측정렬 */
 	text-decoration: none;
 	cursor: pointer;
 	margin-top:8px;
 	margin-right:8px;
 	font-size: 30px;
+	background-color: #2E3856;
+	border:none;
 }
 
 textarea {
@@ -117,6 +119,7 @@ textarea {
 	font-size: 20px;
 	margin-bottom:100px;
 	background-color: #586380;
+	cursor: pointer;
 }
 
 #makeCard{

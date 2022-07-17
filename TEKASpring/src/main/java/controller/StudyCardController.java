@@ -206,26 +206,21 @@ public class StudyCardController {
 			shuffle.add(vo.getQ_question());
 		}
 
-		//q_question의 요소 섞기
-		Collections.shuffle(shuffle);
-		
 		//1번, 2번, 3번 보기를 담는 각 리스트 선언
-		List<String> one = new ArrayList<>();
-		List<String> two = new ArrayList<>();
+		List<String> one  = new ArrayList<>();
+		List<String> two  = new ArrayList<>();
 		List<String> three = new ArrayList<>();
 		
+		//q_question의 요소 섞기
+		Collections.shuffle(shuffle);
 		
 		for(int i=0; i<q_question.size(); i++) {
 			
 			one.add(q_question.get(i));
 			two.add(shuffle.get(i));
-			
-			//순서 한 번 더 섞기
-			Collections.shuffle(shuffle);
 			three.add(shuffle.get(i));
 		}
 		
-		//JSONArray  jsonArr = new JSONArray();
 		JSONObject json    = new JSONObject();
 		
 		json.put("one", one);

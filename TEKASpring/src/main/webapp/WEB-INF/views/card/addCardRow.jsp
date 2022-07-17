@@ -10,13 +10,17 @@
 <!-- css -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/addCardRow.css">
 <script type="text/javascript">
+	
+var idx = 1;
+	
 //div 추가	
 function addRow(){
 	
 	/* 추가할 div html코드 json배열 저장 */
 	var jsonHTML = {
-					row: "<div class=\"row\">",	
-					delBtn: "<div><a onclick=\"delRow();\" id=\"delBtn\" >🗑️</a>",
+					row: "<div class=\"row\" id=\"row_" + idx + "\">",	
+					delBtn: "<div><input type=\"button\" class=\"delBtn\" id=\"" + idx++ + "\"", 
+					del: "onclick=\"delRow(this.id);\" value=\"🗑️\">",
 					qArea: "<div class=\"tArea\"><div class=\"qArea\"><div class=\"cnt\"></div><textarea COLS=40 ROWS=8 name=\"q_question\"></textarea><p>&emsp;&emsp;&emsp;&emsp;질문</p></div>",
 					aArea: "<div class=\"aArea\"><textarea COLS=80 ROWS=8 name=\"q_answer\"></textarea><p>&emsp;&emsp;&emsp;&emsp;&emsp;답변</p></div></div>",
 					closeDiv: "</div>"	
@@ -32,15 +36,9 @@ function addRow(){
 }
 
 //div 삭제	
-function delRow(){ //.row의 this를 넘겨주니까 밑에서부터 삭제됨 -> this 빼고 index를 구해서 해당 index삭제하도록 변경
+function delRow(idx){
 	
-	var index = $(".list .row").index();
-	
-	//$(".list .row").eq(index).fadeOut(250);
-	
-	//list내의 row클래스의 index와 동일하면 삭제
-	$(".list .row").eq(index).remove();
-	
+	$("#row_" + idx).remove();
 }//delRow() end
 
 </script>
@@ -51,10 +49,11 @@ function delRow(){ //.row의 this를 넘겨주니까 밑에서부터 삭제됨 -
 	<div id="box">
 		<!-- list영역 행추가 -->
 		<div class="list" style="display:table;">
-			<div class="row">
+			<div class="row" id="row_0">
 				<!-- div 삭제 : this의 정보를 넘겨야 해당 행만 삭제가능 -->
 				<div>
-					<a id="delBtn" onclick="delRow();">🗑️</a>
+					<!-- <a class="delBtn" onclick="delRow();">🗑️</a> -->
+					<input type="button" class="delBtn" id="0" onclick="delRow(this.id);" value="🗑️">
 				</div>
 				<div class="tArea">
 					<!-- 텍스트영역 추가 -->
