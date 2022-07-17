@@ -1,5 +1,10 @@
 @charset "UTF-8";
 
+* {
+	margin: 0px;
+	padding: 0px;
+}
+
 ::after ::before{
 	box-sizing: inherit;
 	font-family: 윤고딕700;

@@ -227,9 +227,9 @@ function slideCard(){
 					
 					<!-- 김다정_20220713 : 삼지선다 영역 3*i.index+1 -->
 					<div class="correctArea">
-						<input type="button" class="chooseCorrect" id="q_${3*i.index+1}" name="${qna.q_idx}">
-						<input type="button" class="chooseCorrect" id="q_${3*i.index+2}" name="${qna.q_idx}">
-						<input type="button" class="chooseCorrect" id="q_${3*i.index+3}" name="${qna.q_idx}">
+						<input type="button" class="chooseCorrect" id="q_${3*i.index+1}">
+						<input type="button" class="chooseCorrect" id="q_${3*i.index+2}">
+						<input type="button" class="chooseCorrect" id="q_${3*i.index+3}">
 					</div>
 				</div>
 				<span><label for="slide${i.count+1 }" class="right"></label>▶</span>
