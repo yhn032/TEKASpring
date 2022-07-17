@@ -32,19 +32,36 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 	
 	<!-- 소셜 로그인 - 이메일을 통해서 이미 등록된 사용자인지 검색하기 -->
-	<select id="selectOneBySocial" parameterType="java.lang.String" resultType="member">
+	<select id="selectOneByNaver" parameterType="java.lang.String" resultType="member">
 		select * from tekamember where m_naverId=#{m_naverId}
 	</select>
 	
+	<select id="selectOneByGoogle" parameterType="java.lang.String" resultType="member">
+		select * from tekamember where m_googleId=#{m_googleId}
+	</select>
+	
 	<!-- 소셜 회원가입 -->
-	<insert id="insertSocial" parameterType="member">
+	<!-- Naver -->
+	<insert id="insertSocialNaver" parameterType="member">
 		insert into tekamember(m_id, m_nickname, m_email, m_grade, m_naverId) values
 		(
-			'naverUser',
+			#{m_id},
 			#{m_nickname},
 			#{m_email},
 			default,
 			#{m_naverId}
+			
+		)
+	</insert>
+	<!-- Google -->
+	<insert id="insertSocialGoogle" parameterType="member">
+		insert into tekamember(m_id, m_nickname, m_email, m_grade, m_googleId) values
+		(
+			#{m_id},
+			#{m_nickname},
+			#{m_email},
+			default,
+			#{m_googleId}
 			
 		)
 	</insert>

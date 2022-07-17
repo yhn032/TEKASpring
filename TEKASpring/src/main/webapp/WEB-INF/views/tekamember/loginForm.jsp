@@ -164,6 +164,7 @@ a {
 	margin: 0 5px;
 	height: 40px;
 	width: 40px;
+	text-decoration: none;
 }
 </style>
 
@@ -271,8 +272,8 @@ a {
 					<h1>Sign-in</h1>
 				</div>
 				<div class="socialContainer">
-					<a href="${naverUrl }" class="social"><i class="fab fa-neos"></i></a>
-					<a href="#" class="social"><i class="fab fa-google"></i></a>
+					<a href="${naverUrl }" class="social"><i class="fab fa-neos" style="color: green;"></i></a>
+					<a href="${googleUrl}" class="social"><i class="fab fa-google"></i></a>
 				</div>
 				<span>or use your account</span> 
 				<input type="text"     id="m_id"  name="m_id"    placeholder="id" /> 
