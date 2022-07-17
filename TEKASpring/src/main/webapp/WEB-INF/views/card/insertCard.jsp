@@ -4,7 +4,7 @@
 <html data-theme="dark">
 <head>
 <meta charset="UTF-8">
-<title>TEKA : 카드만들기</title>
+<title>TEKA : 카드 만들기</title>
 <!-- 부트스트랩 라이브러리등록 -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <!-- css파일 연결 -->

@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>TEKA : 모든 학습세트</title>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <style type="text/css">
@@ -225,9 +225,9 @@ function filter(){
 					var jsonDiv = {
 									 table : "<table class=\"question\">",
 									 q : "<tr><th><textarea cols=\"45\" readonly=\"readonly\" class=\"q_question" + i + "\"",	
-									 qCss: "style=\"border:none; background:#2e3856; border-bottom: 1px solid #586380; resize:none; font-size:17px;\"></textarea></th>",
+									 qCss: "style=\"border:none; background:#2e3856; border-bottom: 1px solid #586380; resize:none; font-size:17px; overflow: hidden;\"></textarea></th>",
 									 a : "<th><textarea cols=\"80\" readonly=\"readonly\" class=\"q_answer" + i + "\"",
-									 aCss:"style=\"border:none; background:#2e3856; border-bottom: 1px solid #586380; resize:none; font-size:17px; vertical-align: bottom;\"></textarea></th></tr>",
+									 aCss:"style=\"border:none; background:#2e3856; border-bottom: 1px solid #586380; resize:none; font-size:17px; vertical-align: bottom; overflow: hidden;\"></textarea></th></tr>",
 									 qText:	"<tr><th class=\"qnaText\">질문</th>",
 									 aText: "<th class=\"qnaText\">답변</th></tr></table>"
 								  };
@@ -262,12 +262,9 @@ function filter(){
 <!-- 좋아요 기능 자바스크립트 -->
 <script type="text/javascript">
 	
-	
 	$(function(){
-		
 		//로그인하지 않았다면 초기화이벤트 종료
 		if("${user.m_idx}"==null) return;
-		
 		//로그인한 상태라면, 현재 m_idx가 좋아요한 카드 조회 -> 이모티콘 채우기
 		if("${user.m_idx}"!=null){
 			
@@ -289,15 +286,12 @@ function filter(){
 	});
 	
 	function liked(c_idx, s_idx){
-		
 		//로그인하지 않았을 경우
 		if(${empty user}){
-			
 			if(!confirm("로그인 후에 이용할 수 있습니다.\n로그인 하시겠습니까?")) return;
 			location.href="../tekamember/loginForm.do";
 			return;
 		}
-		
 		//현재 m_idx와 c_idx로 조회했을 때, 좋아요를 누르지 않았을 경우 좋아요 누를 수 있음
 		$.ajax({
 			url:'../card/likeInsert.do',
@@ -307,13 +301,9 @@ function filter(){
 				
 				//좋아요+1 insert가 정상적으로 처리되었다면
 				if(resData.res==1){ 
-
-					//결과 재요청
 					location.href="../card/mainList.do";
-				
 				//이미 좋아요를 눌러서 누를 수 없는 경우, 좋아요 취소
 				}else if(resData.already==0){ 
-										
 					$.ajax({
 						url : '../card/deleteLiked.do',
 						data : {"c_idx":c_idx, "m_idx": "${user.m_idx}"},
@@ -327,7 +317,6 @@ function filter(){
 			}
 		});//ajax end
 	}//liked end
-	
 </script>
 </head>
 <body id="box">
@@ -335,7 +324,6 @@ function filter(){
 		<div id="title">
 			<i class="fas fa-award" style="color: navy;"></i>&nbsp;<b>${subject }</b>
 		</div>
-
 	</c:if>
 	<div id="filter">
 		<b style="color: white;">여기에서는 검색 필터를 지정할 수 있습니다.</b> 
@@ -352,7 +340,6 @@ function filter(){
 			<div style="color: red; text-align: center; line-height: 333px;">카드가
 				없습니다.</div>
 		</c:if>
-
 		<c:forEach var="card" items="${ list }">
 			<!-- 미리보기팝업 -->
 			<%@include file="previewPopup.jsp"%>

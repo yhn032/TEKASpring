@@ -8,7 +8,7 @@
 <head>
 <meta charset="UTF-8">
 
-<title>Insert title here</title>
+<title>TEKA : 낱말카드</title>
 <!-- BootStrap 3.x -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

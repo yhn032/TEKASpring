@@ -1,4 +1,10 @@
 @charset "UTF-8";
+
+* {
+	margin: 0px;
+	padding: 0px;
+}
+
 /* card */
 .card {	
 	line-height  : 270px;

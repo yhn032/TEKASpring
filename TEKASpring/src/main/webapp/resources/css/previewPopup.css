@@ -1,6 +1,11 @@
 @charset "UTF-8";
 
-#popupBox{
+* {
+	margin: 0px;
+	padding: 0px;
+}
+
+#popupBox {
 	margin-bottom: 100px;
 	width:1350px;
 	height:750px;
@@ -16,6 +21,21 @@
 	left:30px;
 	box-shadow : rgba(0,0,0,0.7) 0 0 0 9999px, rgba(0,0,0,0.7) 2px 2px 2px 3px;
 	background:#2e3856;
+}
+
+#popupBox::-webkit-scrollbar {
+  	width: 10px;
+}
+
+#popupBox::-webkit-scrollbar-thumb {
+    background-color: #2f3542;
+  	border-radius: 15px;
+}
+
+#popupBox::-webkit-scrollbar-track {
+  	background-color: gray;
+ 	border-radius: 15px;
+ 	box-shadow: inset 0px 0px 5px white;
 }
 
 #container{
@@ -64,16 +84,15 @@ td{
 	cursor : pointer;
 	text-decoration: none;
 	font-size: 30px;
-	color : gray;
+	color : #586380;
 	position : fixed;
-	/* fixed는 뷰포인트로 위치지정 */
 	right : 140px;
 	top : 85px;
 }
 .qnaText{
 	font-size: 18px;
 	text-align: left;
-	color:white;
+	color:#586380;
 }	
 
 .question{
@@ -82,7 +101,6 @@ td{
 	margin-top : 30px;
 	margin-bottom : 30px;
 }
-/* 클릭시 포커스 없애기 */
 textarea:focus{
 	outline: none;
 }

@@ -142,36 +142,28 @@ public class CardController {
 	@ResponseBody
 	public Map popup(int c_idx) {
 		List<ViewVo> previewList = null;
-		
-		//previewPopup 전체 조회
 		previewList = view_dao.previewList();
 		
 		JSONObject json = new JSONObject();
 		Map map = new HashMap();
 		
-		//결과저장 : c_idx에 해당하는 질문/답변
 		List<String> question = new ArrayList<>();
 		List<String> answer   = new ArrayList<>();
-		
 
 		for(ViewVo res : previewList) {
-			
 			//파라미터로 들어온 c_idx와 전체리스트의 c_idx가 일치할 때만 list에 추가
 			if(c_idx==res.getC_idx()) {
-
 				question.add(res.getQ_question());
 				answer.add(res.getQ_answer());
 			}
-		}
+		}// end : for
 		
-		//응답할 데이터 저장
 		map.put("question", question);
 		map.put("answer", answer);
 		
 		//m_nickname 구하기
 		previewList = view_dao.previewSelectThree(c_idx);
 		
-		//굳이 반복을 돌려야 하는가?
 		for(ViewVo vo : previewList) {
 			
 			String c_title    = vo.getC_title();
@@ -184,7 +176,6 @@ public class CardController {
 			//조회는 카드개수만큼 되지만, 위 데이터들은 1개씩만 필요하므로 1회 반복 후 강제탈출
 			break;
 		}
-		
 		return map;
 	}
 	
@@ -244,35 +235,36 @@ public class CardController {
 	
 	@RequestMapping("insertCard.do")
 	public String insertCard(ViewVo vo, @RequestParam("q_question") String[] q_questionStrArray,@RequestParam("q_answer") String[] q_answerStrArray) {
-		//카드 질문갯수
+		//카드 질문갯수 구하기
 		int c_qCnt = q_questionStrArray.length;
-		//vo포장
 		vo.setC_qCnt(c_qCnt);
+		// html 엔터로 변경
+		String c_title    = vo.getC_title().replaceAll("\r\n", "<br>");
+		String c_content  = vo.getC_content().replaceAll("\r\n", "<br>");
+		String q_answer   = vo.getQ_answer().replaceAll("\r\n", "<br>");
+		String q_question = vo.getQ_question().replaceAll("\r\n", "<br>");
+		vo.setC_title(c_title);
+		vo.setC_content(c_content);
+		vo.setQ_answer(q_answer);
+		vo.setQ_question(q_question);
 		
-		//카드 추가하기
-		int cardRes = view_dao.cardInsert(vo);
+		int cardRes = view_dao.cardInsert(vo); 
 		
 		//c_title로 c_idx 얻어오기
-		ViewVo c_idxVo = view_dao.selectCIdx(vo.getC_title());
-		
+		ViewVo c_idxVo = view_dao.selectCIdx(vo.getC_title()); 
 		int c_idx = c_idxVo.getC_idx();
-		
-		//얻은 c_idx를 다시 vo에 포장
 		vo.setC_idx(c_idx);
 		
-		//m_idx, c_idx에 해당하는 좋아요 수 insert
-		int insertLiked = view_dao.insertLiked(vo);
-		//내 학습세트에 추가하기
+		int insertLiked  = view_dao.insertLiked(vo);
 		int myCardSetRes = view_dao.myCardSetInsert(vo);
 		
-		//질문 추가하기
 		for(int i=0; i<q_questionStrArray.length; i++) {
 				
 			vo.setQ_question(q_questionStrArray[i]);
 			vo.setQ_answer(q_answerStrArray[i]);
 			
-			int Qnares = view_dao.qnaInsert(vo);
-		}//for end
+			int qnaRes = view_dao.qnaInsert(vo);
+		}//end : for
 		
 		return "redirect:myCardList.do";
 	}
@@ -286,7 +278,6 @@ public class CardController {
 	@RequestMapping("likeCheck.do")
 	@ResponseBody
 	public Map likeCheck(@RequestParam(required = false) int m_idx) {
-
 		
 		//l_likey>0인 컬럼만 list에 추가됨
 		List<ViewVo> list = likey_dao.likeCheck(m_idx);
@@ -324,10 +315,10 @@ public class CardController {
 		
 		return map;
 	}
+	
 	@RequestMapping("likeInsert.do")
 	@ResponseBody
 	public Map likeInsert(ViewVo vo) {
-		
 		JSONObject json = new JSONObject();
 		Map map = new HashMap();
 		
@@ -338,20 +329,14 @@ public class CardController {
 			int insertLiked = view_dao.insertLiked(vo);
 			resVo = likey_dao.selectLike(vo);
 		}
-		
 		//l_like가 0인 경우 좋아요+1 DB insert 
 		if(resVo.getL_like()==0) {
-			
-			//DB insert
 			int res = likey_dao.liked(vo);
-			//결과 저장 -> 1 반환
 			map.put("res", 1);
-		
 		//이미 좋아요를 눌렀다면, 0 반환
 		}else if(resVo.getL_like()==1) {
 			map.put("already", 0);
 		}
-		
 		return map;
 	}
 	
