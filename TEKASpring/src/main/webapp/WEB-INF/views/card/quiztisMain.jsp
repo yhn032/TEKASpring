@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>기술 면접 플래시 카드</title>
+<title>TEKA : 기술 면접 플래시 카드</title>
 
 <!-- BootStrap 3.x -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">

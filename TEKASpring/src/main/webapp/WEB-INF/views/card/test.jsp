@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>QuizTIS : 카드만들기</title>
+<title>TEKA : 튜토리얼</title>
 <!-- BootStrap 3.x -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -65,12 +65,12 @@
 			<p class="count">&nbsp;하나.</p><br>
 			<p class="ment">원하는 주제별로 카테고리를 설정해요.</p><br>
      		 <select multiple class="form-control" id="multiBox">
-		        <option>네트워크</option>
 		        <option>운영체제</option>
-		        <option>자료구조</option>
+		        <option>네트워크</option>
 		        <option>알고리즘</option>
-		        <option>Spring Framework</option>
-		        <option>Java</option>
+		        <option>자료구조</option>
+		        <option>자바</option>
+		        <option>스프링</option>
 	     	 </select><br><br><br>
 			<p class="count">&nbsp;둘.</p><br>
 			<p class="ment">내용을 입력하세요. 카드를 클릭하면 뜻을 볼 수 있어요.&#128161;</p><br>
@@ -96,8 +96,8 @@
 		<div class="text" style="margin-top:150px;">
 			<p class="count">&nbsp;셋.</p><br>
 			<p class="ment">다른 사람의 학습세트를 공부할 수 있어요.</p><br>
-<!-- 사진 수정예정 -->
-<!-- <input type="image" src="../image/will_modify.png" style="width:70%; margin:auto;"> -->
+<!-- 수정예정 -->
+<input type="image" src="${pageContext.request.contextPath}/resources/img/mainPage.png" style="width:70%; margin:auto;">
 		</div>
 		<div class="text" style="margin-top:380px;">
 			<p style="font-weight:550;">자, 이제 TEKA에서 학습할 준비가 끝났어요.<br><br>

@@ -111,7 +111,7 @@
 	padding   : 27px;
 	width	  : 350px;
 	cursor    : pointer; /* 마우스가 올라갔을 때, 커서 -> 포인터 변경 */
-	border    : 4px solid #3ccfcf;
+	/* border    : 4px solid #3ccfcf; */
 }
 
 
@@ -210,7 +210,7 @@
 .chooseCorrect {
 	display: block;
 	width: 700px;
-	height: 50px;
+	height: 70px;
 	background-color: #2E3856;
 	font-size:20px;
 	text-align: left;

@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>TEKA : 내 학습세트</title>
 <script type="text/javascript">
 
 function study(c_idx){
