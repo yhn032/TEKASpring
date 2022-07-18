@@ -196,9 +196,7 @@ function addOrDeleteMyCards(c, s){
 function filter(){
 	var order = $("#order").val();
 	
-	if(order!=''){
-		location.href='mainList.do?subject=${subject}&order='+order;
-	}
+	location.href='mainList.do?page=${empty param.page ? 1 : param.page}&subject=${empty param.subject ? 'all' : param.subject}&selectSearch=${empty param.selectSearch ? 'all' : param.selectSearch}&text=${param.text}&order='+order;
 }
 		
 </script>
@@ -264,9 +262,11 @@ function filter(){
 	
 	$(function(){
 		//로그인하지 않았다면 초기화이벤트 종료
-		if("${user.m_idx}"==null) return;
+		if("${empty user}" == "true") return;
+		
+
 		//로그인한 상태라면, 현재 m_idx가 좋아요한 카드 조회 -> 이모티콘 채우기
-		if("${user.m_idx}"!=null){
+		if("${!empty user}" == "true"){
 			
 			$.ajax({
 				url:'../card/likeCheck.do',
@@ -321,8 +321,8 @@ function filter(){
 </head>
 <body id="box">
 	<c:if test="${!empty subject }">
-		<div id="title">
-			<i class="fas fa-award" style="color: navy;"></i>&nbsp;<b>${subject }</b>
+		<div id="title" style="color: white;">
+			<i class="fas fa-award" style="color: yellow;"></i>&nbsp;<b>${subject }</b>
 		</div>
 	</c:if>
 	<div id="filter">

@@ -57,54 +57,94 @@ public class CardController {
 		return "card/quiztisMain";
 	}
 	
-	String sub;
 	//모든 학습세트 보기
 	@RequestMapping("mainList.do")
-	public String mainList(String subject, String order, Model model, @RequestParam(value="page", required = false, defaultValue = "1") int nowPage) {
+	public String mainList(@RequestParam(value="subject", required = false, defaultValue = "all") String subject, 
+						   @RequestParam(value="order", required = false, defaultValue = "newest") String order, 
+						   Model model, 
+						   @RequestParam(value="page", required = false, defaultValue = "1") int nowPage,
+						   @RequestParam(value="selectSearch", required = false, defaultValue = "all") String selectSearch,
+						   @RequestParam(value="text", required = false) String text) {
 		// url 종류
-		// http://localhost:9090/TEKA/card/list.do
-		// http://localhost:9090/TEKA/card/list.do?subject=
-		// http://localhost:9090/TEKA/card/list.do?subject=?&order=?
+		// http://localhost:9090/TEKA/card/mainList.do
+		// http://localhost:9090/TEKA/card/mainList.do?page=2
+		// http://localhost:9090/TEKA/card/mainList.do?subject=java
+		// http://localhost:9090/TEKA/card/mainList.do?page=2&subject=java&order=oldest&search=all&searchText=aa
 		
-
-		if (subject != null && !subject.isEmpty()) {// 특정 주제를 원하는 경우에는 특정 주제에 부합하는 내용만을 읽어오기
-
-			// 주제 리스트 가져오기
-			List<ViewVo> list = getSubjectList(subject);
+		//현재 페이지를 이용해서 게시물의 start/end계산
+		Map map = new HashMap();
+		map.put("block_list", MyConstant.Card.BLOCK_LIST);
+		map.put("page", (nowPage-1)*MyConstant.Card.BLOCK_LIST);
+		
+		//3가지의 조건중 하나라도 기본값이 아니라면, 조건에 맞는 행을 찾음. 셋 다 기본값이라면 전체 조회를 진행한다.
+		if (!subject.equals("all") || !selectSearch.equals("all")) {// 특정 조건을 원하는 경우에는 특정 조건에 부합하는 내용만을 읽어오기
 			
-			// 필터가 있으면 정렬
-			if (order != null && !order.isEmpty()) {
+			String transSubject ="";
+			if(!subject.equals("all")) {
+				
+				// 주제 번역해서 가져오기 + 주제가 있다면 번역된 주제이름을 map에 포장한다.
+				//subject	   : select의 value -> os, java, spring ... 
+				//transSubject : DB에 저장된 s_name -> 운영체제, 자바, 스프링,,,
+				transSubject = getSubject(subject);
+				
+				map.put("s_name", transSubject);
+			}
+			
+			if(!selectSearch.equals("all")) {
+				
+				if(selectSearch.equals("c_title")) {
+					map.put("c_title", text);
+					
+				}else if(selectSearch.equals("c_content")) {
+					map.put("c_content", text);
+					
+				}else if(selectSearch.equals("m_nickname")) {
+					map.put("m_nickname", text);
+				}
+			}
+			
+			/*
+			 * if(!order.equals("newest")) { if(order.equals("mostLiked")) {
+			 * map.put("order", selectSearch); } }
+			 */
+			
+			//취합한 map으로 자료를 조회한다.
+			//특정 주제에 해당하는 전체 카드 개수 구하기 -> 오버라이딩한 메소드
+			int totalCard = card_dao.selectTotalMain(map);
+			
+			//쿼리에는 DB에 저장된 내용이 아니라, select의 value값을 넣어야 일관적인 결과 도출 가능 필터를 어떻게 만들지 세개의 조건에 대한 정보를 취합해야 하는데
+			String searchFilter = String.format("&subject=%s&selectSearch=%s&text=%s", subject, selectSearch, text);
+			
+			//페이징 메뉴 만들기
+			String pageMenu = Paging.getPaging("mainList.do", searchFilter, nowPage, totalCard, MyConstant.Card.BLOCK_LIST, MyConstant.Card.BLOCK_PAGE);
+			
+			List<ViewVo> list = card_dao.selectByCondition(map);
+			
+			if(!order.equals("newest")) {
 				Collections.sort(list, new ViewVoComp(order));
 			}
-
+			
 			// 리퀘스트 바인딩
+			model.addAttribute("subject", transSubject);
+			model.addAttribute("pageMenu", pageMenu);
 			model.addAttribute("list", list);
-			model.addAttribute("subject", sub);
 			
 			return "card/mainList";
-
-		} else { // 주제가 없으면 전체 리스트 보기
 			
-			//현재 페이지를 이용해서 게시물의 start/end계산
-			Map map = new HashMap();
-			map.put("block_list", MyConstant.Card.BLOCK_LIST);
-			map.put("page", (nowPage-1)*MyConstant.Card.BLOCK_LIST);
+		} else { //아무런 조건없이 페이징 처리만 하여 전체 조회하는 경우
 			
 			//전체 카드 개수 조회하기 
 			int totalCard = card_dao.selectTotalMain();
 			
 			//페이징 메뉴 만들기
 			String pageMenu = Paging.getPaging("mainList.do", nowPage, totalCard, MyConstant.Card.BLOCK_LIST, MyConstant.Card.BLOCK_PAGE);
-		
 			
 			// 전체 리스트 가져오기
 			List<ViewVo> list = card_dao.selectAllList(map);
 			
-			// 필터가 있으면 정렬
-			if (order != null && !order.isEmpty()) {
+			if(!order.equals("newest")) {
 				Collections.sort(list, new ViewVoComp(order));
 			}
-			
 			// 리퀘스트 바인딩
 			model.addAttribute("list", list);
 			model.addAttribute("pageMenu", pageMenu);
@@ -177,60 +217,6 @@ public class CardController {
 			break;
 		}
 		return map;
-	}
-	
-	@RequestMapping("cardSearch.do")
-	public String cardSearch(Model model, String selectSearch, @RequestParam(required = false) String text, @RequestParam(value="page", required = false, defaultValue = "1")int nowPage ) {
-		//요청 url : /card/cardSearch.do?selectSearch=all&text=
-		//          /card/cardSearch.do?selectSearch=c_title&text=길동
-		
-		Map map = new HashMap();
-		map.put("block_list", MyConstant.Card.BLOCK_LIST);
-		map.put("page", (nowPage-1)*MyConstant.Card.BLOCK_LIST);
-		
-		//전체 카드 개수 조회하기 
-		int totalCard = card_dao.selectTotalMain();
-		
-		//페이징 메뉴 만들기
-		String pageMenu = Paging.getPaging("mainList.do", nowPage, totalCard, MyConstant.Card.BLOCK_LIST, MyConstant.Card.BLOCK_PAGE);
-		
-		//selectSearch가 null / 비어있으면 검색필터 = 전체
-		if(selectSearch==null || selectSearch.isEmpty()) {
-			selectSearch = "all";
-		}
-		
-		List<ViewVo> searchList = null;
-		
-		
-		//전체검색이 아닌 경우 검색조건
-		if(!selectSearch.equals("all")) {
-			
-			if(selectSearch.equals("c_title")) {
-				
-				map.put("c_title", text);	
-			
-			}else if(selectSearch.equals("c_content")) {
-				
-				map.put("c_content", text);
-			
-			}else if(selectSearch.equals("m_nickname")) {
-				
-				map.put("m_nickname", text);	
-			}
-			
-			searchList = card_dao.cardCondition(map);
-			
-			model.addAttribute("list", searchList);
-			
-			return "card/mainList";
-		}else {
-			
-			//전체카드 조회
-			
-			searchList = card_dao.selectAllList(map);
-			
-			return "card/mainList";
-		}
 	}
 	
 	@RequestMapping("insertCard.do")
@@ -387,8 +373,8 @@ public class CardController {
 	}
 	
 	// 주제 리스트를 가져오는 메서드
-	private List<ViewVo> getSubjectList(String subject) {
-
+	private String getSubject(String subject) {
+		String sub="";
 		switch (subject) {
 		case "os":
 			sub = "운영체제";
@@ -409,9 +395,9 @@ public class CardController {
 			sub = "스프링";
 			break;
 		}
-
-		List<ViewVo> list = card_dao.selectBySubject(sub);
-		return list;
+		
+		
+		return sub;
 
 	}
 	

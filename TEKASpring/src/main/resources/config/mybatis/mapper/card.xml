@@ -15,9 +15,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<!--특정 카드 조회 O-->
-	<select id="selectBySubject" parameterType="java.lang.String" resultType="vo.ViewVo">
-		select * from subjectCard 
-		where s_name=#{s_name}
+	<select id="selectByCondition" parameterType="java.util.Map" resultType="vo.ViewVo">
+		select 
+			s.*,
+		    rank() over(order by c_regdate desc) as no
+		from
+			(
+				select * from likedCard
+				<!-- 조건을 만족하면 명령어가 동적으로 할당되고, 접두어로 where가 붙으며, where 뒤에 or가 존재하는 경우 trim으로 삭제해버림 -->
+				<trim prefix="where" prefixOverrides="and">
+					<if test="s_name != null">
+						s_name = #{s_name}
+					</if>
+					<if test="c_title != null">
+						 and c_title like concat('%', #{c_title}, '%')
+					</if>
+					<if test="c_content != null">
+						 and c_content like concat('%', #{c_content}, '%')
+					</if>
+					<if test="m_nickname != null">
+						 and m_nickname like concat('%', #{m_nickname}, '%')
+					</if>
+				</trim>
+			) as s limit #{block_list} offset #{page}
 	</select>
 	
 	<!-- 이미 추가된 카드인지 확인하기 O-->
@@ -25,25 +45,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select * from mycardset where c_idx=#{c_idx} and m_idx=#{m_idx}
 	</select>
 	
-	<!-- 카드 검색 O-->
-	<select id="cardCondition" parameterType="java.util.Map" resultType="vo.ViewVo">
-		select * from cardCondition
-		
-		<trim prefix="where" prefixOverrides="or">
-			<if test="c_title!=null">
-				 c_title like '%' || #{c_title} || '%'
-			</if>
-			
-			<if test="c_content!=null">
-				 or c_content like '%' || #{c_content} || '%'
-			</if>
-
-			<if test="m_nickname!=null">
-				 or m_nickname like '%' || #{m_nickname} || '%'
-			</if>
-		</trim>
- 		order by c_regdate desc
-	</select>
 	
 	<!-- 미리보기 팝업 리스트 전체 조회 O-->
 	<select id="preview" resultType="vo.ViewVo">
@@ -126,8 +127,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</delete>
 	
 	<!-- 전체 카드 개수 조회하기 -->
-	<select id="selectTotalMain" resultType="int">
-		select nvl(count(*), 0) from likedCard;
+	<select id="selectTotalRow" resultType="int">
+		select nvl(count(*), 0) from likedCard
+	</select>
+	
+	<!-- 특정 조건에 해당하는 카드 조회하기 -->
+	<select id="selectTotalRowByCondition" parameterType="java.lang.String" resultType="int">
+		select nvl(count(*), 0) from likedCard 
+		<trim prefix="where" prefixOverrides="and">
+			<if test="s_name != null">
+				s_name = #{s_name}
+			</if>
+			<if test="c_title!=null">
+				 and c_title like concat('%', #{c_title}, '%')
+			</if>
+			<if test="c_content!=null">
+				 and c_content like concat('%', #{c_content}, '%')
+			</if>
+			<if test="m_nickname!=null">
+				 and m_nickname like concat('%', #{m_nickname}, '%')
+			</if>
+		</trim>
 	</select>
 	
 </mapper>
