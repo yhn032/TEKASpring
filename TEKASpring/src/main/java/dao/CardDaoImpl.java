@@ -21,9 +21,9 @@ public class CardDaoImpl implements CardDao {
 	}
 
 	
-	public List<ViewVo> selectBySubject(String subject) {
+	public List<ViewVo> selectByCondition(Map map) {
 		// TODO Auto-generated method stub
-		return sqlSession.selectList("card.selectBySubject", subject);
+		return sqlSession.selectList("card.selectByCondition", map);
 	}
 	
 	public int insertMyCard(MyCardSetVo vo) {
@@ -41,10 +41,6 @@ public class CardDaoImpl implements CardDao {
 		return sqlSession.selectList("card.selectMyCardList", m_idx);
 	} 
 	
-	public List<ViewVo> cardCondition(Map map){
-		return sqlSession.selectList("card.cardCondition", map);
-	}
-	
 	public int like(String c_title){
 		return sqlSession.selectOne("card.like", c_title);
 	}
@@ -58,13 +54,20 @@ public class CardDaoImpl implements CardDao {
 	@Override
 	public int selectTotalMain() {
 		// TODO Auto-generated method stub
-		return sqlSession.selectOne("card.selectTotalMain");
+		return sqlSession.selectOne("card.selectTotalRow");
 	}
 
 	@Override
 	public List<ViewVo> selectAllList(Map map) {
 		// TODO Auto-generated method stub
 		return sqlSession.selectList("card.selectAllList", map);
+	}
+	
+	//조건이 있는 카드의 개수 조회하기 
+	@Override
+	public int selectTotalMain(Map map) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("card.selectTotalRowByCondition", map);
 	}
 	
 }

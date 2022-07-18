@@ -65,6 +65,7 @@ height: 80px;
 		var selectSearch = $("#selectSearch").val();
 		var text         = $("#text").val().trim();
 		
+		//전체보기가 아닌데, 검색어가 비어있는 경우
 		if(selectSearch != "all" && text==''){
 			alert('검색어를 입력해주세요.');
 			$("#text").val('');
@@ -72,7 +73,8 @@ height: 80px;
 			return;
 		}
 		
-		location.href="../card/cardSearch.do?selectSearch=" + selectSearch + "&text=" + encodeURIComponent(text);
+		//검색요청(자기자신을 호출하는 경우에는 쿼리만 작성해도 된다.)
+		location.href="mainList.do?page=${empty param.page ? 1 : param.page}&subject=${empty param.subject ? 'all' : param.subject}&selectSearch=" + selectSearch + "&text=" + encodeURIComponent(text);
 	}
 	
 	
@@ -140,12 +142,12 @@ height: 80px;
 				</li>
 				<li class="dropDown"><a class="dropDownToggle" href="#" style="width: 150px;height: 65px;">주제 <span class="caret"></span></a>
 					<ul class="dropDownMenu">
-						<li><a href="../card/mainList.do?subject=os">운영체제</a></li>
-						<li><a href="../card/mainList.do?subject=network">네트워크</a></li>
-						<li><a href="../card/mainList.do?subject=algorithm">알고리즘</a></li>
-						<li><a href="../card/mainList.do?subject=datastructure">자료구조</a></li>
-						<li><a href="../card/mainList.do?subject=java">Java</a></li>
-						<li><a href="../card/mainList.do?subject=spring">Spring</a></li>
+						<li><a href="../card/mainList.do?page=${empty param.page ? 1 : param.page}&subject=os">운영체제</a></li>
+						<li><a href="../card/mainList.do?page=${empty param.page ? 1 : param.page}&subject=network">네트워크</a></li>
+						<li><a href="../card/mainList.do?page=${empty param.page ? 1 : param.page}&subject=algorithm">알고리즘</a></li>
+						<li><a href="../card/mainList.do?page=${empty param.page ? 1 : param.page}&subject=datastructure">자료구조</a></li>
+						<li><a href="../card/mainList.do?page=${empty param.page ? 1 : param.page}&subject=java">Java</a></li>
+						<li><a href="../card/mainList.do?page=${empty param.page ? 1 : param.page}&subject=spring">Spring</a></li>
 
 					</ul>
 			</ul>
