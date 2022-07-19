@@ -14,6 +14,9 @@
 	text-decoration: none;
 	clear: both;
 }
+a:hover {
+	text-decoration: none;
+}
 </style>
 </head>
 <body>

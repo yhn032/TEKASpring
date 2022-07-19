@@ -4,16 +4,48 @@
 	margin: 0px;
 	padding: 0px;
 }
-
+body {
+	background: linear-gradient(to top, #2e015f, #0a092d);
+	overflow-x: hidden;
+}
+body::-webkit-scrollbar {
+  	width: 5px;
+}
+body::-webkit-scrollbar-thumb {
+    background-color: #2f3542;
+}
+body::-webkit-scrollbar-track {
+  	background-color: gray;
+}
 /* card */
+#card-container{
+	background: #CFD8FF;
+	background: linear-gradient(to right, #b25858, #9a3dff);
+	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+	border: 1px solid #9E5B40;
+	border-radius: 70px;
+	width: 45%;
+	height: 400px; 
+	margin-top: 100px;
+	margin-left: 200px;
+}
 .card {	
-	line-height  : 270px;
-	width        : 300px;
-	height       : 270px;
+	line-height: 270px;
+	width: 300px;
+	width: 400px;
+	height: 270px;
 	margin       : right;
 	margin-right : 250px;
 	float        : right;
 	margin-top   : 200px;
+}
+#cardBox{
+    line-height: 270px;
+	width: 80%;
+	height: 330px;
+	margin: 0 auto;
+	margin-top: 5%;
+	margin-right: 10%;
 }
 .card-inner {
 	position   : relative;
@@ -22,6 +54,7 @@
 	text-align : center;
 	transition : transform 0.8s;
 	transform-style: preserve-3d; 
+	color: black;
 }
 .card.flipped .card-inner {
 	transform: rotateX(180deg);
@@ -48,10 +81,108 @@
 .card-back {
 	transform: rotateX(180deg);
 }
-
+#question, #answer {
+	font-weight: bolder;
+	font-size: 30px;
+}
+.side {
+	padding: 10px;
+	margin-right: 8%;
+	margin-top: 60px;
+	width: 180px;
+	height: 280px;
+}
+.introduction {
+	padding-top: 30px;
+}
+.badge {
+	font-size: 20px;
+	margin-top: 5px;
+}
+#grid_container {
+	margin: auto;
+	width: 1460px;
+	padding-top: 15px;
+	display: grid;
+	grid-template-columns: 725px 725px;
+	grid-template-rows: 300px 300px;
+	row-gap: 50px;
+	column-gap: 20px;
+	border-radius: 20px;
+}
+.card-container {
+	text-decoration: none;
+	margin: auto;
+	width: 900px;
+	height: 450px;
+	background: linear-gradient(to right, #b25858, #9a3dff);
+	border-radius: 10px;
+	display: flex;
+}
+#cardSet{
+    line-height: 270px;
+	width: 60%;
+	height: 350px;
+	margin: 0 auto;
+	margin-top: 6%;
+	margin-left: 5%;
+}
+#title {
+	margin: auto;
+	width: 1460px;
+	height: 100px;
+	line-height: 100px;
+	font-size: 45px;
+}
+.plusCard {
+	text-align: center;
+	width: 100%;
+	height: 60px;
+	margin-top: 40px;
+}
+.w-btn {
+    position: relative;
+    border: none;
+    display: inline-block;
+    border-radius: 15px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.25s;
+    font-size:18px;
+}
+.w-btn-gra3 {
+    background: linear-gradient(
+        45deg,
+        #002bff,
+        #7a00ff,
+        #ff00c8,
+        #ff0000
+    );
+    color: white;
+}
+.w-btn-gra-anim {
+    background-size: 400% 400%;
+    animation: gradient1 5s ease infinite;
+}
+/* button animation */
+@keyframes gradient1 {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
 /* content */
 #cardView{
-	height : 850px;
+	margin-top : 90px;
+	width: 100%;
+	height: 650px;
+	color: white;
 }
 #q, #a{
 	margin-left  : 7px;
@@ -62,62 +193,101 @@
 .text{
 	font-weight : 500;
 	font-size   : 34px; 
-	margin-left : 190px;
+	margin-left : 200px;
 	margin-top  : 270px;
 	float       : left;
-	font-family : Yoon 윤고딕 700;
 }
-#subjectView{
-	height : 3300px;
+#one{
+	width: 100%;
+	height: 600px;
+	color: white;
+	font-weight: 500;
+	font-size: 34px; 
+	margin-left: 200px;
+	margin-top: 235px;
+}
+#two{
+	width: 100%;
+	height: 850px;
+	color:white;
+	margin-left: 200px;
+}
+#three {
+	width: 100%;
+	height: 750px;
+	color: white;
+	font-weight: 500;
+	font-size: 34px; 
+	margin-left: 200px;
+	margin-top: 350px;
 }
 #multiBox{
-	height     : 180px;
-	width      : 500px;
-	font-size  : 20px;
+	width: 50%;
+	font-size: 20px;
 	font-weight: bold;
+	background-color: white;	
+	padding: 0;
+	border: 1px solid gray;
+	border-radius: 2px;
+	box-shadow: 1px 1px 5px 1px gray;
 }
-#textArea{
-	margin-left : 10px;
+#aText, #qText{
+	resize: none;
+	height: 60px;
+	width: 100%;
+	border-radius: 2px;
+	border: none;
+	border-bottom: 2px solid white;
+	background-color: #1D0448;
+	color:white;
+	font-size: 18px;
+	font-weight: 600;
+	overflow: hidden;
+	text-decoration: none;
 }
-#qText{
-	resize        : none;
-	width         : 80%;
-	height        : 50px;
-	display       : block;
-	margin-bottom : 5px;
+textarea:focus {
+	outline: none;
 }
-#aText{
-	resize  : none;
-	width   : 80%;
-	height  : 60px;
-	display : block;
+#insertbtnArea{
+	margin-top: 30px;
+	margin-left: 353px;
 }
-#btnInsert{
-	margin-top  : 10px;
-	margin      : left;
-	margin-left : 200px;
+#insertBtn {
+	margin-bottom:100px;
+	border-radius: 10px;
+	border: 1px solid white;
+	width: 130px;
+	height: 60px;
+	font-weight: bold;
+	font-size: 18px;
+	background-color: #1D0448;
+	color: white;
+	cursor: pointer;	
 }
 #textInsert{
-	margin-left   : 10px;
-	width         : 100%;
-	float         : right;
-}
-#cardBox{
-	width         : 50%;
-	margin-top    : 20px;
-	margin-bottom : 40px;
-	height        : 250px;
+	margin-left: 135px;
+	margin-top: 100px;
+	width: 100%;
 }
 #lastBtn{
-	margin       :10px;
-	margin-right :10px;
-	display      : block;
+	margin: 10px;
+	margin-right: 10px;
+	display: block;
 }
 .count{
 	font-weight: bold;
-	font-size  : 30px;
+	font-size: 30px;
 }
 .ment{
 	font-size   : 28px;
 	font-weight : 500px;
+}
+.qnaText {
+	font-size: 20px;
+	color: white;
+}
+.qnaArea {
+	display: inline-block;
+	width:26%;
+	margin : 5px;
 }
