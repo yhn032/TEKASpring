@@ -1,6 +1,6 @@
 package vo;
 
-public class LikeyVo {
+public class LikeVo {
 	
 	int l_grade;
 	int l_like;

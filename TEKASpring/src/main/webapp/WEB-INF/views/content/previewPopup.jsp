@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>TEKA : 카드 미리보기</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/previewPopup.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/content/previewPopup.css">
 <script type="text/javascript">
 
 	function hidePopup(){

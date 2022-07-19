@@ -22,16 +22,13 @@
 	</beans:bean>
 	
 	<!-- <context:component-scan base-package="com.ict.TekaApp" /> -->
-	
 	<!-- 수동 생성 -->
 	<context:annotation-config/>
 	
 	<beans:bean class="controller.CardController">
-		<beans:constructor-arg ref="card_dao"></beans:constructor-arg>
-		<beans:constructor-arg ref="view_dao"></beans:constructor-arg>
-		<beans:constructor-arg ref="likey_dao"></beans:constructor-arg>
+		<beans:constructor-arg ref="card_dao"/>
+		<beans:constructor-arg ref="view_dao"/>
 	</beans:bean>
-	
 	
 	<beans:bean class="controller.TekaMemberController">
 		<beans:constructor-arg ref="member_dao"/>
@@ -42,11 +39,15 @@
 	</beans:bean>
 	
 	<beans:bean class="controller.StudyCardController">
-		<beans:constructor-arg ref="studyCard_dao"></beans:constructor-arg>
+		<beans:constructor-arg ref="studyCard_dao"/>
 	</beans:bean>
 	
 	<beans:bean class="controller.MyPageController">
-		<beans:constructor-arg ref="attend_dao"></beans:constructor-arg>
+		<beans:constructor-arg ref="attend_dao"/>
 	</beans:bean>
 	
+	<beans:bean class="controller.LikeController">
+		<beans:constructor-arg ref="like_dao"/>
+		<beans:constructor-arg ref="view_dao"/>
+	</beans:bean>
 </beans:beans>

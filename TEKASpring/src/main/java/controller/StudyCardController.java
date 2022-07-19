@@ -95,7 +95,6 @@ public class StudyCardController {
 		return map;
 	}
 	
-	
 	//즐겨찾기 초기화용 테이블의 q_idx모두 읽어오기
 	@RequestMapping("checkWrong.do")
 	@ResponseBody
@@ -188,41 +187,19 @@ public class StudyCardController {
 		return "studyCard/studyCardWord";
 	}
 	
-	//김다정_20220713 : c_idx에 해당하는 전체 q_question 반환 (studyCardTest.jsp)
-	@RequestMapping( value="selectQuestion.do", produces="text/json; charset=utf-8;" )
+	//삼지선다 보기
+	@RequestMapping( value="threeChoice.do", produces="text/json; charset=utf-8;" )
 	@ResponseBody
-	public String selectQuestion(int c_idx) {
-		
-		List<ViewVo> list = studyCard_dao.selectCard(c_idx);
-		
-		//문제의 정답 List
-		List<String> q_question = new ArrayList<>();
-		//문제의 오답 List
-		List<String> shuffle     = new ArrayList<>();
-		
-		for(ViewVo vo : list) {
-
-			q_question.add(vo.getQ_question());
-			shuffle.add(vo.getQ_question());
-		}
-
+	public String threeChoice(int c_idx) {
 		//1번, 2번, 3번 보기를 담는 각 리스트 선언
-		List<String> one  = new ArrayList<>();
-		List<String> two  = new ArrayList<>();
-		List<String> three = new ArrayList<>();
+		List<String> one   = studyCard_dao.selectQuestion(c_idx);
+		List<String> two   = studyCard_dao.selectQuestion(c_idx);
+		List<String> three = studyCard_dao.selectQuestion(c_idx);
+		//보기 섞기 : one은 정답을 순서대로 저장함
+		Collections.shuffle(two);
+		Collections.shuffle(three);
 		
-		//q_question의 요소 섞기
-		Collections.shuffle(shuffle);
-		
-		for(int i=0; i<q_question.size(); i++) {
-			
-			one.add(q_question.get(i));
-			two.add(shuffle.get(i));
-			three.add(shuffle.get(i));
-		}
-		
-		JSONObject json    = new JSONObject();
-		
+		JSONObject json = new JSONObject();
 		json.put("one", one);
 		json.put("two", two);
 		json.put("three", three);

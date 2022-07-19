@@ -13,6 +13,5 @@ public interface ViewDao {
 	public int cardInsert(ViewVo vo);
 	public int insertLiked(ViewVo vo);
 	public int myCardSetInsert(ViewVo vo);
-	public List<ViewVo> previewList();
-	public List<ViewVo> previewSelectThree(int c_idx);
+	public List<ViewVo> previewList(int c_idx);
 }

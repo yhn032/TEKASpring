@@ -45,22 +45,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select * from mycardset where c_idx=#{c_idx} and m_idx=#{m_idx}
 	</select>
 	
-	
-	<!-- 미리보기 팝업 리스트 전체 조회 O-->
-	<select id="preview" resultType="vo.ViewVo">
-		select * from previewPopup
+	<!-- 미리보기 c_idx에 해당하는 데이터 조회 -->
+	<select id="preview" parameterType="int" resultType="vo.ViewVo">
+		select * from previewPopup where c_idx=#{c_idx}
 	</select>
 
 	<!-- 카드제목으로 c_idx 구하기 O-->
 	<select id="selectCidx" parameterType="String" resultType="vo.ViewVo" >
 		select * from card where c_title=#{c_title}
 	</select>
-	
-	<!-- c_idx로 닉네임 / 카드제목 / 소개글 조회 O-->
-	<select id="previewSelectThree" parameterType="int" resultType="vo.ViewVo">
-		select m_nickname, c_title, c_content from previewPopup where c_idx=#{c_idx}
-	</select>
-	
 	
 	<!-- DML -->
 	<!-- 카드테이블 insert O-->	
@@ -69,7 +62,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		values(#{c_title}, #{c_content}, default, #{s_idx}, #{m_idx}, now(), #{c_qCnt})
 	</insert>
 	
-	<!-- like insert O-->
+	<!-- 카드테이블에 like 기본값 추가 -->
 	<insert id="insertLiked" parameterType="vo.ViewVo">
 		insert into likey(l_like, c_idx, m_idx) values(default, #{c_idx}, #{m_idx})
 	</insert>
@@ -89,36 +82,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		insert into mycardset(s_idx, m_idx, c_idx) values(#{s_idx}, #{m_idx}, #{c_idx})
 	</insert>	
 	
-	
 	<!--나의 학습세트에 추가된 학습 카드 조회하기 O-->
 	<select id="selectMyCardList" parameterType="int" resultType="vo.ViewVo">
 		select * from studyCard where m_idx=#{m_idx}
-	</select>
-	
-	
-	<!-- c_idx / m_idx로 현재 l_like 조회 O-->
-	<select id="selectLike" parameterType="vo.ViewVo" resultType="vo.ViewVo">
-		select l_like from likey where c_idx=#{c_idx} and m_idx=#{m_idx}
-	</select>
-	
-	<!-- l_like + 1 (좋아요 버튼 클릭 시) -->
-	<update id="liked" parameterType="vo.ViewVo">
-		update likey set l_like=1 where c_idx=#{c_idx} and m_idx=#{m_idx}	
-	</update>
-	
-	<!-- 좋아요 취소 : 다시 0으로 변경 -->
-	<update id="deleteLike" parameterType="vo.ViewVo">
-		update likey set l_like=0 where c_idx=#{c_idx} and m_idx=#{m_idx}
-	</update>
-	
-	<!-- c_idx의 전체 좋아요 개수 구하기 O-->
-	<select id="totalLike" parameterType="vo.ViewVo" resultType="vo.ViewVo">
-		select sum(l_like) as l_like from likey where c_idx=#{c_idx}
-	</select>
-	
-	<!-- 좋아요 수 체크하기 O-->
-	<select id="likeCheck" parameterType="int" resultType="vo.ViewVo">
-		select * from likey where m_idx=#{m_idx} and l_like>0
 	</select>
 	
 	<!-- 나의학습세트에서 삭제하기 O-->

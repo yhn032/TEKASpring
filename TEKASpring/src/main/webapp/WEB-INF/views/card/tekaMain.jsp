@@ -12,96 +12,8 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-
-<style type="text/css">
-body{
-	background: #2e015f;
-}
-
-/* main.css */
-#content {
-	min-height: 700px;
-	padding-top: 80px;
-	width: 55%;
-	margin-left: 0px;
-	float: left;
-}
-
-#sub_content {
-	padding-top: 80px;
-	width: 35%;
-	margin-left: 0px;
-	float: left;
-	margin-top: 120px;
-	margin-left: 50px;
-	color: white;
-}
-
-/* content */
-.mainBtn {
-	width: 160px;
-	height: 30px;
-	margin: auto;
-}
-
-.tutorial{
-	margin-left: 200px;
-}
-
-/* card */
-#card-container{
-	background: #CFD8FF;
-	background: linear-gradient(to right, #b25858, #9a3dff);
-	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
-	width: 70%;
-	height: 330px; 
-	border-radius: 100px;
-	margin: auto;
-	margin-top: 50px;
-	border: 1px solid #9E5B40;
-}
-
-.card {
-	line-height: 270px;
-	width: 400px;
-	height: 270px;
-	margin: 0 auto;
-	margin-top: 5%;
-}
-
-.card-inner {
-	position: relative;
-	width: 100%;
-	height: 100%;
-	text-align: center;
-	transition: transform 0.8s;
-	transform-style: preserve-3d; 
-}
-
-.card.flipped .card-inner {
-	transform: rotateX(180deg);
-}
-
-.card-front, .card-back {
-	position: absolute;
-	top:0%;
-	bottom:0%;
-	width: 100%;
-	height: 100%;
-	background-color: white;
-	border-radius: 50px;
-	box-shadow: 1px 1px 4px black;
-	box-sizing: border-box;
-	-webkit-backface-visibility: hidden; /* Safari */
-	backface-visibility: hidden;
-}
-
-.card-back {
-	transform: rotateX(180deg);
-}
-
-
-</style>
+<!-- css -->
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/card/tekaMain.css">
 <script type="text/javascript">
 $(document).ready(function(){
 	$(".card").click(function(){
@@ -128,7 +40,7 @@ $(document).ready(function(){
 			</div>
 		</div><br>
 		<div class="tutorial">
-			<input class="mainBtn btn btn-info" type="button" value="나도 만들어보기"    onclick="location.href='test.do'">
+			<input class="mainBtn btn btn-info" type="button" value="나도 만들어보기"    onclick="location.href='tutorial.do'">
 			<input class="mainBtn btn btn-info" type="button" value="다른 학습세트보기"  onclick="location.href='mainList.do'">
 		</div>
 	</div>
