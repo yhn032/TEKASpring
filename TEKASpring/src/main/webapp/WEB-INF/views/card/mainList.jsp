@@ -25,7 +25,6 @@
 #content{
 	margin: auto;
 	min-height: 700px;
-	background-color: white;
 }
 #footer{
 	padding: 10px;

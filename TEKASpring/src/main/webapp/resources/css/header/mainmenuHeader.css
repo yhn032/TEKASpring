@@ -1,13 +1,38 @@
 #searchbar{
-	margin-left : 450px;
+	margin-left : 15%;
 }
 
 #makebtn{
-	margin-left : 20px;
+	margin-left : 1%;
 }
 
 #bar{
+	width: 100%;
 	padding-top : 15px;
 	height      : 80px;
 }
+.dropDownMenu{
+		display: none;
+		width: 150px;
+		height: 180px; 
+		background-color: white;	
+		padding: 0;
+		border: 1px solid gray;
+		border-radius: 2px;
+		box-shadow: 1px 1px 5px 1px gray;
+}
 
+.dropDownMenu li{
+	list-style: none;
+	line-height: 30px;
+	padding-left: 25px;
+}
+
+.dropDownMenu a{
+	text-decoration: none;
+	color: black;
+}
+
+.drop{
+	display: block;
+}
