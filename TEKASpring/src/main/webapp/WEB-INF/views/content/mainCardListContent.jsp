@@ -88,11 +88,11 @@
 	row-gap: 50px;
 	column-gap: 20px;
 	border-radius: 20px;
+	
 }
 
 #filter {
 	margin: auto;
-	padding-top: 10px;
 	width: 1460px;
 	height: 100px;
 }
@@ -326,19 +326,19 @@ function filter(){
 		</div>
 	</c:if>
 	<div id="filter">
-		<b style="color: white;">여기에서는 검색 필터를 지정할 수 있습니다.</b> 
-		<select id="order" style="height: 40px; border-radius: 15px;">
-			<option value="">검색조건</option>
-			<option value="newest">최신순</option>
-			<option value="mostLiked">추천순</option>
-			<option value="oldest">오래된순</option>
-		</select> <input type="button" class="w-btn" value="검색" style="height: 40px; width: 80px;" onclick="filter();">
-		<hr>
+		<hr style="background-color: #003026; height: 1px; border: 0;">
+			<b style="color: white;">여기에서는 검색 필터를 지정할 수 있습니다.</b> 
+			<select id="order" style="height: 40px; border-radius: 15px;">
+				<option value="">검색조건</option>
+				<option value="newest">최신순</option>
+				<option value="mostLiked">추천순</option>
+				<option value="oldest">오래된순</option>
+			</select> <input type="button" class="w-btn" value="검색" style="height: 40px; width: 80px;" onclick="filter();">
+		<hr style="background-color: #003026; height:3px; border:0;">
 	</div>
 	<div id="grid_container">
 		<c:if test="${empty list}">
-			<div style="color: red; text-align: center; line-height: 333px;">카드가
-				없습니다.</div>
+			<div style="color: red; text-align: center; line-height: 333px;">카드가 없습니다.</div>
 		</c:if>
 		<c:forEach var="card" items="${ list }">
 			<!-- 미리보기팝업 -->

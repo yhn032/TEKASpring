@@ -36,9 +36,19 @@ function deleteCard(c_idx){
 	margin: auto;
 	width: 500px;
 	height: 300px;
-	border: 2px solid navy;
 	border-radius: 10px;
- 	box-shadow: 1px 1px 4px purple;
+ 	box-shadow: 1px 1px 4px gray;
+ 	color: black;
+ 	background: gray;
+}
+
+.myStudy{
+	width: 700px;
+	height: 300px; 
+	border-radius: 10px;
+	color: white;
+	font-size: 28px;
+	font-weight: 700;
 }
 
 .myCardTitle{
@@ -70,9 +80,8 @@ function deleteCard(c_idx){
 	grid-template-rows: 300px 300px;
 	row-gap: 50px;
 	column-gap: 20px;
-	border: 1px solid gray;
+	border: 1px solid #2e3800;
 	border-radius: 20px;
-	box-shadow: inset 3px 3px 5px 2px black;
 }
 
 #filter{
@@ -82,16 +91,46 @@ function deleteCard(c_idx){
 }
 
 .myBtn{
-	margin: 50px 0px 0px 20px;
-	width: 150px; 
-	height: 80px;
-	background-color: white;
-	border: 0;
-	box-shadow: 1px 1px 3px grey;
-	font-size: 15px;
-	font-weight: 300;
+	margin: 15px 0px 0px 5px;
+	width: 600px; 
+	height: 50px;
 }
 
+#c_content{
+	padding: 5px;
+}
+#delBtn{
+	background: #ED6A5A;
+	color: #EDA39A;
+	border-radius: 5px;
+	background: radial-gradient(circle, #ED412A 0.25em, transparent 0.25em) center/1.2em 1.2em;
+	border: 3px solid #ED412A;
+	transition: all .3s ease;
+	font-size: 25px;
+	font-weight: 500;
+}
+#delBtn:hover{
+	color : white;
+          background: radial-gradient(circle, #ED412A 0.25em, transparent 0.25em) center/0.1em 0.1em;
+          transition: all .5s ease;
+}
+
+#studyBtn{
+	background: #C7F8F9;
+	color: #6AB1C9;
+	border: none;
+	transition: all .7s ease;
+	border-radius: 3px;
+}
+
+#studyBtn:hover{
+	background: transparent;
+	color: #C7F8F9;
+	border-top: 3px solid #C7F8F9;
+	border-bottom: 3px solid #C7F8F9;
+}
+				
+				
 </style>
 
 </head>
@@ -99,13 +138,13 @@ function deleteCard(c_idx){
 
 	<c:if test="${!empty subject }">
 		<div id="title">
-			<i class="fas fa-award" style="color: navy;"></i>&nbsp<b>${subject }</b>
+			<i class="fas fa-award" style="color: navy;"></i>&nbsp;<b>${subject }</b>
 		</div>
 	
 	</c:if>
 	<div id="filter">
-		<hr>
-			<b>여기에서는 검색 필터를 지정할 수 있습니다.</b>
+		<hr style="background-color: #003026; height: 1px; border: 0;">
+			<b style="color: white;">여기에서는 검색 필터를 지정할 수 있습니다.</b>
 			<select name="category" style="height: 40px;">
 				<option value="">검색조건</option>
 				<option value="com001">인기순</option>
@@ -113,7 +152,7 @@ function deleteCard(c_idx){
 				<option value="sp003">최근순</option>
 			</select>
 			<input type="button" value="검색" style="height: 40px; width: 80px;">
-		<hr>
+		<hr style="background-color: #003026; height: 3px; border: 0;">
 	</div>
 	<div id="grid_container">
 		<c:if test="${empty list }">
@@ -144,8 +183,12 @@ function deleteCard(c_idx){
 				</c:if>
 				<div class="myCardWord">${card.c_qCnt }단어</div>
 				<div class="myCardMake badge">${card.m_nickname }</div><br>
-				<input class="myBtn" type="button" value="카드학습하기" onclick="study(${card.c_idx});"> 
-				<input class="myBtn" type="button" value="카드삭제하기" onclick="deleteCard(${card.c_idx});"> 
+			</div>
+			
+			<div class="myStudy">
+				<div id="c_content">${card.c_content }</div>
+				<input class="myBtn" id="studyBtn" type="button" value="카드학습하기" onclick="study(${card.c_idx});"><br>
+				<input class="myBtn" id="delBtn"   type="button" value="카드삭제하기" onclick="deleteCard(${card.c_idx});"> 
 			</div>
 		</c:forEach>
 	</div>

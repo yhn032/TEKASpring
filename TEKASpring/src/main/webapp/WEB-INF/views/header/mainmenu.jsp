@@ -7,20 +7,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<style type="text/css">
-#searchbar{
-margin-left: 15%;
-}
-#makebtn{
-margin-left: 1%;
-}
-
-#bar{
-width: 100%;
-padding-top: 15px;
-height: 80px;
-}
-</style>
+<!-- css -->
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/mainmenuHeader.css">
 <!-- 스크립트 -->
 <script type="text/javascript">
 	
@@ -93,33 +81,6 @@ height: 80px;
 	});
 	
 </script>
-<style type="text/css">
-.dropDownMenu{
-		display: none;
-		width: 150px;
-		height: 180px; 
-		background-color: white;	
-		padding: 0;
-		border: 1px solid gray;
-		border-radius: 2px;
-		box-shadow: 1px 1px 5px 1px gray;
-}
-
-.dropDownMenu li{
-	list-style: none;
-	line-height: 30px;
-	padding-left: 25px;
-}
-
-.dropDownMenu a{
-	text-decoration: none;
-	color: black;
-}
-
-.drop{
-	display: block;
-}
-</style>
 </head>
 <body>
 	<nav id="bar" class="navbar navbar-inverse navbar-fixed-top">
