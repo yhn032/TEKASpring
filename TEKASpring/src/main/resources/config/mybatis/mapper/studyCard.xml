@@ -8,6 +8,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select * from qnaCard where c_idx = #{c_idx}
 	</select>
 	
+	<select id="selectQuestion" parameterType="int" resultType="String">
+		select q_question from qnaCard where c_idx = #{c_idx}
+	</select>
+	
 	<!-- 즐겨찾기 초기화를 위해 오답 처리 된 질문 읽어오기 O-->
 	<select id="selectWrongNumber" parameterType="vo.WrongQnaVo" resultType="java.lang.Integer">
 		select q_idx from wrongqna where c_idx=#{c_idx} and m_idx=#{m_idx}
@@ -22,8 +26,4 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<delete id="deleteWrongQnaCard" parameterType="vo.WrongQnaVo">
 		delete from wrongqna where m_idx=#{m_idx} and q_idx=#{q_idx}
 	</delete>
-  
-	
-	
-	
 </mapper>

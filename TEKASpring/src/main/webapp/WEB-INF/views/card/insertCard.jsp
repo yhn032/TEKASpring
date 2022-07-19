@@ -8,10 +8,9 @@
 <!-- 부트스트랩 라이브러리등록 -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <!-- css파일 연결 -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mainmenuHeader.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mainInsertCard.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/addCardRow.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/insertCard.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/header/mainmenuHeader.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/card/addCardRow.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/card/insertCard.css">
 <!-- 자바스크립트 -->
 <script type="text/javascript">
 

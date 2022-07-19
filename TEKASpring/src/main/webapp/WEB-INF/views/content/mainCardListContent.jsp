@@ -201,122 +201,91 @@ function filter(){
 		
 </script>
 <script type="text/javascript">
+function previewPopup(c_idx){
+	$.ajax({
+		url:'previewPopup.do?c_idx=' + c_idx, //c_idx를 쿼리로 전송
+		dataType:'json',
+		success : function(resData){
 
-	function previewPopup(c_idx){
-		
-		$.ajax({
-
-			url:'popup.do?c_idx=' + c_idx, //c_idx를 쿼리로 전송
-			dataType:'json',
-			success : function(resData){
-			
-				//m_nickname 출력
-				$("#m_nickname").html('madeBy' + ' ' + resData.m_nickname);
-				$("#c_title").html(resData.c_title);
-				$("#c_content").html(resData.c_content);
+			$("#m_nickname").html('madeBy' + ' ' + resData.m_nickname);
+			$("#c_title").html(resData.c_title);
+			$("#c_content").html(resData.c_content);
+			//동적으로 요소추가 (list만큼 반복하기 때문에 모든 요소 출력가능) : 질문-답변은 쌍으로 저장(반복횟수 동일)
+			for(i in resData.question){
 				
-				
-				//popup.jsp파일에 동적으로 요소추가 (list만큼 반복하기 때문에 모든 요소 출력가능)
-				//질문-답변은 쌍으로 저장된다. -> 반복횟수가 같다.
-				for(i in resData.question){
-					
-					var jsonDiv = {
-									 table : "<table class=\"question\">",
-									 q : "<tr><th><textarea cols=\"45\" readonly=\"readonly\" class=\"q_question" + i + "\"",	
-									 qCss: "style=\"border:none; background:#2e3856; border-bottom: 1px solid #586380; resize:none; font-size:17px; overflow: hidden;\"></textarea></th>",
-									 a : "<th><textarea cols=\"80\" readonly=\"readonly\" class=\"q_answer" + i + "\"",
-									 aCss:"style=\"border:none; background:#2e3856; border-bottom: 1px solid #586380; resize:none; font-size:17px; vertical-align: bottom; overflow: hidden;\"></textarea></th></tr>",
-									 qText:	"<tr><th class=\"qnaText\">질문</th>",
-									 aText: "<th class=\"qnaText\">답변</th></tr></table>"
-								  };
-					
-					var div = '';
-					
-					for(j in jsonDiv){
-						
-						div += jsonDiv[j];
-					}
-					
-					$(".res").append(div);
-				
-					$(".q_question" + i).append(resData.question[i]);
-					$(".q_question" + i).height(1).height($(".q_question" + i).prop('scrollHeight'));
-					
-					$(".q_answer" + i).append(resData.answer[i]);
-					$(".q_answer" + i).height(1).height($(".q_answer" + i).prop('scrollHeight'));
+				var jsonDiv = {
+								 table : "<table class=\"question\">",
+								 q : "<tr><th><textarea cols=\"45\" readonly=\"readonly\" class=\"q_question" + i + "\"",	
+								 qCss: "style=\"border:none; background:#2e3856; border-bottom: 1px solid #586380; resize:none; font-size:17px; overflow: hidden;\"></textarea></th>",
+								 a : "<th><textarea cols=\"80\" readonly=\"readonly\" class=\"q_answer" + i + "\"",
+								 aCss:"style=\"border:none; background:#2e3856; border-bottom: 1px solid #586380; resize:none; font-size:17px; vertical-align: bottom; overflow: hidden;\"></textarea></th></tr>",
+								 qText:	"<tr><th class=\"qnaText\">질문</th>",
+								 aText: "<th class=\"qnaText\">답변</th></tr></table>"
+							  };
+				var div = '';
+				for(j in jsonDiv){
+					div += jsonDiv[j];
 				}
-			}//success end
-		});
-		
-		//append했던 데이터 지우기
-		$("#q_question").remove();
-		$("#q_answer").remove();
-		$(".question").remove();
-
-		centerBox();
-		$("#popupBox").show();
-	}
-</script>
-<!-- 좋아요 기능 자바스크립트 -->
-<script type="text/javascript">
-	
-	$(function(){
-		//로그인하지 않았다면 초기화이벤트 종료
-		if("${empty user}" == "true") return;
-		
-
-		//로그인한 상태라면, 현재 m_idx가 좋아요한 카드 조회 -> 이모티콘 채우기
-		if("${!empty user}" == "true"){
-			
-			$.ajax({
-				url:'../card/likeCheck.do',
-				data:{"m_idx":"${user.m_idx}"},
-				dataType:'json',
-				success : function(res){
-					
-					if(res.liked){
-						
-						for(i in res.likedList){
-							$("#liked"+res.likedList[i]).val("❤️");
-						}//for end
-					}//if end
-				}
-			});//ajax end
-		}
-	});
-	
-	function liked(c_idx, s_idx){
-		//로그인하지 않았을 경우
-		if(${empty user}){
-			if(!confirm("로그인 후에 이용할 수 있습니다.\n로그인 하시겠습니까?")) return;
-			location.href="../tekamember/loginForm.do";
-			return;
-		}
-		//현재 m_idx와 c_idx로 조회했을 때, 좋아요를 누르지 않았을 경우 좋아요 누를 수 있음
-		$.ajax({
-			url:'../card/likeInsert.do',
-			data:{"m_idx": "${user.m_idx}", "c_idx":c_idx},
-			dataType:'json',
-			success : function(resData){
 				
-				//좋아요+1 insert가 정상적으로 처리되었다면
-				if(resData.res==1){ 
-					location.href="../card/mainList.do";
-				//이미 좋아요를 눌러서 누를 수 없는 경우, 좋아요 취소
-				}else if(resData.already==0){ 
-					$.ajax({
-						url : '../card/deleteLiked.do',
-						data : {"c_idx":c_idx, "m_idx": "${user.m_idx}"},
-						dataType : 'json',
-						success : function(resData){
-							//결과 재요청
-							location.href="../card/mainList.do";
-						}
-					});// inner ajax end
-				}//if already end
+				$(".res").append(div);
+				$(".q_question" + i).append(resData.question[i]);
+				$(".q_question" + i).height(1).height($(".q_question" + i).prop('scrollHeight'));
+				$(".q_answer" + i).append(resData.answer[i]);
+				$(".q_answer" + i).height(1).height($(".q_answer" + i).prop('scrollHeight'));
 			}
-		});//ajax end
-	}//liked end
+		}//success end
+	});
+	//append되어있는 데이터 삭제
+	$("#q_question").remove();
+	$("#q_answer").remove();
+	$(".question").remove();
+
+	centerBox();
+	$("#popupBox").show();
+}
+</script>
+<!-- 좋아요 기능 -->
+<script type="text/javascript">
+$(function(){
+	//로그인하지 않은 경우
+	if("${empty user}"  == "true") return;
+	//로그인한 경우
+	if("${!empty user}" == "true") {
+		$.ajax({
+			url:'../card/like.do',
+			data:{"m_idx":"${user.m_idx}"},
+			dataType:'json',
+			success : function(res){
+ 				for(i in res.list){
+					$("#like"+ res.list[i]).val("❤️");
+				}
+			}
+		});//end : ajax
+	}
+});//end : 윈도우 초기화
+
+function like(c_idx, s_idx){
+	//로그인하지 않았을 경우
+	if("${empty user}"=="true"){
+		if(!confirm("로그인 후에 이용할 수 있습니다.\n로그인 하시겠습니까?")) return;
+		location.href="../tekamember/loginForm.do";
+		return;
+	}
+	$.ajax({
+		url:'../card/insertLike.do',
+		data:{"m_idx": "${user.m_idx}", "c_idx":c_idx},
+		dataType:'json',
+		success : function(res){
+			//좋아요
+			if(res.result){ 
+				location.href="../card/mainList.do?page=" + "${param.page}"; //현재 페이지 정보를 담고 이동
+			//좋아요 취소
+			}else { 
+				location.href="../card/cancelLike.do?c_idx="+c_idx+"&m_idx=${user.m_idx}&page=${param.page}";
+			}
+		}
+	});//end : ajax
+}//end : like()
 </script>
 </head>
 <body id="box">
@@ -349,7 +318,7 @@ function filter(){
 					<div class="card-inner">
 						<div class="card-front">
 							<div id="question">
-								<b>${ card.c_title }</b>
+								<b>${card.c_title}</b>
 							</div>
 						</div>
 						<div class="card-back">
@@ -363,10 +332,10 @@ function filter(){
 				<div class="side">
 
 					<button type="button" class="btn btn-xs btn-primary"
-						onclick="liked(${card.c_idx},${card.s_idx });">
+						onclick="like(${card.c_idx},${card.s_idx });">
 						추천 <span class="badge">${card.l_like}</span>
 					</button>
-					<input type="button" value="🤍" id="liked${card.c_idx}"
+					<input type="button" value="🤍" id="like${card.c_idx}"
 						disabled="disabled" style="background: transparent;"><br>
 					
 					<!-- 주제별로 다른 레이블 색상 -->

@@ -14,11 +14,12 @@ public class StudyCardDaoImpl implements StudyCardDao {
 		super();
 		this.sqlSession = sqlSession;
 	}
-	
 	public List<ViewVo> selectCard(int c_idx) {
 		return sqlSession.selectList("studyCard.selectCard", c_idx);
 	}
-
+	public List<String> selectQuestion(int c_idx) {
+		return sqlSession.selectList("studyCard.selectQuestion", c_idx);
+	}
 	public List<Integer> selectWrongNumber(WrongQnaVo vo) {
 		return sqlSession.selectList("studyCard.selectWrongNumber", vo);
 	}

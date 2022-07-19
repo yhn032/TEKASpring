@@ -202,12 +202,13 @@
 	font-weight: 600;
 }
 
-.correctArea {
+.choice {
 	position:fixed;
 	top:420px;
 	right:105px;
 }
-.chooseCorrect {
+
+.threechoice {
 	display: block;
 	width: 700px;
 	height: 70px;
@@ -220,6 +221,6 @@
 	cursor:pointer; 
 }
 
-.chooseCorrect:hover{
+.threechoice:hover{
 	background-color: #586380;
 }

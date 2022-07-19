@@ -20,7 +20,7 @@
 		<constructor-arg ref="sqlSession"/>
 	</bean>
 	
-	<bean id="likey_dao" class="dao.LikeyDaoImpl">
+	<bean id="like_dao" class="dao.LikeDaoImpl">
 		<constructor-arg ref="sqlSession"/>
 	</bean>
 	
