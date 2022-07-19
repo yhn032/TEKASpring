@@ -34,17 +34,17 @@
 }
 </style>
 </head>
-<body>
+<body style="background:#2e3856;">
 <div id="box">
-<div id="mainmenu">
-<%@ include file="../header/mainmenu.jsp" %>
-</div>
-<div id="content">
-<%@ include file="../content/myCardListContent.jsp" %>
-</div>
-<div id="footer">
-<%@ include file="../footer/footer.jsp" %>
-</div>
+	<div id="mainmenu">
+	<%@ include file="../header/mainmenu.jsp" %>
+	</div>
+	<div id="content" style="background:#2e3856;">
+	<%@ include file="../content/myCardListContent.jsp" %>
+	</div>
+	<div id="footer" style="background:#2e3856;">
+	<%@ include file="../footer/footer.jsp" %>
+	</div>
 </div>
 </body>
 </html>
