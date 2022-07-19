@@ -10,13 +10,8 @@
 <!-- css -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/card/addCardRow.css">
 <script type="text/javascript">
-	
 var idx = 1;
-	
-//div 추가	
 function addRow(){
-	
-	/* 추가할 div html코드 json배열 저장 */
 	var jsonHTML = {
 					row: "<div class=\"row\" id=\"row_" + idx + "\">",	
 					delBtn: "<div><input type=\"button\" class=\"delBtn\" id=\"" + idx++ + "\"", 
@@ -25,26 +20,20 @@ function addRow(){
 					aArea: "<div class=\"aArea\"><textarea COLS=80 ROWS=8 name=\"q_answer\"></textarea><p>&emsp;&emsp;&emsp;&emsp;&emsp;답변</p></div></div>",
 					closeDiv: "</div>"	
 				  };
-	
-	var add = ''; //반복문 안에서 선언하면 누적 못함
-	//json배열에 있는 요소 누적
+	var add = '';
 	for(i in jsonHTML){
 		add += jsonHTML[i];
 	}
-	//추가할 영역 지정
+	
 	$(".list").append(add);
 }
 
-//div 삭제	
 function delRow(idx){
-	
 	$("#row_" + idx).remove();
-}//delRow() end
-
+}
 </script>
 </head>
 <body>
-
 <div id="container">
 	<div id="box">
 		<!-- list영역 행추가 -->
@@ -52,7 +41,6 @@ function delRow(idx){
 			<div class="row" id="row_0">
 				<!-- div 삭제 : this의 정보를 넘겨야 해당 행만 삭제가능 -->
 				<div>
-					<!-- <a class="delBtn" onclick="delRow();">🗑️</a> -->
 					<input type="button" class="delBtn" id="0" onclick="delRow(this.id);" value="🗑️">
 				</div>
 				<div class="tArea">
