@@ -105,7 +105,7 @@ a {
 					<h1>${m_id}입니다.</h1>
 				</div>
 				<input type="button" value="비밀번호 찾기" onclick="location.href='findPWD.do'">
-				<input type="button" value="로그인 하기" onclick="loation.href='loginForm.do'">
+				<input type="button" value="로그인 하기" onclick="location.href='loginForm.do'">
 			</form>
 			
 		</div>

@@ -59,7 +59,7 @@ $(document).ready(function(){
 		</c:if>
 	</div>
 </div>
-<div id="footer">
+<div id="footer" style="background: #2e015f;">
 	<%@ include file="../footer/footer.jsp" %>	
 </div>
 </body>

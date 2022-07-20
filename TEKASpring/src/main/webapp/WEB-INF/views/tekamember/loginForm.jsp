@@ -187,24 +187,75 @@ a {
 	
 	function showMessage(){
 		if("${param.reason eq 'failId'}" == "true"){
-			alert('아이디가 틀렸습니다.');
-			return;
+			Swal.fire({
+				  icon: 'question',
+				  title: '아이디를 확인하세요...',
+				  text: '존재하지 않는 아이디입니다.',
+				  returnFocus: false
+			}).then((result) => {
+				
+				if(result.isConfirmed){
+					$("#m_id").focus();
+				}else{
+					return;
+					
+				}
+				
+			});
 		}
 		
 		if("${param.reason eq 'failPwd'}" == "true"){
-			alert('비밀번호가 틀렸습니다.');
-			return;
+			Swal.fire({
+				  icon: 'question',
+				  title: '비밀번호를 확인하세요...',
+				  text: '존재하지 않는 비밀번호입니다.',
+				  returnFocus: false
+			}).then((result) => {
+				
+				if(result.isConfirmed){
+					$("#m_pwd").focus();
+				}else{
+					
+					return;
+				}
+				
+			});
 		}
 		
 		if("${param.reason eq 'sessionTimeout'}" == "true"){
-			alert('로그인해주세요.');
-			return;
+			Swal.fire({
+				  icon: 'question',
+				  title: '로그인 해주세요...',
+				  text: '세션이 만료되었습니다.',
+				  returnFocus: false
+			}).then((result) => {
+				
+				if(result.isConfirmed){
+					$("#m_id").focus();
+				}else{
+					return;
+					
+				}
+				
+			});
 		}
 		
 		if("${param.reason eq 'social'}" == "true"){
-			if(!confirm("이미 가입한 계정이 있습니다.\n아이디를 찾으시겠습니까?")) return;
-		
-			location.href="findID.do";
+			Swal.fire({
+				title: '이미 가입한 계정이 있습니다.\n아이디를 찾으시겠습니까?',
+				icon:'warning',
+				showDenyButton: true,
+				confirmButtonText: '네',
+				denyButtonText: '아니요',
+			}).then((result) => {
+				/* Read more about isConfirmed, isDenied below */
+				if (result.isConfirmed) {
+					location.href="findID.do";
+				} else if (result.isDenied) {
+					return;
+				}
+			});
+			
 		}
 		
 		
@@ -217,21 +268,36 @@ a {
 		var m_pwd = $("#m_pwd").val().trim();
 		
 		if(m_id == ''){
-			alert('아이디를 입력하세요.');
-			$("#m_id").val('');
-			$("#m_pwd").focus();
-			return;
+			Swal.fire({
+				  icon: 'info',
+				  title:'아이디를 입력하세요!',
+				  returnFocus: false
+			}).then((result) => {
+				
+				if(result.isConfirmed){
+					$("#m_id").val('');
+					$("#m_id").focus();
+					return;
+				}
+			});
 		}
 		
 		//비밀번호는 정규식 추가해야 할 것 같음
 		if(m_pwd == ''){
-			alert('비밀번호를 입력하세요.');
-			$("#m_pwd").val('');
-			$("#m_pwd").focus();
-			return;
+			Swal.fire({
+				  icon: 'info',
+				  title:'비밀번호를 입력하세요!',
+				  returnFocus: false
+			}).then((result) => {
+				
+				if(result.isConfirmed){
+					$("#m_pwd").val('');
+					$("#m_pwd").focus();
+					return;
+				}
+			});
 		}
 		
-		//alert(m_id + "##" + m_pwd);
 		
 		try{
 			var RSAPublicKeyModulus  = $("#RSAModulus").val();

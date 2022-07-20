@@ -12,6 +12,9 @@
 
 <!-- FontAwesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"/>
+
+<!-- SweetAlert -->
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <style type="text/css">
 #box{
 	

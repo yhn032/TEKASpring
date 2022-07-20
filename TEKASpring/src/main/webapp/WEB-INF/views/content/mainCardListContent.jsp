@@ -164,14 +164,37 @@ $(document).ready(function(){
 
 function showMsg(){
 	if("${param.reason eq 'exist'}" == "true"){
-		if(confirm("이미 저장되어 있는 학습카드입니다.\n나의 학습카드로 이동하시겠습니까?") == false) return;
-		location.href="myCardList.do";
+		Swal.fire({
+			title: '이미 저장되어 있는 학습카드입니다.\n나의 학습카드로 이동하시겠습니까?',
+			icon: 'question',
+			showDenyButton: true,
+			confirmButtonText: '네',
+			denyButtonText: '아니요',
+		}).then((result) => {
+			/* Read more about isConfirmed, isDenied below */
+			if (result.isConfirmed) {
+				location.href="myCardList.do";
+			} else if (result.isDenied) {
+				return;
+			}
+		});
 	}
 	
 	if("${param.reason eq 'success'}" == "true"){
-		if(confirm("선택한 카드를 나의 학습세트에 저장했습니다.\n나의 학습카드로 이동하시겠습니까?") == false) return;
-
-		location.href="myCardList.do";
+		Swal.fire({
+			title: '선택한 카드를 나의 학습세트에 저장했습니다.\n나의 학습카드로 이동하시겠습니까?',
+			icon: 'question',
+			showDenyButton: true,
+			confirmButtonText: '네',
+			denyButtonText: '아니요',
+		}).then((result) => {
+			/* Read more about isConfirmed, isDenied below */
+			if (result.isConfirmed) {
+				location.href="myCardList.do";
+			} else if (result.isDenied) {
+				return;
+			}
+		});
 	}
 }
 
@@ -179,17 +202,27 @@ function addOrDeleteMyCards(c, s){
 	var user = "${user.m_id}";
 	//로그인 정보 확인
 	if(user ==''){
-		if(!confirm("로그인 후에 이용할 수 있습니다.\n로그인 하시겠습니까?")) {
-			return;
-		}
-		
-		location.href="../tekamember/loginForm.do";
-		return;
+		Swal.fire({
+			title: '로그인 후 이용가능합니다.\n로그인 하시겠습니까?',
+			icon:'question',
+			showDenyButton: true,
+			confirmButtonText: '네',
+			denyButtonText: '아니요',
+		}).then((result) => {
+			/* Read more about isConfirmed, isDenied below */
+			if (result.isConfirmed) {
+				location.href="../tekamember/loginForm.do";
+			} else if (result.isDenied) {
+				return;
+			}
+		});
 	}
 	
 	//$("#addelete").text("");
-	
-	location.href='myCardInsert.do?c_idx=' + c + '&s_idx=' + s;
+	if(user != ''){
+		location.href='myCardInsert.do?c_idx=' + c + '&s_idx=' + s;
+		
+	}
 }
 
 function filter(){
@@ -266,10 +299,23 @@ $(function(){
 function like(c_idx, s_idx){
 	//로그인하지 않았을 경우
 	if("${empty user}"=="true"){
-		if(!confirm("로그인 후에 이용할 수 있습니다.\n로그인 하시겠습니까?")) return;
-		location.href="../tekamember/loginForm.do";
-		return;
+		Swal.fire({
+			title: '로그인 후 이용가능합니다.\n로그인 하시겠습니까?',
+			icon:'question',
+			showDenyButton: true,
+			confirmButtonText: '네',
+			denyButtonText: '아니요',
+		}).then((result) => {
+			/* Read more about isConfirmed, isDenied below */
+			if (result.isConfirmed) {
+				location.href="../tekamember/loginForm.do";
+			} else if (result.isDenied) {
+				return;
+			}
+		});
 	}
+	
+	
 	$.ajax({
 		url:'../card/insertLike.do',
 		data:{"m_idx": "${user.m_idx}", "c_idx":c_idx},

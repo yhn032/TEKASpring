@@ -8,9 +8,17 @@
 <title>TEKA : 내 학습세트</title>
 <script type="text/javascript">
 
-function study(c_idx){
-	alert(c_idx + "번 카드를 학습합니다.");
-	location.href="../studyCard/studyCardMain.do?c_idx="+c_idx;
+function study(c_title, c_idx){
+	Swal.fire({
+		  icon: 'success',
+		  title: c_title + '을(를) 학습합니다.',
+		  returnFocus: false
+	}).then((result) => {
+		
+		if(result.isConfirmed){
+			location.href="../studyCard/studyCardMain.do?c_idx="+c_idx;
+		}
+	});
 }
 
 function deleteCard(c_idx){
@@ -19,14 +27,23 @@ function deleteCard(c_idx){
 		data: {"c_idx":c_idx},
 		success: function(res){
 			if(res.result){
-				alert("삭제 성공");
-				//현재 페이지 호출(=새로고침)
-				location.href="";
+				Swal.fire({
+					  icon: 'success',
+					  title: '학습세트에서 삭제하였습니다.',
+					  returnFocus: false
+				}).then((result) => {
+					
+					//현재 페이지 호출(=새로고침)
+					location.href="";
+				});
 			}
 		},
 		error  : function(err){
-			alert("삭제 실패");
-			alert(err.responseText);
+			Swal.fire({
+				  icon: 'warning',
+				  title: '학습세트에서 삭제하지 못했습니다.',
+				  returnFocus: false
+			});
 		}
 	});
 }
@@ -184,7 +201,7 @@ function deleteCard(c_idx){
 			
 			<div class="myStudy">
 				<div id="c_content">${card.c_content }</div>
-				<input class="myBtn" id="studyBtn" type="button" value="카드학습하기" onclick="study(${card.c_idx});"><br>
+				<input class="myBtn" id="studyBtn" type="button" value="카드학습하기" onclick="study('${card.c_title}', ${card.c_idx });"><br>
 				<input class="myBtn" id="delBtn"   type="button" value="카드삭제하기" onclick="deleteCard(${card.c_idx});"> 
 			</div>
 		</c:forEach>

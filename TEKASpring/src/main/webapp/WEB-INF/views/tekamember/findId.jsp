@@ -104,13 +104,21 @@ $(document).ready(function(){
 function showMsg(){
 	
 	if("${param.reason eq 'social'}" == "true"){
-		alert("입력하신 이메일은 소셜 로그인으로 가입된 회원입니다.\n별도의 비밀번호 찾기 없이 로그인해주세요.");
-		return;
+		Swal.fire({
+			  icon: 'info',
+			  title: '입력하신 이메일은 소셜 로그인으로 가입된 회원입니다.',
+			  text: '별도의 비밀번호 찾기 없이 로그인해주세요.',
+			  returnFocus: false
+		});
 	}
 	
 	if("${param.reason eq 'failEmail'}" == "true"){
-		alert("존재하지 않는 이메일입니다. 이메일을 확인하거나 회원가입해주세요.");
-		return;
+		Swal.fire({
+			  icon: 'info',
+			  title: '존재하지 않는 이메일입니다.',
+			  text: '이메일을 확인하거나 회원가입해주세요',
+			  returnFocus: false
+		});
 	}
 }
 
@@ -118,22 +126,25 @@ function sendEmail(f){
 	
 	var email = $("#m_email").val().trim();
 	
-	if(email==''){
-		alert("이메일을 입력하세요.");
-		$("#m_email").val('');
-		$("#m_email").focus();
-		return;
-	}
-	
 	if(!regex.test(email)){
-		alert("올바르지 않은 이메일 형식입니다.");
-		$("#m_email").val('');
-		$("#m_email").focus();
-		return;
+		Swal.fire({
+			  icon: 'warning',
+			  title: '올바르지 않은 이메일 형식입니다.',
+			  returnFocus: false
+		}).then((result) => {
+			
+			if(result.isConfirmed){
+				$("#m_email").val('');
+				$("#m_email").focus();
+				return;
+			}
+		});
+	}else{
+		f.action = 'checkEmailForId.do';
+		f.submit();
+		
 	}
 	
-	f.action = 'checkEmailForId.do';
-	f.submit();
 }
 </script>
 </head>
