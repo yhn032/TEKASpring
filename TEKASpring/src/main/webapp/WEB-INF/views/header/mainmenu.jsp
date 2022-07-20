@@ -9,34 +9,50 @@
 <title>Insert title here</title>
 <!-- css -->
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/header/mainmenuHeader.css">
+
+<!-- SweetAlert -->
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <!-- 스크립트 -->
 <script type="text/javascript">
 	
 	//로그인 하지 않고 카드만들기 하려는 경우 -> 로그인 후에 카드 만들기를 바로 하러 가도록 세션 트래킹
 	function insertCard(){
+		var url_insert = "http://localhost:9090/teka/card/insertCardForm.do";
 		
-		if(!confirm('로그인 후 이용가능합니다.\n로그인 하시겠습니까?')) {
-			return;
-		}
-		
-		var url_insert = "http://localhost:9090/teka/card/insertCardForm.do"
-		
-		location.href="../tekamember/loginForm.do?url=" + encodeURIComponent(url_insert);
+		Swal.fire({
+			title: '로그인 후 이용가능합니다.\n로그인 하시겠습니까?',
+			showDenyButton: true,
+			confirmButtonText: '네',
+			denyButtonText: '아니요',
+		}).then((result) => {
+			/* Read more about isConfirmed, isDenied below */
+			if (result.isConfirmed) {
+				location.href="../tekamember/loginForm.do?url=" + encodeURIComponent(url_insert);
+			} else if (result.isDenied) {
+				return;
+			}
+		});
 	}
 	
 	//로그인 하지 않고 나의 학습세트로 이동 하려는 경우 -> 로그인 후에 나의 학습세트로 이동하도록 세션 트래킹
 	function myCardSet(){
-		
-		if(!confirm('로그인 후 이용가능합니다.\n로그인 하시겠습니까?')) {
-			return;
-		}
-		
-		//마이페이지 만들면 추가하기
-
 		var url_myCardSet = "../card/myCardList.do";
-
 		
-		location.href="../tekamember/loginForm.do?url=" + encodeURIComponent(url_myCardSet);
+		Swal.fire({
+			title: '로그인 후 이용가능합니다.\n로그인 하시겠습니까?',
+			showDenyButton: true,
+			confirmButtonText: '네',
+			denyButtonText: '아니요',
+		}).then((result) => {
+			/* Read more about isConfirmed, isDenied below */
+			if (result.isConfirmed) {
+				location.href="../tekamember/loginForm.do?url=" + encodeURIComponent(url_myCardSet);
+			} else if (result.isDenied) {
+				return;
+			}
+		});
+
 	}
 
 
@@ -55,14 +71,23 @@
 		
 		//전체보기가 아닌데, 검색어가 비어있는 경우
 		if(selectSearch != "all" && text==''){
-			alert('검색어를 입력해주세요.');
-			$("#text").val('');
-			$("#text").focus();
-			return;
+			Swal.fire({
+				  icon: 'info',
+				  title:'검색어를 입력하세요!',
+				  returnFocus: false
+			}).then((result) => {
+				
+				if(result.isConfirmed){
+					$("#text").val('');
+					$("#text").focus();
+					return;
+				}
+			});
+		}else{
+			//검색요청(자기자신을 호출하는 경우에는 쿼리만 작성해도 된다.)
+			location.href="mainList.do?page=${empty param.page ? 1 : param.page}&subject=${empty param.subject ? 'all' : param.subject}&selectSearch=" + selectSearch + "&text=" + encodeURIComponent(text);
+			
 		}
-		
-		//검색요청(자기자신을 호출하는 경우에는 쿼리만 작성해도 된다.)
-		location.href="mainList.do?page=${empty param.page ? 1 : param.page}&subject=${empty param.subject ? 'all' : param.subject}&selectSearch=" + selectSearch + "&text=" + encodeURIComponent(text);
 	}
 	
 	

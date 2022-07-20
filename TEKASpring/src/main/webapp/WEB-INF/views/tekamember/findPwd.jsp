@@ -108,21 +108,33 @@ function sendEmail(){
 	var m_email = $("#m_email").val();
 	
 	if(m_id==''){
-		alert("아이디를 입력하세요.");
-		$("#m_id").val('');
-		$("#m_id").focus();
+		Swal.fire({
+			  icon: 'warning',
+			  title: '아이디를 입력하세요.',
+			  returnFocus: false
+		}).then((result) => {
+			
+			if(result.isConfirmed){
+				$("#m_id").val('');
+				$("#m_id").focus();
+			}
+		});
 		return;
 	}
-	if(m_email==''){
-		alert("이메일을 입력하세요.");
-		$("#m_email").val('');
-		$("#m_email").focus();
-		return;
-	}
+	
+	
 	if(!regex.test(m_email)){
-		alert("올바르지 않은 이메일 형식입니다.");
-		$("#m_email").val('');
-		$("#m_email").focus();
+		Swal.fire({
+			  icon: 'warning',
+			  title: '올바르지 않은 이메일 형식입니다.',
+			  returnFocus: false
+		}).then((result) => {
+			
+			if(result.isConfirmed){
+				$("#m_email").val('');
+				$("#m_email").focus();
+			}
+		});
 		return;
 	}
 	
@@ -134,21 +146,44 @@ function sendEmail(){
 			if(res.status){//성공했다면
 				AuthNum = res.num;
 				m_idx = res.m_idx;
-				alert("입력하신 이메일로 인증번호를 전송했습니다.");
-				return;
+				Swal.fire({
+					  icon: 'success',
+					  title: '입력하신 이메일로 인증번호를 전송했습니다.',
+					  returnFocus: false
+				});
 			}else{
 				if(res.reason=='failId'){
-					alert('존재하지 않는 아이디입니다.');
-					$("#m_id").val('');
-					$("#m_email").val('');
-					$("#m_id").focus();
-					return;
+					Swal.fire({
+						  icon: 'question',
+						  title: '아이디를 확인하세요...',
+						  text: '존재하지 않는 아이디입니다.',
+						  returnFocus: false
+					}).then((result) => {
+						
+						if(result.isConfirmed){
+							$("#m_id").val('');
+							$("#m_email").val('');
+							$("#m_id").focus();
+						}else{
+							return;
+						}
+					});
 				}else if(res.reason=='failEmail'){
-					alert('존재하지 않는 이메일입니다.')
-					$("#m_id").val('');
-					$("#m_email").val('');
-					$("#m_email").focus();
-					return;
+					Swal.fire({
+						  icon: 'question',
+						  title: '이메일을 확인하세요...',
+						  text: '존재하지 않는 이메일입니다.',
+						  returnFocus: false
+					}).then((result) => {
+						
+						if(result.isConfirmed){
+							$("#m_id").val('');
+							$("#m_email").val('');
+							$("#m_email").focus();
+						}else{
+							return;
+						}
+					});
 				}
 			}
 			
@@ -163,15 +198,32 @@ function checkAuthNum(){
 	var num = $("#emailNum").val();
 	
 	if(num == AuthNum){
-		alert("인증에 성공했습니다!");
-		location.href="resPWD.do?m_idx="+m_idx;
-		//비밀번호 수정폼으로 이동하기
-		//location.href
+		Swal.fire({
+			  icon: 'success',
+			  title: '인증에 성공했습니다!',
+			  returnFocus: false
+		}).then((result) => {
+			
+			if(result.isConfirmed){
+				location.href="resPWD.do?m_idx="+m_idx;
+			}else{
+				return;
+			}
+		});
 	}else {
-		alert("잘못된 인증번호입니다.");
-		$("#emailNum").val('');
-		$('#emailNum').focus();
-		return;
+		Swal.fire({
+			  icon: 'question',
+			  title: '잘못된 인증번호입니다.',
+			  returnFocus: false
+		}).then((result) => {
+			
+			if(result.isConfirmed){
+				$("#emailNum").val('');
+				$('#emailNum').focus();
+			}else{
+				return;
+			}
+		});
 	}
 }
 </script>

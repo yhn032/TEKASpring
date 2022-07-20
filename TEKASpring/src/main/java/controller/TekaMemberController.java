@@ -205,6 +205,7 @@ public class TekaMemberController {
 				session.setAttribute("user", user);
 				
 				if(url != null && !url.isEmpty()) {
+					model.addAttribute("m_idx", user.getM_idx());
 					return "redirect:"+url;
 				}
 				

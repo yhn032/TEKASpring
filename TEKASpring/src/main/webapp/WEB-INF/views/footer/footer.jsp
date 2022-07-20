@@ -17,7 +17,7 @@
 </style>
 </head>
 <body>
-<div id="footer" style="background:#2e3856;">
+<div id="footer" style="background:transparent;">
 © 2022 TEKA All Rights Reserved. <br>
 만든사람: 김다정, 김병국, 류다희<br>
 <a href="https://github.com/yhn032/TEKA">깃허브 바로가기</a><br>
