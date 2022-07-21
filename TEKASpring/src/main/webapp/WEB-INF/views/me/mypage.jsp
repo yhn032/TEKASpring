@@ -30,7 +30,6 @@
 	padding: 10px;
 	border-radius : 10px;
 	background: linear-gradient(45deg, Violet, Orange);
-	float: left;
 }
 #attendbtndiv{
 	margin-bottom: 10px;
@@ -38,25 +37,6 @@
 	padding-top: 90px;
 	margin: auto;
 }
-#profile{
-	float: left;
-	margin: auto;
-
-
-}
-
-.profilebtn{
-	 background: linear-gradient(
-        45deg,
-        #002bff,
-        #7a00ff,
-        #ff00c8,
-        #ff0000
-    );
-    color: white;
-}
-
-
 
 </style>
 
@@ -149,21 +129,14 @@
 		<%@ include file="../header/mainmenu.jsp"%>
 	</div>
 	<div id="page">
-		<div id="attendbtndiv">
-			<input id="attendbtn" class="btn btn-danger" type="button"
-				value="출석체크하기!" onclick="insertAttend();">
-		</div>
-		<div id="calendar"></div>
-		<div id="profile">
-			${ user.m_nickname }님의 프로필입니다.<br>
-			<input class ="profilebtn" type="button" value="내 학습세트 보기"><br>
-			<input class ="profilebtn" type="button" value="내 프로필 수정">
-			<input class ="profilebtn" type="button" value="문의하기" onclick="location.href='askform.do';">
-			<c:if test="${user.m_grade eq '관리자'}">
-				<input class="profilebtn" type="button" value="회원관리" onclick="location.href='../tekamember/register.do'">
-			</c:if>
-		</div>
-		<div><%@ include file="../footer/footer.jsp"%></div>
+	<div id="attendbtndiv">
+	<input id="attendbtn" class="btn btn-danger" type="button" value="출석체크하기!" onclick="insertAttend();">
+	</div>
+	<div id='calendar'>
+	</div>
+	<div>
+		<%@ include file="../footer/footer.jsp" %>
+	</div>
 	</div>
 </body>
 </html>
