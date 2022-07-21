@@ -11,7 +11,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			c.*,
 			rank() over(order by c_regdate desc) as no
 		from
-			(select * from likedCard) as c limit #{block_list} offset #{page}
+			(select * from likedCard where c_isPublic='공개') as c limit #{block_list} offset #{page}
+	</select>
+	
+	<!--나의 학습세트에 추가된 학습 카드 조회하기 O-->
+	<select id="selectMyCardList" parameterType="java.util.Map" resultType="vo.ViewVo">
+		select 
+			c.*,
+			rank() over(order by c_regdate desc) as no
+		from 
+			(select * from studyCard where m_idx=#{m_idx}) as c
+			limit #{block_list} offset #{page}
 	</select>
 	
 	<!--특정 카드 조회 O-->
@@ -24,8 +34,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				select * from likedCard
 				<!-- 조건을 만족하면 명령어가 동적으로 할당되고, 접두어로 where가 붙으며, where 뒤에 or가 존재하는 경우 trim으로 삭제해버림 -->
 				<trim prefix="where" prefixOverrides="and">
+					<if test="c_isPublic != null">
+						c_isPublic = #{c_isPublic}
+					</if>
 					<if test="s_name != null">
-						s_name = #{s_name}
+						and s_name = #{s_name}
 					</if>
 					<if test="c_title != null">
 						 and c_title like concat('%', #{c_title}, '%')
@@ -82,11 +95,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		insert into mycardset(s_idx, m_idx, c_idx) values(#{s_idx}, #{m_idx}, #{c_idx})
 	</insert>	
 	
-	<!--나의 학습세트에 추가된 학습 카드 조회하기 O-->
-	<select id="selectMyCardList" parameterType="int" resultType="vo.ViewVo">
-		select * from studyCard where m_idx=#{m_idx}
-	</select>
-	
 	<!-- 나의학습세트에서 삭제하기 O-->
 	<delete id="deleteMyCard" parameterType="vo.MyCardSetVo">
 		delete from mycardset where c_idx=#{c_idx} and m_idx=#{m_idx}
@@ -94,26 +102,64 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 전체 카드 개수 조회하기 -->
 	<select id="selectTotalRow" resultType="int">
-		select nvl(count(*), 0) from likedCard
+		select nvl(count(*), 0) from likedCard where c_isPublic='공개'
+	</select>
+	
+	<!-- 나의 카드 개수 조회하기 -->
+	<select id="selectTotalMine" parameterType="java.util.Map" resultType="int">
+		select nvl(count(*), 0) from studyCard where m_idx=#{m_idx}
 	</select>
 	
 	<!-- 특정 조건에 해당하는 카드 조회하기 -->
 	<select id="selectTotalRowByCondition" parameterType="java.lang.String" resultType="int">
 		select nvl(count(*), 0) from likedCard 
 		<trim prefix="where" prefixOverrides="and">
+			<if test="c_isPublic != null">
+				c_isPublic = #{c_isPublic}
+			</if>
 			<if test="s_name != null">
-				s_name = #{s_name}
+				and s_name = #{s_name}
 			</if>
 			<if test="c_title!=null">
-				 and c_title like concat('%', #{c_title}, '%')
+				and c_title like concat('%', #{c_title}, '%')
 			</if>
 			<if test="c_content!=null">
-				 and c_content like concat('%', #{c_content}, '%')
+				and c_content like concat('%', #{c_content}, '%')
 			</if>
 			<if test="m_nickname!=null">
-				 and m_nickname like concat('%', #{m_nickname}, '%')
+				and m_nickname like concat('%', #{m_nickname}, '%')
 			</if>
 		</trim>
 	</select>
 	
+	<!-- 카드 비공개 전환 -->
+	<update id="updateIsPublic" parameterType="int">
+		update card set c_isPublic = '비공개' where c_idx=#{c_idx}
+	</update>
+	
+	
+	<!-- 카드 수정용 데이터 불러오기 -->
+	<select id="selectModifyCard" parameterType="int" resultType="vo.ViewVo">
+		select * from qnaCard where c_idx=#{c_idx}
+	</select>
+	
+	<!-- 카드 수정하기 -->
+	<update id="cardUpdate" parameterType="vo.ViewVo">
+		update card set s_idx=#{s_idx}, c_regdate=now(), c_qCnt=#{c_qCnt} where c_idx=#{c_idx}
+	</update>
+	
+	<!-- 잘문번호 구해오기 -->
+	<select id="qnaIdxNum" parameterType="int" resultType="java.lang.Integer">
+		select q_idx from qna where c_idx=#{c_idx} order by q_idx asc
+	</select>
+	
+	<!-- 질문 수정하기 -->
+	<update id="qnaUpdate" parameterType="vo.ViewVo">
+		update qna set q_question=#{q_question}, q_answer=#{q_answer} where q_idx=#{q_idx}	
+	</update>
+	
+	<!-- 기존 질문보다 질문이 추가된경우 수정 이전의 질문 개수를 가져온다. -->
+	<select id="selectQnaCnt" parameterType="int" resultType="int">
+		select nvl(count(*),0) from qna where c_idx=#{c_idx} 
+	</select>
 </mapper>

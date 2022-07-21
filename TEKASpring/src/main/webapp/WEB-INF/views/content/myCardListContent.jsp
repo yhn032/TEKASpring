@@ -47,6 +47,10 @@ function deleteCard(c_idx){
 		}
 	});
 }
+
+function modifyCardForm(c_idx){
+	location.href="../card/modifyCardForm.do?c_idx="+c_idx;
+}
 </script>
 <style type="text/css">
 .myCardContainer {
@@ -56,7 +60,7 @@ function deleteCard(c_idx){
 	border-radius: 10px;
  	box-shadow: 1px 1px 4px gray;
  	color: black;
- 	background: gray;
+ 	background: white;
 }
 
 .myStudy{
@@ -71,7 +75,7 @@ function deleteCard(c_idx){
 .myCardTitle{
 	font-size: 30px;
 	font-weight: 700;
-	margin: 20px 0px 0px 20px;
+	margin: 50px 0px 0px 40px;
 }
 
 .myCardSubject{
@@ -79,7 +83,7 @@ function deleteCard(c_idx){
 	display: inline-block;;
 	width: 20%;
 	/* 상 우 하 좌 */
-	margin: 20px 0px 0px 20px;
+	margin: 120px 0px 0px 40px;
 }
 
 .myCardWord{
@@ -108,7 +112,7 @@ function deleteCard(c_idx){
 }
 
 .myBtn{
-	margin: 15px 0px 0px 5px;
+	margin: 10px 0px 0px 5px;
 	width: 600px; 
 	height: 50px;
 }
@@ -117,6 +121,7 @@ function deleteCard(c_idx){
 #c_content{
 	padding: 5px;
 }
+
 #delBtn{
 	background: #ED6A5A;
 	color: #EDA39A;
@@ -168,6 +173,9 @@ function deleteCard(c_idx){
 			<input type="button" value="검색" style="height: 40px; width: 80px;">
 		<hr style="background-color: #003026; height: 3px; border: 0;">
 	</div>
+	
+	<div style="text-align: center; font-size: 25px; margin-top: 10px; margin-bottom: 10px; color: white;">${pageMenu }</div>
+	
 	<div id="grid_container">
 		<c:if test="${empty list }">
 			<div style="color: red; text-align: center; line-height: 333px;">아직 추가한 학습 카드가 없습니다.</div>
@@ -198,12 +206,31 @@ function deleteCard(c_idx){
 				<div class="myCardWord">${card.c_qCnt }단어</div>
 				<div class="myCardMake badge">${card.m_nickname }</div><br>
 			</div>
-			
-			<div class="myStudy">
-				<div id="c_content">${card.c_content }</div>
-				<input class="myBtn" id="studyBtn" type="button" value="카드학습하기" onclick="study('${card.c_title}', ${card.c_idx });"><br>
-				<input class="myBtn" id="delBtn"   type="button" value="카드삭제하기" onclick="deleteCard(${card.c_idx});"> 
-			</div>
+			<c:if test="${card.c_isPublic eq '비공개' }">
+				<div class="myStudy">
+					<div id="c_content">카드를 만든 사람이 비공개로 전환하였습니다. 카드를 커스터마이징하여 새로운 카드를 만들어야 학습을 할 수 있습니다.</div>
+					<input class="myBtn" id="delBtn"   type="button" value="카드삭제하기" onclick="deleteCard(${card.c_idx});"><br>
+					<c:if test="${card.m_nickname eq user.m_nickname }">
+						<input class="myBtn" id="modifyBtn" type="button" value="카드수정하기" onclick="modifyCardForm(${card.c_idx});">
+					</c:if>
+					<c:if test="${card.m_nickname ne user.m_nickname }">
+						<input class="myBtn" id="customBtn" type="button" value="카드 커스터마이징" onclick="customCardForm();">
+					</c:if>
+				</div>
+			</c:if>
+			<c:if test="${card.c_isPublic eq '공개' }">
+				<div class="myStudy">
+					<div id="c_content">${card.c_content }</div>
+					<input class="myBtn" id="studyBtn" type="button"  value="카드학습하기" onclick="study('${card.c_title}', ${card.c_idx });" style="margin-top: 30px;"><br>
+					<input class="myBtn" id="delBtn"   type="button"  value="카드삭제하기" onclick="deleteCard(${card.c_idx});"><br>
+					<c:if test="${card.m_nickname eq user.m_nickname }">
+						<input class="myBtn" id="modifyBtn" type="button" value="카드수정하기" onclick="modifyCardForm(${card.c_idx});">
+					</c:if>
+					<c:if test="${card.m_nickname ne user.m_nickname }">
+						<input class="myBtn" id="customBtn" type="button" value="카드 커스터마이징" onclick="customCardForm();">
+					</c:if>
+				</div>
+			</c:if>
 		</c:forEach>
 	</div>
 </body>

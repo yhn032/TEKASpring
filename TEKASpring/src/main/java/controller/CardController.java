@@ -55,10 +55,25 @@ public class CardController {
 	public String tutorial() {
 		return "card/tutorial";
 	}
+	
 	//카드 만들기 페이지 호출
 	@RequestMapping("insertCardForm.do")
 	public String insertCardForm() {
 		return "card/insertCard";
+	}
+	
+	//카드 수정하기 페이지 호출
+	@RequestMapping("modifyCardForm.do")
+	public String modifyCardForm(int c_idx, Model model) {
+		
+		List<ViewVo> list = card_dao.selectModifyCard(c_idx);
+		model.addAttribute("list", list);
+		model.addAttribute("c_title", list.get(0).getC_title());
+		model.addAttribute("c_content", list.get(0).getC_content());
+		model.addAttribute("s_idx", list.get(0).getS_idx());
+		model.addAttribute("size", list.size());
+		
+		return "card/modifyCardForm";
 	}
 	
 	//모든 학습세트 보기
@@ -79,6 +94,7 @@ public class CardController {
 		Map map = new HashMap();
 		map.put("block_list", MyConstant.Card.BLOCK_LIST);
 		map.put("page", (nowPage-1)*MyConstant.Card.BLOCK_LIST);
+		map.put("c_isPublic", "공개");
 		
 		//3가지의 조건중 하나라도 기본값이 아니라면, 조건에 맞는 행을 찾음. 셋 다 기본값이라면 전체 조회를 진행한다.
 		if (!subject.equals("all") || !selectSearch.equals("all")) {// 특정 조건을 원하는 경우에는 특정 조건에 부합하는 내용만을 읽어오기
@@ -159,18 +175,28 @@ public class CardController {
 	
 	//나의 학습 세트 이동하기
 	@RequestMapping("myCardList.do")
-	public String myCardList(Model model) {
+	public String myCardList(Model model, @RequestParam(value="page", required = false, defaultValue = "1")int nowPage) {
 		TekaMemberVo user = (TekaMemberVo) session.getAttribute("user");
 		if(user == null) {
 			model.addAttribute("reason", "sessionTimeout");
 			return "redirect:../tekamember/loginForm.do";
 		}
 		
+		Map map = new HashMap();
+		map.put("block_list", MyConstant.Mine.BLOCK_LIST);
+		map.put("page", (nowPage-1)*MyConstant.Mine.BLOCK_LIST);
+		map.put("m_idx", user.getM_idx());
+		
+		int totalCard = card_dao.selectTotalMine(map);
+		
+		//페이징 메뉴 만들기
+		String pageMenu = Paging.getPagingMine("myCardList.do", nowPage, totalCard, MyConstant.Mine.BLOCK_LIST, MyConstant.Mine.BLOCK_PAGE);
+		
 		//나의 학습세트에 추가한 카드 불러오기
-		List<ViewVo> list = card_dao.selectMyCardList(user.getM_idx());
+		List<ViewVo> list = card_dao.selectMyCardList(map);
 		
 		model.addAttribute("list", list);
-		
+		model.addAttribute("pageMenu", pageMenu);
 		return "card/myCardList";
 	}
 	
@@ -230,6 +256,47 @@ public class CardController {
 		return "redirect:myCardList.do";
 	}
 	
+	
+	//카드 수정하기(추가는 아직 미구현)
+	@RequestMapping("modifyCard.do")
+	public String modifyCard(ViewVo vo, @RequestParam("q_question") String[] q_questionStrArray, @RequestParam("q_answer") String[] q_answerStrArray, Model model) {
+		TekaMemberVo user = (TekaMemberVo) session.getAttribute("user");
+		if(user == null) {
+			model.addAttribute("reason", "sessionTimeout");
+			return "redirect:../tekamember/loginForm.do";
+		}
+		
+		//수정 이전의 질문 갯수 구하기 
+		int qnaCntPrev = card_dao.selectQnaCnt(vo.getC_idx());
+		
+		vo.setC_title(vo.getC_title().replaceAll("\r\n", "<br>"));
+		vo.setC_content(vo.getC_content().replaceAll("\r\n", "<br>"));
+		vo.setC_qCnt(q_questionStrArray.length);
+		
+		//입력값 수정하기 추가는 고려하지 않음.(카드 테이블 수정하기)
+		int cardRes = view_dao.cardUpdate(vo); 
+		
+		//질문테이블의 질문번호 구해오기(기존 카드 수정용)
+		List<Integer> q_idx_array = view_dao.qnaIdxNum(vo.getC_idx());
+		
+		for(int i=0; i<q_questionStrArray.length; i++) {
+			
+			if(i < qnaCntPrev) {//기존 카드는 수정
+				vo.setQ_question(q_questionStrArray[i]);
+				vo.setQ_answer(q_answerStrArray[i]);
+				vo.setQ_idx(q_idx_array.get(i));
+				int qnaRes = view_dao.qnaUpdate(vo);
+			}else {//새로 추가한 카드는 insert
+				vo.setQ_question(q_questionStrArray[i]);
+				vo.setQ_answer(q_answerStrArray[i]);
+				int qnaRes = view_dao.qnaInsert(vo);
+			}
+		}
+		
+		model.addAttribute("m_idx", user.getM_idx());
+		return "redirect:myCardList.do";
+	}
+	
 	@RequestMapping("myCardDelete.do")
 	@ResponseBody
 	public Map myCardDelete(MyCardSetVo vo, Model model) {
@@ -274,6 +341,19 @@ public class CardController {
 			return "redirect:mainList.do";
 		}
 	}
+	
+	@RequestMapping("switchPrivate.do")
+	@ResponseBody
+	public Map switchPrivate(int c_idx) {
+		Map map = new HashMap();
+		
+		int res = card_dao.updateIsPublic(c_idx);
+		
+		map.put("result", res == 1);
+		
+		return map;
+	}
+	
 	
 	// 주제 리스트를 가져오는 메서드
 	private String getSubject(String subject) {

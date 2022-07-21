@@ -36,9 +36,9 @@ public class CardDaoImpl implements CardDao {
 		return sqlSession.selectOne("card.selectCheckMyCard", check);
 	}
 
-	public List<ViewVo> selectMyCardList(int m_idx) {
+	public List<ViewVo> selectMyCardList(Map map) {
 		// TODO Auto-generated method stub
-		return sqlSession.selectList("card.selectMyCardList", m_idx);
+		return sqlSession.selectList("card.selectMyCardList", map);
 	} 
 	
 	public int like(String c_title){
@@ -68,6 +68,30 @@ public class CardDaoImpl implements CardDao {
 	public int selectTotalMain(Map map) {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne("card.selectTotalRowByCondition", map);
+	}
+
+	@Override
+	public int selectTotalMine(Map map) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("card.selectTotalMine", map);
+	}
+
+	@Override
+	public int updateIsPublic(int c_idx) {
+		// TODO Auto-generated method stub
+		return sqlSession.update("card.updateIsPublic", c_idx);
+	}
+
+	@Override
+	public List<ViewVo> selectModifyCard(int c_idx) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("card.selectModifyCard", c_idx);
+	}
+
+	@Override
+	public int selectQnaCnt(int c_idx) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("card.selectQnaCnt", c_idx);
 	}
 	
 }

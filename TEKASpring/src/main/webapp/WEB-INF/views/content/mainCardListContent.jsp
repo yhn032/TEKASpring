@@ -14,7 +14,7 @@
 	margin: auto;
 	width: 640px;
 	height: 300px;
-	background: linear-gradient(to right, #b25858, #9a3dff);
+	background: linear-gradient(to right, #9a3dff, #2e3856);
 	border-radius: 10px;
 	display: flex;
 }
@@ -104,11 +104,21 @@
 	font-size: 45px;
 }
 
+#privateBtn{
+	margin-top: 10px;
+	width: 100%;
+	height: 30px;
+	border-radius: 5px;
+	border: 0;
+	background: transparent;
+	color: white;
+}
+
 .plusCard {
 	text-align: center;
 	width: 100%;
 	height: 60px;
-	margin-top: 40px;
+	margin-top: 20px;
 }
 
 .w-btn {
@@ -331,6 +341,26 @@ function like(c_idx, s_idx){
 		}
 	});//end : ajax
 }//end : like()
+
+
+function privateCard(c_idx){
+	$.ajax({
+		url		: 'switchPrivate.do',
+		data	: {"c_idx":c_idx},
+		dataType: 'json',
+		success	: function(res_data){
+			if(res_data.result){
+				alert('비공개로 전환 되었습니다.');
+			}else{
+				alert('비공개로 전환 실패했습니다.');
+			}
+		},
+		error	: function(err){
+			alert(err.responseText);
+		}
+	});
+	
+}
 </script>
 </head>
 <body id="box">
@@ -350,6 +380,10 @@ function like(c_idx, s_idx){
 		</select> <input type="button" class="w-btn" value="검색" style="height: 40px; width: 80px;" onclick="filter();">
 		<hr style="background-color: #003026; height:3px; border:0;">
 	</div>
+	<div style="text-align: center; font-size: 25px; margin-top: 10px; margin-bottom:10px; color: white;">
+		${pageMenu }
+	</div>
+	
 	<div id="grid_container">
 		<c:if test="${empty list}">
 			<div style="color: red; text-align: center; line-height: 333px;">카드가 없습니다.</div>
@@ -412,12 +446,12 @@ function like(c_idx, s_idx){
 					<span class="badge">${card.m_nickname }</span><br> 
 					<input type="button" class="plusCard w-btn w-btn-gra3 w-btn-gra-anim" value="미리보기" onclick="previewPopup(${card.c_idx});"> 
 					<input type="button" id="addelete" class="plusCard w-btn w-btn-gra3 w-btn-gra-anim" value="내 학습세트에 추가" onclick="addOrDeleteMyCards(${card.c_idx},${card.s_idx });">
+					<c:if test="${card.m_nickname eq user.m_nickname }">
+						<input type="button" id="privateBtn" value="비공개로 전환하기" onclick="privateCard(${card.c_idx});"> 
+					</c:if>
 				</div>
 			</div>
 		</c:forEach>
 	</div>	
-	<div style="text-align: center; font-size: 25px; margin-top: 100px; color: white;">
-		${pageMenu }
-	</div>
 </body>
 </html>

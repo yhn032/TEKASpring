@@ -46,4 +46,22 @@ public class ViewDaoImpl implements ViewDao{
 	public List<ViewVo> previewList(int c_idx){
 		return sqlSession.selectList("card.preview", c_idx);
 	}
+
+	@Override
+	public int cardUpdate(ViewVo vo) {
+		// TODO Auto-generated method stub
+		return sqlSession.update("card.cardUpdate", vo);
+	}
+
+	@Override
+	public List<Integer> qnaIdxNum(int c_idx) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("card.qnaIdxNum", c_idx);
+	}
+
+	@Override
+	public int qnaUpdate(ViewVo vo) {
+		// TODO Auto-generated method stub
+		return sqlSession.update("card.qnaUpdate", vo);
+	}
 }
