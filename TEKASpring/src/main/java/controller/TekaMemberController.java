@@ -486,6 +486,12 @@ public class TekaMemberController {
 		return "redirect:loginForm.do";
 	}
 	
+	// 회원정보 변경 폼으로 포워드
+	@RequestMapping("updateProfileForm.do")
+	public String profileForm(){
+		return "/tekamember/updateProfileForm";
+	}
+	
 	
 	
 	private String decryptRSA(PrivateKey privateKey, String m_id) {
@@ -521,6 +527,8 @@ public class TekaMemberController {
 		
 		return bytes;
 	}
+	
+	
 	
 	
 }

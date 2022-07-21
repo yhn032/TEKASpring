@@ -21,8 +21,11 @@
 <script
 	src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/locales-all.min.js'></script>
 <style type="text/css">
+body{
+background-color: #0a092d;
+}
 #page{
-	margin-left: 20px;
+	margin-left: 40px;
 }
 #calendar{
 	margin-top: 20px;
@@ -31,6 +34,7 @@
 	border-radius : 10px;
 	background: linear-gradient(45deg, Violet, Orange);
 	float: left;
+	margin-bottom: 100px;
 }
 #attendbtndiv{
 	margin-bottom: 10px;
@@ -39,20 +43,29 @@
 	margin: auto;
 }
 #profile{
+	color: white;
+	font-size: 30px;
 	float: left;
 	margin: auto;
-
+	margin-left: 20%;
 
 }
 
 .profilebtn{
-	 background: linear-gradient(
-        45deg,
-        #002bff,
-        #7a00ff,
-        #ff00c8,
-        #ff0000
-    );
+	font-size: 20px;
+	margin: 10px;	
+	margin-left: 10px;
+	border: none;
+	width: 200px;
+	height: 40px;
+	border-radius: 10px;
+	background: linear-gradient(
+	      45deg,
+	      #002bff,
+	      #7a00ff,
+	      #ff00c8,
+	      #ff0000
+	  );
     color: white;
 }
 
@@ -155,12 +168,13 @@
 		</div>
 		<div id="calendar"></div>
 		<div id="profile">
-			${ user.m_nickname }님의 프로필입니다.<br>
-			<input class ="profilebtn" type="button" value="내 학습세트 보기"><br>
-			<input class ="profilebtn" type="button" value="내 프로필 수정">
-			<input class ="profilebtn" type="button" value="문의하기" onclick="location.href='askform.do';">
+			반갑습니다!<br>
+			${ user.m_nickname }님의 페이지입니다.<br><br>
+			<input class ="profilebtn" type="button" value="내 학습세트 보기" onclick="location.href='../card/myCardList.do'"><br>
+			<input class ="profilebtn" type="button" value="내 프로필 수정" onclick="location.href='../tekamember/updateProfileForm.do'"><br>
+			<input class ="profilebtn" type="button" value="문의하기" onclick="location.href='askform.do';"><br>
 			<c:if test="${user.m_grade eq '관리자'}">
-				<input class="profilebtn" type="button" value="회원관리" onclick="location.href='../tekamember/register.do'">
+				<input class="profilebtn" type="button" value="회원관리" onclick="location.href='../tekamember/register.do'"><br>
 			</c:if>
 		</div>
 		<div><%@ include file="../footer/footer.jsp"%></div>
