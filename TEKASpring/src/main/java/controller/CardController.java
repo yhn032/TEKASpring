@@ -76,6 +76,18 @@ public class CardController {
 		return "card/modifyCardForm";
 	}
 	
+	//카드 커스텀 페이지 호출
+	@RequestMapping("customCardForm.do")
+	public String customCardForm(int c_idx, Model model) {
+		
+		List<ViewVo> list = card_dao.selectModifyCard(c_idx);
+		model.addAttribute("list", list);
+		model.addAttribute("s_idx", list.get(0).getS_idx());
+		model.addAttribute("size", list.size());
+		
+		return "card/customCardForm";
+	}
+	
 	//모든 학습세트 보기
 	@RequestMapping("mainList.do")
 	public String mainList(@RequestParam(value="subject", required = false, defaultValue = "all") String subject, 
@@ -253,6 +265,38 @@ public class CardController {
 			int qnaRes = view_dao.qnaInsert(vo);
 		}
 
+		return "redirect:myCardList.do";
+	}
+	
+	//카드 커스터마이징하기(수정중)
+	@RequestMapping("customCard.do")
+	public String customCard(ViewVo vo, @RequestParam("q_question") String[] q_questionStrArray, @RequestParam("q_answer") String[] q_answerStrArray, Model model) {
+		TekaMemberVo user = (TekaMemberVo) session.getAttribute("user");
+		if(user == null) {
+			model.addAttribute("reason", "sessionTimeout");
+			return "redirect:../tekamember/loginForm.do";
+		}
+		
+		vo.setC_title(vo.getC_title().replaceAll("\r\n", "<br>"));
+		vo.setC_content(vo.getC_content().replaceAll("\r\n", "<br>"));
+		vo.setC_qCnt(q_questionStrArray.length);
+		
+		int cardRes = view_dao.cardInsert(vo); 
+		
+		ViewVo c_idxVo = view_dao.selectCIdx(vo.getC_title()); 
+		
+		int c_idx = c_idxVo.getC_idx();
+		vo.setC_idx(c_idx);
+		
+		int insertLiked  = view_dao.insertLiked(vo);
+		int myCardSetRes = view_dao.myCardSetInsert(vo);
+		
+		for(int i=0; i<q_questionStrArray.length; i++) {
+			vo.setQ_question(q_questionStrArray[i]);
+			vo.setQ_answer(q_answerStrArray[i]);
+			int qnaRes = view_dao.qnaInsert(vo);
+		}
+		
 		return "redirect:myCardList.do";
 	}
 	
