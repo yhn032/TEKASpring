@@ -21,13 +21,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 회원가입 O-->
 	<insert id="insert" parameterType="member">
-		insert into tekamember(m_id, m_pwd, m_nickname, m_email, m_grade) values
+		insert into tekamember(m_id, m_pwd, m_nickname, m_email, m_grade, m_regdate) values
 		(
 			#{m_id},
 			#{m_pwd},
 			#{m_nickname},
 			#{m_email},
-			default
+			default,
+			date_format(now(),'%Y-%m-%d')
 		)
 	</insert>
 	
@@ -43,26 +44,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 소셜 회원가입 -->
 	<!-- Naver -->
 	<insert id="insertSocialNaver" parameterType="member">
-		insert into tekamember(m_id, m_nickname, m_email, m_grade, m_naverId) values
+		insert into tekamember(m_id, m_nickname, m_email, m_grade, m_naverId, m_regdate) values
 		(
 			#{m_id},
 			#{m_nickname},
 			#{m_email},
 			default,
-			#{m_naverId}
-			
+			#{m_naverId},
+			date_format(now(),'%Y-%m-%d')
 		)
 	</insert>
 	<!-- Google -->
 	<insert id="insertSocialGoogle" parameterType="member">
-		insert into tekamember(m_id, m_nickname, m_email, m_grade, m_googleId) values
+		insert into tekamember(m_id, m_nickname, m_email, m_grade, m_googleId, m_regdate) values
 		(
 			#{m_id},
 			#{m_nickname},
 			#{m_email},
 			default,
-			#{m_googleId}
-			
+			#{m_googleId},
+			date_format(now(),'%Y-%m-%d')
 		)
 	</insert>
 	
@@ -75,5 +76,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="updatePwd" parameterType="member">
 		update tekamember set m_pwd=#{m_pwd} where m_idx=#{m_idx}
 	</select>
+	
+	<!-- 관리자 탈퇴회원 조회 -->
+	<select id="selectRegister" resultType="member">
+		select * from tekamember where m_grade='탈퇴'
+	</select>
+	
+	<!-- 회원삭제 -->
+	<update id="memberUpdate" parameterType="java.util.Map">
+		update card set m_idx=#{register_idx} where m_idx=#{m_idx}
+	</update>
+	
+	<delete id="memberDelete" parameterType="int">
+		delete from tekamember where m_idx=#{m_idx}
+	</delete>
 	
 </mapper>
