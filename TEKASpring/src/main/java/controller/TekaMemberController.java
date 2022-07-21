@@ -7,6 +7,7 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.RSAPublicKeySpec;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -15,9 +16,7 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.collections.set.SynchronizedSortedSet;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.MailSender;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
@@ -528,6 +527,30 @@ public class TekaMemberController {
 		return bytes;
 	}
 	
+	//관리자 페이지 이동
+	@RequestMapping("register.do")
+	public String registerPage(Model model) {
+		
+		List<TekaMemberVo> list = member_dao.selectRegister();
+		model.addAttribute("list", list);
+		
+		return "tekamember/registerPage";
+	}
+	
+	//회원 삭제
+	@RequestMapping("memberDelete.do")
+	public String memberDelete(Map map, int m_idx, int register_idx) {
+		
+		map.put("m_idx", m_idx);
+		map.put("register_idx", register_idx);
+		
+		// 카드테이블 m_idx 변경
+		int updateRes = member_dao.memberUpdate(map);
+		// m_idx 삭제
+		int delRes    = member_dao.memberDelete(m_idx); 
+		
+		return "redirect:register.do";
+	}
 	
 	
 	

@@ -9,7 +9,14 @@ public class TekaMemberVo {
 	String m_grade;
 	String m_naverId;
 	String m_googleId;
+	String m_regdate;
 	
+	public String getM_regdate() {
+		return m_regdate;
+	}
+	public void setM_regdate(String m_regdate) {
+		this.m_regdate = m_regdate;
+	}
 	public String getM_googleId() {
 		return m_googleId;
 	}

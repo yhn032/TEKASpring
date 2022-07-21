@@ -1,5 +1,8 @@
 package dao;
 
+import java.util.List;
+import java.util.Map;
+
 import vo.TekaMemberVo;
 
 public interface TekaMemberDao {
@@ -14,4 +17,7 @@ public interface TekaMemberDao {
 	public int insertSocialGoogle(TekaMemberVo vo);
 	public TekaMemberVo selectOneByIdx(int m_idx);
 	public int updatePwd(TekaMemberVo vo);
+	public List<TekaMemberVo> selectRegister();
+	public int memberDelete(int m_idx);
+	public int memberUpdate(Map map);
 }

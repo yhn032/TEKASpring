@@ -1,5 +1,8 @@
 package dao;
 
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.session.SqlSession;
 
 import vo.TekaMemberVo;
@@ -64,5 +67,20 @@ public class TekaMemberDaoImpl implements TekaMemberDao{
 	public TekaMemberVo selectOneByGoogle(String m_googleId) {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne("tekamember.selectOneByGoogle", m_googleId);
+	}
+
+	@Override
+	public List<TekaMemberVo> selectRegister() {
+		return sqlSession.selectList("tekamember.selectRegister");
+	}
+
+	@Override
+	public int memberUpdate(Map map) {
+		return sqlSession.update("tekamember.memberUpdate", map);
+	}
+
+	@Override
+	public int memberDelete(int m_idx) {
+		return sqlSession.delete("tekamember.memberDelete", m_idx);
 	}
 }
