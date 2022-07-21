@@ -51,6 +51,11 @@ function deleteCard(c_idx){
 function modifyCardForm(c_idx){
 	location.href="../card/modifyCardForm.do?c_idx="+c_idx;
 }
+
+function customCardForm(c_idx){
+	location.href="../card/customCardForm.do?c_idx="+c_idx;
+	
+}
 </script>
 <style type="text/css">
 .myCardContainer {
@@ -214,7 +219,7 @@ function modifyCardForm(c_idx){
 						<input class="myBtn" id="modifyBtn" type="button" value="카드수정하기" onclick="modifyCardForm(${card.c_idx});">
 					</c:if>
 					<c:if test="${card.m_nickname ne user.m_nickname }">
-						<input class="myBtn" id="customBtn" type="button" value="카드 커스터마이징" onclick="customCardForm();">
+						<input class="myBtn" id="customBtn" type="button" value="카드 커스터마이징" onclick="customCardForm(${card.c_idx});">
 					</c:if>
 				</div>
 			</c:if>
@@ -227,7 +232,7 @@ function modifyCardForm(c_idx){
 						<input class="myBtn" id="modifyBtn" type="button" value="카드수정하기" onclick="modifyCardForm(${card.c_idx});">
 					</c:if>
 					<c:if test="${card.m_nickname ne user.m_nickname }">
-						<input class="myBtn" id="customBtn" type="button" value="카드 커스터마이징" onclick="customCardForm();">
+						<input class="myBtn" id="customBtn" type="button" value="카드 커스터마이징" onclick="customCardForm(${card.c_idx});">
 					</c:if>
 				</div>
 			</c:if>
