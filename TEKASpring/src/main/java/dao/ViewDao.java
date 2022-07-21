@@ -14,4 +14,7 @@ public interface ViewDao {
 	public int insertLiked(ViewVo vo);
 	public int myCardSetInsert(ViewVo vo);
 	public List<ViewVo> previewList(int c_idx);
+	public int cardUpdate(ViewVo vo);
+	public List<Integer> qnaIdxNum(int c_idx);
+	public int qnaUpdate(ViewVo vo);
 }

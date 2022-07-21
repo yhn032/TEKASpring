@@ -64,7 +64,7 @@ public class TekaMemberController {
 	
 	//소셜 callback
 	@RequestMapping(value="login/{service}/callback", method= {RequestMethod.GET, RequestMethod.POST})
-	public String socialLoginCallback(@PathVariable String service, Model model, @RequestParam String code ) throws Exception {
+	public String socialLoginCallback(@PathVariable String service, Model model, @RequestParam String code) throws Exception {
 		SocialValue social = null;
 		if(service.equals("naver")) {
 			social = naverSocial;
@@ -114,8 +114,11 @@ public class TekaMemberController {
 				return "redirect:../../../tekamember/loginForm.do";
 				
 			}else {//소셜로 로그인한 가입자이다. -> 바로 로그인
+				
 				session.setAttribute("user", vo);
+				model.addAttribute("m_idx", vo.getM_idx());
 				return "redirect:../../../card/mainList.do";
+				
 			}
 			
 		}

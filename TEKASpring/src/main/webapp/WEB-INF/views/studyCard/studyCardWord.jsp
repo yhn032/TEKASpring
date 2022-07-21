@@ -18,6 +18,8 @@
 <!-- FontAwesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"/>
 
+<!-- SweetAlert -->
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- 스크립트 -->
 <script type="text/javascript">
 var timer = null;
@@ -188,8 +190,13 @@ function flipCard() {
 function slideCard(){
 	index++;
 	if(index > card){
-		alert("모든 카드를 학습했습니다!");
-		stop();
+		Swal.fire({
+			  icon: 'success',
+			  title: '모든 카드를 학습했습니다!',
+			  returnFocus: false
+		}).then((result) => {
+			stop();
+		});
 		return;
 	}
 	//console.log(index);
