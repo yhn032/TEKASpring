@@ -53,26 +53,7 @@ function deleteCard(c_idx){
 </script>
 </head>
 <body>
-
-	<c:if test="${!empty subject }">
-		<div id="title">
-			<i class="fas fa-award" style="color: navy;"></i>&nbsp;<b>${subject }</b>
-		</div>
-	
-	</c:if>
-	<div id="filter">
-		<hr style="background-color: #003026; height: 1px; border: 0;">
-			<b style="color: white;">여기에서는 검색 필터를 지정할 수 있습니다.</b>
-			<select name="category" style="height: 40px;">
-				<option value="">검색조건</option>
-				<option value="com001">인기순</option>
-				<option value="ele002">추천순</option>
-				<option value="sp003">최근순</option>
-			</select>
-			<input type="button" value="검색" style="height: 40px; width: 80px;">
-		<hr style="background-color: #003026; height: 3px; border: 0;">
-	</div>
-	
+	<hr style="background-color: #003026; height: 3px; border: 0;">
 	<div style="text-align: center; font-size: 25px; margin-top: 10px; margin-bottom: 10px; color: white;">${pageMenu }</div>
 	
 	<div id="grid_container">

@@ -58,7 +58,7 @@
 
 .studyItem{
 	border: 1px solid black;
-	width: 23%;
+	width: 30%;
 	height: 50px;
 	border-radius    : 5px;
 	border			 : 2px solid black;
@@ -68,6 +68,7 @@
 	line-height: 50px;
 	font-size: 25px;
 	font-weight: 600;
+	background-color: purple;
 }
 
 /* slide css */
@@ -147,8 +148,4 @@
 
 .studyMenu i{
 	color: white;
-}
-
-.studyItem{
-	background-color: purple;
 }

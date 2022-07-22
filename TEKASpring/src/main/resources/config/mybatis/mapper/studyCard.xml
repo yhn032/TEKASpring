@@ -26,4 +26,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<delete id="deleteWrongQnaCard" parameterType="vo.WrongQnaVo">
 		delete from wrongqna where m_idx=#{m_idx} and q_idx=#{q_idx}
 	</delete>
+	
+	<!-- 즐겨찾기 or 시험보기에서 틀린 문제만 가져오기 -->
+	<select id="selectFavorCardIdx" parameterType="vo.ViewVo" resultType="java.lang.Integer">
+		select q_idx from wrongqna where m_idx=#{m_idx} and c_idx=#{c_idx}
+	</select>
+	
+	<!-- 구해온 질문번호에 해당하는 리스트 가져오기 -->
+	<select id="selectFavorCard" parameterType="java.util.List" resultType="vo.ViewVo">
+		select
+			*
+		from qnaCard
+		where q_idx in 
+			<foreach collection="list" item="item" separator="," open="(" close=")">
+				#{item}
+			</foreach>
+			
+	</select>
 </mapper>

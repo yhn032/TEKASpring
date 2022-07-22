@@ -17,7 +17,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"/>
 
 <script type="text/javascript">
-var timer = null;
 var index = 1;
 var card = 0;
 $(document).ready(function(){
@@ -30,7 +29,8 @@ $(document).ready(function(){
 		success: function(res_data){
 			if(res_data.res){
 				for(var i=0; i<res_data.list.length; i++){
-					$("#star"+res_data.list[i]).val("★");
+					$("input[name="+ res_data.list[i] +"]").val("★");	//id로 태그 접근
+					//$("#star"+res_data.list[i]).val("★");				//name으로 태그 접근
 				}
 			}else{
 			}
@@ -63,34 +63,44 @@ $(document).ready(function(){
 		//name값을 얻어오는 방법
 		var q_idx = $(this).attr("name");
 		var c_idx = "${param.c_idx}";
-		var m_idx = "${user.m_idx}";
 		
 		if($(this).val()=="☆"){
 			$(this).val("★");
 			
-			//q_idx값에 해당하는 질문의 q_Correct를 true로
+			//해당 질문을 관심질문 테이블에 추가하기
 			$.ajax({
 				type:"GET",
 				url :"wrongQna.do",
 				data:{"q_idx": q_idx, "c_idx": c_idx},
 				dataType: 'json',
 				success : function(res_data){
+					if(res_data.res){
+						alert('즐겨찾기 성공');
+					}else{
+						alert('즐겨찾기 실패');
+					}
 				}
 			});
 		}else{
 			$(this).val("☆");
 			
-			//q_idx값에 해당하는 질문의 q_Correct를 false로
+			//해당 질문을 관심질문 테이블에서 삭제하기
 			$.ajax({
 				type:"GET",
 				url :"correctQna.do",
 				data:{"q_idx": q_idx},
 				dataType: 'json',
 				success : function(res_data){
+					if(res_data.res){
+						alert('즐겨찾기 해제 성공');
+					}else{
+						alert('즐겨찾기 해제 실패');
+					}
 				}
 			});
 		}
 	});
+	
 });
 
 function slideCard(){
@@ -111,27 +121,70 @@ function slideCard(){
 	//정답 배경이미지 제거
 	$(".card-front").css("background-image", "url('')");
 }
+
+/* 틀린문제 추가하기 */
+function updateWrongQna(num){
+	if($("#star"+num).val() == "☆"){
+		$("#star"+num).val("★");
+		
+		var q_idx = $("#star"+num).attr("name");
+		var c_idx = "${param.c_idx}";
+		
+		$.ajax({
+			type:"GET",
+			url :"wrongQna.do",
+			data:{"q_idx": q_idx, "c_idx": c_idx},
+			dataType: 'json',
+			success : function(res_data){
+				
+			}
+		});
+	}
+}
 </script>
 <!-- 삼지선다 보기 -->
 <script type="text/javascript">
+
+//document가 초기화되자마자 모든 li에 3지 선다 초기화 시키기. arr에는 각 섞인 인덱스가 저장되고, 0 3, 6, 9 ..가 정답이다. 
 $(function(){
+	var arr = new Array();
 	$.ajax({
 		url     : 'threeChoice.do',
 		data    : {"c_idx":"${param.c_idx}"},
 		dataType: 'json',
 		success : function(res) {
+			var globalListSize = "${fn:length(list)}";
+			//alert(random_1+" "+random_2);
+			if(globalListSize < 3){
+				alert("적어도 세개의 질문은 있어야 시험을 진행할 수 있습니다!");
+				return;
+			}
 			for(var i=0; i<"${fn:length(list)}"; i++) {
 
-				var q1 = 3*i+1;
-				var q2 = 3*i+2;
-				var q3 = 3*i+3;
-				var arr = [q1,q2,q3];
-				shuffle(arr);
+				var q1 = 3*i+0;
+				var q2 = 3*i+1;
+				var q3 = 3*i+2;
+				var temp = [q1,q2,q3];
+				shuffle(temp);
 				
-				$("#q_" + arr[0]).val(res.one[i]);
-				$("#q_" + arr[1]).val(res.two[i]);
-				$("#q_" + arr[2]).val(res.three[i]);
-				//정답
+				for(var k=0; k<3; k++){
+					arr[i*3+k] = temp[k];	
+				}
+				
+				var random_1 = Math.floor(Math.random()*globalListSize);
+				var random_2 = Math.floor(Math.random()*globalListSize);
+				
+				while(random_1 == i){
+					random_1 = Math.floor(Math.random()*globalListSize);
+				}
+				while((random_2 == i) || (random_2 == random_1)){
+					random_2 = Math.floor(Math.random()*globalListSize);
+				}
+				$("#q_" + arr[i*3+0]).val(res.one[i]);//정답
+				$("#q_" + arr[i*3+1]).val(res.one[random_1]);//순서를 섞은 오답
+				$("#q_" + arr[i*3+2]).val(res.one[random_2]);//순서를 섞은 오답
+				
+				/* //정답
 				$("#q_" + arr[0]).click(function(){
 					$(".card-front").css( {"background-image": "url('${pageContext.request.contextPath}/resources/img/answerIcon.png')",
 										   "background-size":"450px", "background-repeat":"no-repeat", "background-position":"center top" });
@@ -141,17 +194,55 @@ $(function(){
 				$("#q_" + arr[1]).click(function(){
 					$(".card-front").css( {"background-image": "url('${pageContext.request.contextPath}/resources/img/falseIcon.png')",
 										   "background-size":"400px", "background-repeat":"no-repeat", "background-position":"center top" });
-					setTimeout(function() { $(".card-front").css("background-image", "url('')") }, 650); //배경이미지 제거
+					var a = $(this).attr("id").substring(2);
+					var num = Math.floor(a/3);
+					updateWrongQna(num);
+					setTimeout(function() { slideCard() }, 600); //다음 카드로 넘기기
 				})
 				$("#q_" + arr[2]).click(function(){
 					$(".card-front").css( {"background-image": "url('${pageContext.request.contextPath}/resources/img/falseIcon.png')",
 						  				   "background-size":"400px", "background-repeat":"no-repeat", "background-position":"center top" });
-					setTimeout(function() { $(".card-front").css("background-image", "url('')") }, 650); //배경이미지 제거
-				})
+					var a = $(this).attr("id").substring(2);
+					var num = Math.floor(a/3);
+					updateWrongQna(num);
+					setTimeout(function() { slideCard() }, 600); //다음 카드로 넘기기
+				}) */
 			} //end : for
+			/* for(var i=0; i<arr.length; i++){
+				console.log(i + " : " +arr[i]);
+			} */
 		}
 	}); //end : ajax
+	
+	
+/* 	$(".threechoice").click(function(){
+		alert($(this).attr("id"));
+		return;
+	}); */
+	$(".threechoice").click(function(){
+		var idx = $(this).attr("id").substring(2);
+		
+		var i = Math.floor(idx/3);
+		//alert(idx);
+		//alert(arr[idx]);
+		//선택된 값(idx)이 -> arr[i*0]이랑 같아야 한다 이말이지.
+		if(arr[i*3] == idx){
+			//alert("정답");
+			$(".card-front").css( {"background-image": "url('${pageContext.request.contextPath}/resources/img/answerIcon.png')",
+				   "background-size":"450px", "background-repeat":"no-repeat", "background-position":"center top" });
+			setTimeout(function() { slideCard() }, 600); //다음 카드로 넘기기
+			
+		}else {
+			//alert("오답");
+			$(".card-front").css( {"background-image": "url('${pageContext.request.contextPath}/resources/img/falseIcon.png')",
+				   "background-size":"400px", "background-repeat":"no-repeat", "background-position":"center top" });
+			var num = Math.floor(idx/3);
+			updateWrongQna(num);
+			setTimeout(function() { slideCard() }, 600); //다음 카드로 넘기기
+		}
+	});
 }); //end : 윈도우 초기화
+
 
 function shuffle(arr) {
     for(var i=arr.length-1; i>0; i--){
@@ -181,22 +272,20 @@ function shuffle(arr) {
 		<c:forEach var="qna" items="${list }" begin="0" end="${fn:length(list)-1 }" varStatus="i">
 			<li>
 				<!-- 이전 페이지로 이동한다.  -->
-				<div class="checked"><input class="checkBtn" id="star${qna.q_idx }" type="button" value="☆" name="${qna.q_idx }"></div>
-				<span style="z-index: 11;"><label for="slide${i.index}" class="left"></label>◀</span>
+				<div class="checked"><input class="checkBtn" id="star${i.index }" type="button" value="☆" name="${qna.q_idx }"></div>
 				<div class="card" style="font-size: 10px;">
 					<div class="card-inner">
 						<div class="card-front" style="font-size:20px; ">${qna.q_answer }</div>
 					</div>
 					<!-- 삼지선다 보기 -->
 					<div class="choice">
+						<input type="button" class="threechoice" id="q_${3*i.index+0}">
 						<input type="button" class="threechoice" id="q_${3*i.index+1}">
 						<input type="button" class="threechoice" id="q_${3*i.index+2}">
-						<input type="button" class="threechoice" id="q_${3*i.index+3}">
 					</div>
 				</div>
-				<span><label for="slide${i.count+1 }" class="right"></label>▶</span>
 			</li>
-			</c:forEach>
+		</c:forEach>
 		<!-- 슬라이드 영역 종료 -->	
 		</ul>
 	</div>
