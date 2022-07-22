@@ -1,0 +1,181 @@
+@charset "UTF-8";
+.myCardContainer {
+	margin: auto;
+	width: 500px;
+	height: 300px;
+	border-radius: 10px;
+ 	box-shadow: 1px 1px 4px gray;
+ 	color: black;
+ 	background: white;
+}
+
+.myStudy{
+	width: 700px;
+	height: 300px; 
+	border-radius: 10px;
+	color: white;
+	font-size: 28px;
+	font-weight: 700;
+}
+
+.myCardTitle{
+	font-size: 30px;
+	font-weight: 700;
+	margin: 50px 0px 0px 40px;
+}
+
+.myCardSubject{
+	font-size: 20px;
+	display: inline-block;;
+	width: 20%;
+	/* 상 우 하 좌 */
+	margin: 120px 0px 0px 40px;
+}
+
+.myCardWord{
+	display: inline-block;;
+	text-align:center;
+	width: 15%;
+}
+
+#grid_container{
+	margin: auto;
+	width: 1460px;
+	padding-top: 15px;
+	display: grid;
+	grid-template-columns: 725px 725px;
+	grid-template-rows: 300px 300px;
+	row-gap: 50px;
+	column-gap: 20px;
+	border: 1px solid #2e3800;
+	border-radius: 20px;
+}
+
+#filter{
+	margin: auto;
+	width: 1460px;
+	height: 100px;
+}
+
+.myBtn{
+	margin: 10px 0px 0px 5px;
+	width: 600px; 
+	height: 50px;
+}
+
+
+#c_content{
+	padding: 5px;
+}
+/* delete Btn Design */
+#delBtn{
+	background: #ED6A5A;
+	color: #EDA39A;
+	border-radius: 5px;
+	background: radial-gradient(circle, #ED412A 0.25em, transparent 0.25em) center/1.2em 1.2em;
+	border: 3px solid #ED412A;
+	transition: all .3s ease;
+	font-size: 25px;
+	font-weight: 500;
+	letter-spacing: 2.5px;
+}
+#delBtn:hover{
+	color : white;
+          background: radial-gradient(circle, #ED412A 0.25em, transparent 0.25em) center/0.1em 0.1em;
+          transition: all .5s ease;
+}
+/* study Btn Design */
+#studyBtn{
+	background: #C7F8F9;
+	color: #6AB1C9;
+	border: none;
+	transition: all .7s ease-in-out;
+	border-radius: 3px;
+	font-size: 25px;
+	font-weight: 500;
+	letter-spacing: 2.5px;
+}
+#studyBtn:hover{
+	background: transparent;
+	color: #C7F8F9;
+	border-top: 3px solid #C7F8F9;
+	border-bottom: 3px solid #C7F8F9;
+}
+/* modify Btn Design */
+#modifyBtn{
+	width: 600px;
+	height: 50px;
+	font-family: 'Roboto', sans-serif;
+	font-size: 25px;
+	font-weight: 500;
+	letter-spacing: 2.5px;
+	color: #D0F9C7;
+	background-color: #78C98D;
+	border: none;
+	border-radius: 45px;
+	box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+	transition: all 0.3s ease 0s;
+	cursor: pointer;
+	outline: none;
+}
+#modifyBtn:hover {
+	background-color: #D0F9C7;
+	box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
+	color: #78C98D;
+	transform: translateY(-5px);
+}
+/* custom Btn Design */
+#custom{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  width: 600px;
+  height: 50px;
+  line-height: 40px;
+  font-size: 25px;
+  text-align: center;
+  text-decoration: none;
+  letter-spacing: 2.5px;
+  background: #2e3856;
+}
+#custom:before{
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  background: #ff005e;
+  color: #2e3856;
+  transition: 0.5s;
+  transform-origin: bottom;
+  transform: translatey(-100%) rotatex(90deg);
+  line-height: 50px;
+}
+#custom:hover:before
+{
+  transform: translatey(0) rotatex(0deg);
+}
+
+#custom:after{
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  background: #2e3856;
+  border-top: 5px solid #ff005e;
+  border-bottom: 5px solid #ff005e;
+  color: #ff005e;
+  transition: 0.5s;
+  transform-origin: top;
+  transform: translatey(0) rotatex(0deg);
+}
+#custom:hover:after
+{
+  transform: translatey(100%) rotatex(90deg);
+}
