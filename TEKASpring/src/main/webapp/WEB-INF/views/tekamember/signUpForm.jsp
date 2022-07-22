@@ -28,7 +28,7 @@
 <script type="text/javascript">
 	var checkID = /^[a-zA-Z0-9]{4,16}$/;
 	var checkPWD = /^[a-zA-Z0-9]{4,20}$/;
-	var checkNICKNAME = /^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]{2,16}$/;
+	var checkNICKNAME = /^(?=.*[a-z0-9가-힣ㄱ-ㅎㅏ-ㅣ])[a-z0-9가-힣ㄱ-ㅎㅏ-ㅣ]{2,16}$/;
 	var checkEMAIL =  /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 	
 	$(document).ready(function() {
@@ -49,6 +49,7 @@
 					data : {'m_id' : m_id},
 					dataType : 'json',
 					success : function(resData){
+						console.log(resData.result);
 						if(resData.result){
 						$("#idMsg").html('사용 가능한 아이디입니다.').css("color","green");
 						$("#registerBtn").attr("disabled", false);

@@ -20,4 +20,5 @@ public interface TekaMemberDao {
 	public List<TekaMemberVo> selectRegister();
 	public int memberDelete(int m_idx);
 	public int memberUpdate(Map map);
+	public int memberDeleteFromClient(int m_idx);
 }
