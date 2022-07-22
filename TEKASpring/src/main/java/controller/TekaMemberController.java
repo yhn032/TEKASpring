@@ -537,7 +537,7 @@ public class TekaMemberController {
 		return "tekamember/registerPage";
 	}
 	
-	//회원 삭제
+	//회원 삭제 (데이터베이스에서 정말 정보를 삭제하는 것)
 	@RequestMapping("memberDelete.do")
 	public String memberDelete(Map map, int m_idx, int register_idx) {
 		
@@ -550,6 +550,17 @@ public class TekaMemberController {
 		int delRes    = member_dao.memberDelete(m_idx); 
 		
 		return "redirect:register.do";
+	}
+	
+	
+	// 회원정보에서 클라이언트측 회원탈퇴
+	@RequestMapping("deleteAccount.do")
+	public String deleteAccount(int m_idx) {
+		
+		member_dao.memberDeleteFromClient(m_idx);
+		
+		session.removeAttribute("user");
+		return "redirect:../card/main.do";
 	}
 	
 	

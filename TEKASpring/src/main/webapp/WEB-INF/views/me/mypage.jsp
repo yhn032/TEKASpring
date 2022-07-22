@@ -94,13 +94,14 @@ background-color: #0a092d;
 			data : {"m_idx" : "${user.m_idx}"},
 			dataType : 'json',
 			success : function(resData){
+				console.log(resData);
 				attendList = resData;
+				showCalendar();
 				// 오늘 날짜가 마지막 출석 입력일이랑 같으면 버튼 비활성화
 				if(attendList[attendList.length-1].start==today){
 					$("#attendbtn").attr("disabled",true);
 					$("#attendbtn").val('출석 완료!');
 				}
-				showCalendar();
 			},
 			error : function(err){
 			}
