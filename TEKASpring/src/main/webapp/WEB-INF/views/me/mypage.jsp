@@ -96,6 +96,7 @@ background-color: #0a092d;
 			success : function(resData){
 				console.log(resData);
 				attendList = resData;
+				
 				showCalendar();
 				// 오늘 날짜가 마지막 출석 입력일이랑 같으면 버튼 비활성화
 				if(attendList[attendList.length-1].start==today){

@@ -91,4 +91,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		delete from tekamember where m_idx=#{m_idx}
 	</delete>
 	
+	<!-- 클라이언트측 회원탈퇴 -->
+	<update id="memberDeleteFromClient" parameterType="int">
+		update tekamember set 
+		m_grade='탈퇴', 
+		m_regdate = date_format(now(),'%Y-%m-%d'),
+		m_id = '',
+        m_email = ''
+		where m_idx=#{m_idx}
+		
+	</update>
+	
 </mapper>

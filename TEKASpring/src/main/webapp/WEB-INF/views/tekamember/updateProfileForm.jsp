@@ -136,6 +136,10 @@ $(document).ready(function() {
 		if(!confirm('정말 탈퇴하시겠습니까? 흑흑')){
 			return;
 		}
+		if("${user.m_grade eq '관리자'}"=="true"){
+			alert('관리자 계정은 탈퇴할 수 없습니다');
+			return;
+		}
 		
 		location.href="deleteAccount.do?m_idx="+"${user.m_idx}";
 		

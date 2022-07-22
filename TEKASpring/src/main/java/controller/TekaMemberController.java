@@ -557,7 +557,7 @@ public class TekaMemberController {
 	@RequestMapping("deleteAccount.do")
 	public String deleteAccount(int m_idx) {
 		
-		member_dao.memberDeleteFromClient(m_idx);
+		int res = member_dao.memberDeleteFromClient(m_idx);
 		
 		session.removeAttribute("user");
 		return "redirect:../card/main.do";
