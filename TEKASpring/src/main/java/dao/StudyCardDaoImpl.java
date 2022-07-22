@@ -31,4 +31,16 @@ public class StudyCardDaoImpl implements StudyCardDao {
 	public int deleteWrongQnaCard(WrongQnaVo vo) {
 		return sqlSession.delete("studyCard.deleteWrongQnaCard", vo);
 	}
+	
+	//관심질문만 가져오기
+	@Override
+	public List<Integer> selectFavorCardIdx(ViewVo vo) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("studyCard.selectFavorCardIdx", vo);
+	}
+	@Override
+	public List<ViewVo> selectFavorCard(List<Integer> qIdxArray) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("studyCard.selectFavorCard", qIdxArray);
+	}
 }

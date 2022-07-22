@@ -123,10 +123,9 @@ $(document).ready(function(){
 		</div>
 		<!-- 학습 목록 -->
 		<div class="studyMenu">
-			<div class="studyItem">&nbsp<i class="fas fa-clone"></i>&nbsp <a href="studyCardWord.do?c_idx=${param.c_idx }&type=word">낱말카드</a></div>
-			<div class="studyItem">&nbsp<i class="fas fa-brain"></i>&nbsp <a href="studyCardLearn.do?c_idx=${param.c_idx }&type=learn">학습하기</a></div>
-			<div class="studyItem">&nbsp<i class="fas fa-hourglass-start"></i>&nbsp <a href="studyCardTest.do?c_idx=${param.c_idx }&type=test">시험보기</a></div>
-			<div class="studyItem">&nbsp<i class="fas fa-star"></i>&nbsp <a href="studyCardStar.do?c_idx=${param.c_idx }&type=star">관심질문</a></div>
+			<div class="studyItem">&nbsp;<i class="fas fa-clone"></i>&nbsp; <a href="studyCardWord.do?c_idx=${param.c_idx }&type=word">낱말카드</a></div>
+			<div class="studyItem">&nbsp;<i class="fas fa-hourglass-start"></i>&nbsp; <a href="studyCardTest.do?c_idx=${param.c_idx }&type=test">시험보기</a></div>
+			<div class="studyItem">&nbsp;<i class="fas fa-star"></i>&nbsp; <a href="studyCardStar.do?c_idx=${param.c_idx }&type=star">관심질문</a></div>
 		</div>
 		<ul class="slideList">
 		<!-- 슬라이드 영역 -->

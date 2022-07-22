@@ -221,30 +221,51 @@ function slideCard(){
 	
 	<div class="slideBox">
 		<ul class="slideList">
-		<!-- 슬라이드 영역 -->
-		<c:forEach var="qna" items="${list }" begin="0" end="${fn:length(list)-1 }" varStatus="i">
-			<li>
-				<!-- 이전 페이지로 이동한다.  -->
-				<div class="checked"><input class="checkBtn" id="star${qna.q_idx }" type="button" value="☆" name="${qna.q_idx }"></div>
-				<span style="z-index: 11;"><label for="slide${i.index}" class="left"></label>◀</span>
-				<div class="card">
-					<div class="card-inner">
-						<div class="card-front">${qna.q_question }</div>
-						<div class="card-back">${qna.q_answer }</div>
+		<!-- 즐겨찾기한 카드가 없는 경우 -->
+		<c:if test="${empty list }">
+			<div class="card">
+				<div class="card-inner">
+					<div class="card-front">즐겨찾기한 질문이 없습니다. 카드를 클릭해보세요.</div>
+					<div class="card-back">
+						학습을 통해 관심 질문을 선택해보세요.
 					</div>
 				</div>
-				<span><label for="slide${i.count+1 }" class="right"></label>▶</span>
-			</li>
-		</c:forEach>
+			</div>
+		</c:if>
+		<!-- 슬라이드 영역 -->
+		<!-- 즐겨찾기한 카드가 있는 경우 -->
+		<c:if test="${not empty list }">
+			<c:forEach var="qna" items="${list }" begin="0" end="${fn:length(list)-1 }" varStatus="i">
+				<li>
+					<!-- 이전 페이지로 이동한다.  -->
+					<div class="checked"><input class="checkBtn" id="star${qna.q_idx }" type="button" value="☆" name="${qna.q_idx }"></div>
+					<span style="z-index: 11;"><label for="slide${i.index}" class="left"></label>◀</span>
+					<div class="card">
+						<div class="card-inner">
+							<div class="card-front">${qna.q_question }</div>
+							<div class="card-back">${qna.q_answer }</div>
+						</div>
+					</div>
+					<span><label for="slide${i.count+1 }" class="right"></label>▶</span>
+				</li>
+			</c:forEach>
+		</c:if>
 		<!-- 슬라이드 영역 종료 -->	
 		</ul>
 	</div>
 </div><!-- section end -->
-<span id="msg"></span>
-<div id="btnBox">
-	<input type="button" value="▶ 자동재생" id="playCard" >
-	<input type="button" value="∥ 재생정지" id="stopCard">
-	<input type="button" value="∞ 순서섞기" id="shuffleCard" onclick="location.href='?c_idx=${param.c_idx}&opt=random'">
-</div>
+<c:if test="${not empty list }">
+	<span id="msg"></span>
+	<div id="btnBox">
+		<input type="button" value="▶ 원래대로" id="notShuffleCard" onclick="location.href='?c_idx=${param.c_idx}';">
+		<input type="button" value="∞ 순서섞기" id="shuffleCard" onclick="location.href='?c_idx=${param.c_idx}&opt=random';">
+	</div>
+</c:if>
+<c:if test="${empty list }">
+	<div id="btnBox">
+		<input type="button" value="낱말카드" onclick="location.href='studyCardWord.do?c_idx=${param.c_idx }&type=word'">
+		<input type="button" value="시험보기" onclick="location.href='studyCardTest.do?c_idx=${param.c_idx }&type=test'">
+	</div>
+</c:if>
 </body>
 </html>

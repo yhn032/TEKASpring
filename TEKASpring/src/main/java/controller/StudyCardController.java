@@ -3,13 +3,15 @@ package controller;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.swing.text.View;
 
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -113,32 +115,38 @@ public class StudyCardController {
 		return map;
 	}
 	
-	//학습하기
-	@RequestMapping("studyCardLearn.do")
-	public String studyCardLearn(Model model, int c_idx, String type) {
-		TekaMemberVo user = (TekaMemberVo)session.getAttribute("user");
-		if(user == null) {
-			model.addAttribute("reason", "sessionTimeout");
-			return "redirect:../tekamember/loginForm.do";
-		}
-		
-		List<ViewVo> list = studyCard_dao.selectCard(c_idx);
-		
-		model.addAttribute("list",list);
-		model.addAttribute("type", type);
-		return "studyCard/studyCardLearn";
-	}
-	
 	//관심질문
 	@RequestMapping("studyCardStar.do")
-	public String studyCardStar(Model model, int c_idx, String type) {
+	public String studyCardStar(Model model, int c_idx, String type, @RequestParam(value="opt", required=false) String random) {
 		TekaMemberVo user = (TekaMemberVo)session.getAttribute("user");
 		if(user == null) {
 			model.addAttribute("reason", "sessionTimeout");
 			return "redirect:../tekamember/loginForm.do";
 		}
+		int m_idx = user.getM_idx();
+		ViewVo vo = new ViewVo();
+		vo.setM_idx(m_idx);
+		vo.setC_idx(c_idx);
 		
-		List<ViewVo> list = studyCard_dao.selectCard(c_idx);
+		//특정 사용자가 특정 카드에 대해 추가한 즐겨찾기의 질문 번호 리스트를 가져오기
+		List<Integer> qIdxArray = studyCard_dao.selectFavorCardIdx(vo);
+		
+		if(qIdxArray.size() == 0) {
+			model.addAttribute("type", type);
+			return "studyCard/studyCardStar";
+		}
+		
+		List<ViewVo> list = null;
+		
+		if(random != null && !random.isEmpty()) {
+			list = studyCard_dao.selectFavorCard(qIdxArray);
+			Collections.shuffle(list);
+		}else {
+			//질문 번호에 해당하는 질문 레코드 가져오기. 뷰를 새로 만들려다가 mybatis에서 foreach문 써보려고 그냥 사용했음
+			list = studyCard_dao.selectFavorCard(qIdxArray);
+			
+		}
+		
 		
 		model.addAttribute("list",list);
 		model.addAttribute("type", type);
@@ -191,18 +199,12 @@ public class StudyCardController {
 	@RequestMapping( value="threeChoice.do", produces="text/json; charset=utf-8;" )
 	@ResponseBody
 	public String threeChoice(int c_idx) {
-		//1번, 2번, 3번 보기를 담는 각 리스트 선언
+		//정답 리스트
 		List<String> one   = studyCard_dao.selectQuestion(c_idx);
-		List<String> two   = studyCard_dao.selectQuestion(c_idx);
-		List<String> three = studyCard_dao.selectQuestion(c_idx);
-		//보기 섞기 : one은 정답을 순서대로 저장함
-		Collections.shuffle(two);
-		Collections.shuffle(three);
+		
 		
 		JSONObject json = new JSONObject();
 		json.put("one", one);
-		json.put("two", two);
-		json.put("three", three);
 		
 		return json.toJSONString();
 	}

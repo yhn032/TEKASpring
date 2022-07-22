@@ -35,23 +35,6 @@ $(document).ready(function(){
 				<div id="dropDown">
 					<span class="dropDownBtn">낱말카드</span>
 					<div class="dropDownItem">
-						<a href="studyCardLearn.do?c_idx=${param.c_idx }&type=learn"><span class="icon"><i class="fas fa-brain"></i></span>학습하기</a>
-						<a href="studyCardTest.do?c_idx=${param.c_idx }&type=test"><span class="icon"><i class="fas fa-hourglass-start"></i></span>시험보기</a>
-						<a href="studyCardStar.do?c_idx=${param.c_idx }&type=star"><span class="icon"><i class="fas fa-star"></i></span>관심질문</a>
-						<hr>
-						<a href="studyCardMain.do?c_idx=${param.c_idx}"><span class="icon"><i class="fas fa-home"></i></span>홈</a>
-					</div>
-					<span><i class="fas fa-chevron-circle-down"></i></span>
-				</div>	
-			</c:if>
-			
-			<!-- 학습세트를 문제 풀이 하는 경우 -->
-			<c:if test="${type eq 'learn' }">
-				<span><i class="fas fa-brain"></i></span>
-				<div id="dropDown">
-					<span class="dropDownBtn">학습하기</span>
-					<div class="dropDownItem">
-						<a href="studyCardWord.do?c_idx=${param.c_idx }&type=word"><span class="icon"><i class="fas fa-clone"></i></span>낱말카드</a>
 						<a href="studyCardTest.do?c_idx=${param.c_idx }&type=test"><span class="icon"><i class="fas fa-hourglass-start"></i></span>시험보기</a>
 						<a href="studyCardStar.do?c_idx=${param.c_idx }&type=star"><span class="icon"><i class="fas fa-star"></i></span>관심질문</a>
 						<hr>
@@ -68,7 +51,6 @@ $(document).ready(function(){
 					<span class="dropDownBtn">시험보기</span>
 					<div class="dropDownItem">
 						<a href="studyCardWord.do?c_idx=${param.c_idx }&type=word"><span class="icon"><i class="fas fa-clone"></i></span>낱말카드</a>
-						<a href="studyCardLearn.do?c_idx=${param.c_idx }&type=learn"><span class="icon"><i class="fas fa-brain"></i></span>학습하기</a>
 						<a href="studyCardStar.do?c_idx=${param.c_idx }&type=star"><span class="icon"><i class="fas fa-star"></i></span>관심질문</a>
 						<hr>
 						<a href="studyCardMain.do?c_idx=${param.c_idx}"><span class="icon"><i class="fas fa-home"></i></span>홈</a>
@@ -84,7 +66,6 @@ $(document).ready(function(){
 					<span class="dropDownBtn">관심질문</span>
 					<div class="dropDownItem">
 						<a href="studyCardWord.do?c_idx=${param.c_idx }&type=word"><span class="icon"><i class="fas fa-clone"></i></span>낱말카드</a>
-						<a href="studyCardLearn.do?c_idx=${param.c_idx }&type=learn"><span class="icon"><i class="fas fa-brain"></i></span>학습하기</a>
 						<a href="studyCardTest.do?c_idx=${param.c_idx }&type=test"><span class="icon"><i class="fas fa-hourglass-start"></i></span>시험보기</a>
 						<hr>
 						<a href="studyCardMain.do?c_idx=${param.c_idx}"><span class="icon"><i class="fas fa-home"></i></span>홈</a>
