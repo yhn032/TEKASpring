@@ -554,10 +554,13 @@ public class TekaMemberController {
 	
 	
 	// 회원정보에서 클라이언트측 회원탈퇴
+	// TODO: 트랜잭션처리
 	@RequestMapping("deleteAccount.do")
 	public String deleteAccount(int m_idx) {
 		
-		int res = member_dao.memberDeleteFromClient(m_idx);
+		TekaMemberVo vo = member_dao.selectOneByIdx(m_idx);
+		
+		int res = member_dao.memberDeleteFromClient(vo);
 		
 		session.removeAttribute("user");
 		return "redirect:../card/main.do";

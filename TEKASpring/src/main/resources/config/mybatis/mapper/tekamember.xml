@@ -92,14 +92,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</delete>
 	
 	<!-- 클라이언트측 회원탈퇴 -->
-	<update id="memberDeleteFromClient" parameterType="int">
-		update tekamember set 
-		m_grade='탈퇴', 
-		m_regdate = date_format(now(),'%Y-%m-%d'),
-		m_id = '',
-        m_email = ''
-		where m_idx=#{m_idx}
-		
+	<!-- 멤버정보를 quitmember 테이블로 이동시킨뒤(insert) 
+	     tekamember에서 탈퇴처리(update)한다 -->
+	<update id="memberDeleteFromClient" parameterType="member">
+		call deletemember
+			(
+				#{m_idx},
+				#{m_id},
+			    #{m_pwd},
+				#{m_nickname}, 
+				#{m_email},
+				'탈퇴',
+				#{m_naverId}, 
+				#{m_googleId}
+			);
 	</update>
 	
 </mapper>
