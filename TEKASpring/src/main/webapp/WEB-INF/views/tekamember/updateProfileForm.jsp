@@ -60,12 +60,18 @@ $(document).ready(function() {
 					data : {'m_nickname' : m_nickname},
 					dataType : 'json',
 					success : function(resData){
-						if(resData.result){
-						$("#nicknameMsg").html('사용 가능한 닉네임입니다.').css("color","white");
-						$("#registerBtn").attr("disabled", false);
-						} else {
-						$("#nicknameMsg").html('이미 사용중인 닉네임입니다.').css("color","red");
-						$("#registerBtn").attr("disabled", true);
+						//db에서 조회되는 값이 없을때
+					    if(resData.result){
+							$("#nicknameMsg").html('사용 가능한 닉네임입니다.').css("color","white");
+							$("#registerBtn").attr("disabled", false);
+						//작성된 이름이 현재 닉네임과 같을때
+					  } else if(m_nickname=="${user.m_nickname}"){
+						  	$("#nicknameMsg").html('');
+						  	$("#registerBtn").attr("disabled", false);
+						//db에서 조회되는 값이 있을때
+					  } else {
+							$("#nicknameMsg").html('이미 사용중인 닉네임입니다.').css("color","red");
+							$("#registerBtn").attr("disabled", true);
 						}
 					},
 					error: function(err){
