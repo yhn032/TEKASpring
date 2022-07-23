@@ -85,7 +85,7 @@ public class TekaMemberDaoImpl implements TekaMemberDao{
 	}
 
 	@Override
-	public int memberDeleteFromClient(int m_idx) {
-		return sqlSession.update("tekamember.memberDeleteFromClient", m_idx);
+	public int memberDeleteFromClient(TekaMemberVo vo) {
+		return sqlSession.update("tekamember.memberDeleteFromClient", vo);
 	}
 }
