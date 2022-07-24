@@ -31,6 +31,10 @@ th, td{
 	color: white;
 }
 
+#m_grade {
+	color: black;
+}
+
 #join{
 	text-align   : right;
 	margin-top   : 20px;
@@ -54,7 +58,7 @@ function del(m_idx){
 		  location.href="memberDelete.do?m_idx=" + m_idx + "&register_idx=${user.m_idx}";
 	  }
 	}); 
-}//del() end
+}// end : del
 </script>
 </head>
 <body style="background:#0a092d;">
@@ -62,15 +66,15 @@ function del(m_idx){
 	<%@include file="../header/mainmenu.jsp" %>
 </div>
 	<div id="box">
+	<input type="button" value="전체회원 관리" onclick="location.href='register.do';">
 		<div>
 			<table class="table table">
 				<tr>
 					<th>회원번호</th>
-					<th>아이디</th>
 					<th>닉네임</th>
-					<th>이메일</th>
+					<th>회원등급</th>
 					<th>탈퇴일자</th>
-					<th>관리</th>
+					<th>회원관리</th>
 				</tr>
 			<c:if test="${empty list}">
 				<tr><th colspan="6"><font color="red">탈퇴한 회원이 없습니다.</font></th></tr>
@@ -80,9 +84,8 @@ function del(m_idx){
 					<c:forEach var="vo" items="${list}">
 					<tr>
 						<td>${vo.m_idx}</td>
-						<td>${vo.m_id}</td>
 						<td>${vo.m_nickname}</td>
-						<td>${vo.m_email}</td>
+						<td>${vo.m_grade}</td>
 						<td>${vo.m_regdate}</td>
 						<td>
 							<input class="btn btn-default"  type="button" value="삭제" onclick="del(${vo.m_idx});">

@@ -77,16 +77,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		update tekamember set m_pwd=#{m_pwd} where m_idx=#{m_idx}
 	</select>
 	
-	<!-- 관리자 탈퇴회원 조회 -->
+	<!-- 관리자 전체 회원 조회 -->
 	<select id="selectRegister" resultType="member">
+		select * from tekamember where m_grade='일반' or m_grade='관리자'
+	</select>
+	<!-- 관리자 탈퇴 회원 조회 -->
+	<select id="selectQuitMember" resultType="member">
 		select * from tekamember where m_grade='탈퇴'
 	</select>
-	
-	<!-- 회원삭제 -->
+	<!-- 회원 등급변경 -->
+	<!-- update tekamember set m_grade=#{m_grade} where m_idx=#{m_idx} -->
+	<update id="memberGradeUpdate" parameterType="member">
+		UPDATE `teka`.`tekamember` SET `m_grade`=#{m_grade} WHERE (`m_idx` = #{m_idx});
+	</update>
+	<!-- 회원삭제 : m_idx 변경 -->
 	<update id="memberUpdate" parameterType="java.util.Map">
 		update card set m_idx=#{register_idx} where m_idx=#{m_idx}
 	</update>
-	
+	<!-- 회원삭제 -->
 	<delete id="memberDelete" parameterType="int">
 		delete from tekamember where m_idx=#{m_idx}
 	</delete>

@@ -18,6 +18,8 @@ public interface TekaMemberDao {
 	public TekaMemberVo selectOneByIdx(int m_idx);
 	public int updatePwd(TekaMemberVo vo);
 	public List<TekaMemberVo> selectRegister();
+	public List<TekaMemberVo> selectQuitMember();
+	public int memberGradeUpdate(TekaMemberVo vo);
 	public int memberDelete(int m_idx);
 	public int memberUpdate(Map map);
 	public int memberDeleteFromClient(TekaMemberVo vo);
