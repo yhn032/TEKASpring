@@ -527,31 +527,51 @@ public class TekaMemberController {
 		return bytes;
 	}
 	
-	//관리자 페이지 이동
+	//관리자 페이지 : 전체회원 조회
 	@RequestMapping("register.do")
 	public String registerPage(Model model) {
 		
 		List<TekaMemberVo> list = member_dao.selectRegister();
 		model.addAttribute("list", list);
 		
-		return "tekamember/registerPage";
+		return "tekamember/registerAll";
+	}
+	//관리자 페이지 : 탈퇴회원 조회
+	@RequestMapping("selectQuitMember.do")
+	public String selectQuitMember(Model model) {
+		
+		List<TekaMemberVo> list = member_dao.selectQuitMember();
+		model.addAttribute("list", list);
+		
+		return "tekamember/registerQuit";
 	}
 	
 	//회원 삭제 (데이터베이스에서 정말 정보를 삭제하는 것)
 	@RequestMapping("memberDelete.do")
-	public String memberDelete(Map map, int m_idx, int register_idx) {
+	public String memberDelete(int m_idx, int register_idx) {
+		Map map = new HashMap();
 		
 		map.put("m_idx", m_idx);
 		map.put("register_idx", register_idx);
-		
 		// 카드테이블 m_idx 변경
 		int updateRes = member_dao.memberUpdate(map);
 		// m_idx 삭제
 		int delRes    = member_dao.memberDelete(m_idx); 
 		
-		return "redirect:register.do";
+		return "redirect:selectQuitMember.do";
 	}
 	
+	@RequestMapping("memberGradeUpdate.do")
+	public String memberModify(TekaMemberVo vo) {
+		//Map map = new HashMap();
+		
+		//map.put("m_idx", m_idx);
+		//map.put("m_grade", m_grade);
+		
+		int res = member_dao.memberGradeUpdate(vo);
+		
+		return "redirect:register.do";
+	}
 	
 	// 회원정보에서 클라이언트측 회원탈퇴
 	// TODO: 트랜잭션처리
