@@ -166,6 +166,21 @@ a {
 	width: 40px;
 	text-decoration: none;
 }
+
+#backFromLogin{
+	color: white;
+	width: 150px;
+	height: 70px;
+	border: 0;
+	background: transparent;
+	box-shadow: 1px 3px 1px black;
+	font-size: 20px;
+	font-weight: 600;
+}
+
+#backFromLogin:hover{
+	background: black;
+}
 </style>
 
 <script type="text/javascript">
@@ -360,6 +375,7 @@ a {
 				<div class="overlayPanel overlayRight">
 					<h1>Welcome Back!</h1>
 					<p>Study Hard. And then pass the Technical Interview. Let's Go NeKaLiCuBaeDangTo!</p>
+					<input id="backFromLogin" type="button" value="뒤로가기" onclick="location.href='../card/main.do';">
 				</div>
 			</div>
 		</div>

@@ -121,9 +121,17 @@ $(document).ready(function(){
 				dataType: 'json',
 				success : function(res_data){
 					if(res_data.res){
-						alert('즐겨찾기 성공');
+						Swal.fire({
+							  icon: 'success',
+							  title: '관심질문에 등록되었습니다!'
+						});
+						//alert('즐겨찾기 성공');
 					}else{
-						alert('즐겨찾기 실패');
+						//alert('즐겨찾기 실패');
+						Swal.fire({
+							  icon: 'warning',
+							  title: '관심질문에 등록하지 못했습니다ㅜ'
+						});
 					}
 				},
 				error   : function(err){
@@ -142,9 +150,15 @@ $(document).ready(function(){
 				dataType: 'json',
 				success : function(res_data){
 					if(res_data.res){
-						alert('즐겨찾기 해제 성공');
+						Swal.fire({
+							  icon: 'success',
+							  title: '관심질문에서 삭제되었습니다!'
+						});
 					}else{
-						alert('즐겨찾기 해제 실패');
+						Swal.fire({
+							  icon: 'warning',
+							  title: '관심질문에서 삭제하지 못했습니다 ㅜ'
+						});
 					}
 				},
 				error   : function(err){
