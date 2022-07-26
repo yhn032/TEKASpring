@@ -16,6 +16,8 @@
 <!-- FontAwesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"/>
 
+<!-- SweetAlert -->
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script type="text/javascript">
 var index = 1;
 var card = 0;
@@ -75,9 +77,17 @@ $(document).ready(function(){
 				dataType: 'json',
 				success : function(res_data){
 					if(res_data.res){
-						alert('즐겨찾기 성공');
+						Swal.fire({
+							  icon: 'success',
+							  title: '관심질문에 등록되었습니다!'
+						});
+						//alert('즐겨찾기 성공');
 					}else{
-						alert('즐겨찾기 실패');
+						//alert('즐겨찾기 실패');
+						Swal.fire({
+							  icon: 'warning',
+							  title: '관심질문에 등록하지 못했습니다ㅜ'
+						});
 					}
 				}
 			});
@@ -92,9 +102,15 @@ $(document).ready(function(){
 				dataType: 'json',
 				success : function(res_data){
 					if(res_data.res){
-						alert('즐겨찾기 해제 성공');
+						Swal.fire({
+							  icon: 'success',
+							  title: '관심질문에서 삭제되었습니다!'
+						});
 					}else{
-						alert('즐겨찾기 해제 실패');
+						Swal.fire({
+							  icon: 'warning',
+							  title: '관심질문에서 삭제하지 못했습니다 ㅜ'
+						});
 					}
 				}
 			});
@@ -106,9 +122,19 @@ $(document).ready(function(){
 function slideCard(){
 	index++;
 	if(index > card){
-		if(!confirm('시험이 종료되었습니다.\n메인학습페이지로 이동하시겠습니까?')) return;
-		//메인 페이지로 이동
-		location.href="studyCardMain.do?c_idx=" + ${param.c_idx};
+		Swal.fire({
+			title: '시험이 종료되었습니다.\n틀린문제만 따로 학습하시겠습니까?',
+			showDenyButton: true,
+			confirmButtonText: '네',
+			denyButtonText: '아니요',
+		}).then((result) => {
+			/* Read more about isConfirmed, isDenied below */
+			if (result.isConfirmed) {
+				location.href="studyCardStar.do?c_idx="+${param.c_idx};
+			} else if (result.isDenied) {
+				location.href="studyCardMain.do?c_idx=" + ${param.c_idx};
+			}
+		});
 	}
 
 	$("#status").html(index +" / " + card);
@@ -156,7 +182,10 @@ $(function(){
 			var globalListSize = "${fn:length(list)}";
 			//alert(random_1+" "+random_2);
 			if(globalListSize < 3){
-				alert("적어도 세개의 질문은 있어야 시험을 진행할 수 있습니다!");
+				Swal.fire({
+					  icon: 'warning',
+					  title: '적어도 3개의 질문이 있어야 시험보기 기능이 가용합니다!'
+				});
 				return;
 			}
 			for(var i=0; i<"${fn:length(list)}"; i++) {
