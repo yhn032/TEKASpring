@@ -1,6 +1,6 @@
 # 기술면접 플래시 카드, TEKA(Technical Card)
 ## Description
-> 2022-06-11 ~ 2022-07-26
+> 2022-06-13 ~ 2022-07-29
 ## Contents
 :paperclip: 국비지원학원 수료 팀 프로젝트
 
@@ -15,7 +15,9 @@
 <img src="https://img.shields.io/badge/Eclipse-2C2255?style=flat-square&logo=eclipse&logoColor=white"/>
 <img src="https://img.shields.io/badge/Amazon RDS-527FFF?style=flat-square&logo=amazonrds&logoColor=white"/>
 <img src="https://img.shields.io/badge/Amazon EC2-FF9900?style=flat-square&logo=amazonec2&logoColor=white"/>
-
+<br/>
+<img src="https://img.shields.io/badge/jQuery-0769AD?style=flat-square&logo=jquery&logoColor=white"/>
+<img src="https://img.shields.io/badge/mariaDB-003545?style=flat-square&logo=mariadb&logoColor=white"/>
 
 ## Summaary
 기술면접을 대비하여 주요 CS지식을 학습할 수 있는 웹 플래시 카드 제작하기
