@@ -88,12 +88,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 회원 등급변경 -->
 	<!-- update tekamember set m_grade=#{m_grade} where m_idx=#{m_idx} -->
 	<update id="memberGradeUpdate" parameterType="member">
-		UPDATE `teka`.`tekamember` SET `m_grade`=#{m_grade} WHERE (`m_idx` = #{m_idx});
+		update tekamember set m_grade=#{m_grade} where m_idx=#{m_idx}
 	</update>
 	<!-- 회원삭제 : m_idx 변경 -->
 	<update id="memberUpdate" parameterType="java.util.Map">
 		update card set m_idx=#{register_idx} where m_idx=#{m_idx}
 	</update>
+	<!-- tekamember에서 완전히 삭제하기 전, attend 미리 삭제(추후 제약조건 수정 예정) -->
+	<delete id="attendDelete" parameterType="int">
+		delete from attend where m_idx=#{m_idx}
+	</delete>
 	<!-- 회원삭제 -->
 	<delete id="memberDelete" parameterType="int">
 		delete from tekamember where m_idx=#{m_idx}
