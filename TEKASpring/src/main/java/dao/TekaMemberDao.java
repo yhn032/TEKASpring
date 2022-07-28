@@ -21,6 +21,7 @@ public interface TekaMemberDao {
 	public List<TekaMemberVo> selectQuitMember();
 	public int memberGradeUpdate(TekaMemberVo vo);
 	public int memberDelete(int m_idx);
+	public int attendDelete(int m_idx);
 	public int memberUpdate(Map map);
 	public int memberDeleteFromClient(TekaMemberVo vo);
 }

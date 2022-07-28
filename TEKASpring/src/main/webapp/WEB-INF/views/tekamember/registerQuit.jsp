@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>TEKA : 회원관리</title>
+<title>TEKA : 탈퇴회원 관리</title>
 <!-- BootStrap 3.x 라이브러리 등록 -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -28,7 +28,6 @@
 
 th, td{
 	text-align: center;
-	color: white;
 }
 
 #m_grade {
@@ -40,6 +39,17 @@ th, td{
 	margin-top   : 20px;
 	margin-bottom: 20px;
 	margin-right : 20px;
+}
+#transAllPage {
+	text-align: right;
+	margin-bottom:30px;
+}
+#transBtn {
+	height:50px;
+	width:300px;
+	border:2px solid black;
+	border-radius: 10px;
+	font-size: 18px;
 }
 </style>
 <script type="text/javascript">
@@ -61,14 +71,19 @@ function del(m_idx){
 }// end : del
 </script>
 </head>
-<body style="background:#0a092d;">
+<body>
 <div id="header">
 	<%@include file="../header/mainmenu.jsp" %>
 </div>
 	<div id="box">
-	<input type="button" value="전체회원 관리" onclick="location.href='register.do';">
+	<div id="transAllPage">
+		<input type="button" value="전체회원 관리" onclick="location.href='register.do';" id="transBtn">
+	</div>
 		<div>
-			<table class="table table">
+			<hr>
+			<h3>탈퇴회원 목록</h3>
+			<hr>
+			<table class="table table-striped">
 				<tr>
 					<th>회원번호</th>
 					<th>닉네임</th>
@@ -94,11 +109,8 @@ function del(m_idx){
 					</c:forEach>
 				</c:if>
 			</table>
+			<!-- Paging -->
 		</div>
 	</div>
-	
-<div id="footer" style="background:none;">
-	<%@ include file="../footer/footer.jsp" %>	
-</div>
 </body>
 </html>

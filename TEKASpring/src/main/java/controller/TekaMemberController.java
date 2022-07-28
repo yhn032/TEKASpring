@@ -553,6 +553,8 @@ public class TekaMemberController {
 		
 		map.put("m_idx", m_idx);
 		map.put("register_idx", register_idx);
+		//출석테이블에 m_idx가 추가되어있는 경우, 삭제
+		int attendIdx = member_dao.attendDelete(m_idx);
 		// 카드테이블 m_idx 변경
 		int updateRes = member_dao.memberUpdate(map);
 		// m_idx 삭제

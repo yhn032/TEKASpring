@@ -98,4 +98,9 @@ public class TekaMemberDaoImpl implements TekaMemberDao{
 	public int memberGradeUpdate(TekaMemberVo vo) {
 		return sqlSession.update("tekamember.memberGradeUpdate", vo);
 	}
+
+	@Override
+	public int attendDelete(int m_idx) {
+		return sqlSession.delete("tekamember.attendDelete", m_idx);
+	}
 }
