@@ -88,9 +88,11 @@
 1. 3지 선다의 보기 
 2. 정답시 슬라이드 이동 
 3. 오답시 해당 질문을 틀린 문제로 자동 추가하고 슬라이드 이동</br>
-<h5>[정답]</h5>
-![image](https://user-images.githubusercontent.com/87313203/181679889-a100d6e9-12ea-4cf2-9e00-cf293a4284b7.png)
-<h5>[오답]</h5>
+
+정답
+![image](https://user-images.githubusercontent.com/87313203/181681270-e26ac481-71d5-4e47-a919-29c375b288b7.png)
+
+오답
 ![image](https://user-images.githubusercontent.com/87313203/181679718-eb592386-58cc-46cb-9ac3-1d83363fdd4f.png)
 
 👇 <h3>마이페이지</h3>
