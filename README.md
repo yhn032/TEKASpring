@@ -27,6 +27,75 @@
 
 ## Role
 * 공통 : DB모델링(ERD), UML(유즈케이스다이어그램), 페이지 레이아웃 
-* 김병국: 로그인, 카드 플립 및 슬라이드, 카드 학습하기
-* 류다희: 회원가입, 헤더, AWS 서버 구축 및 DB호스팅
-* 김다정: 튜토리얼, 헤더, 카드 플립 및 슬라이드, 카드 만들기 및 미리보기
+* 김병국: 로그인, 카드 플립 및 슬라이드, 카드 학습(낱말카드, 시험보기, 관심질문), 메일인증
+* 류다희: 회원가입, 헤더, AWS 서버 구축 및 DB호스팅, 출석체크, 회원정보 관리
+* 김다정: 튜토리얼, 헤더, 카드 플립 및 슬라이드, 카드 만들기 및 미리보기, 카드 학습(시험보기)
+
+## Function
+:paperclip: 로그인
+1. OAuth2.0 기술을 사용한 네이버와 구글 소셜 로그인 및 회원가입 기능
+2. 일반 회원가입을 진행한 사용자가 입력한 아이디 비밀번호는 RSA알고리즘을 사용하여 암호화 후에 서버로 전송
+![image](https://user-images.githubusercontent.com/87313203/181677954-46f81db6-4299-477b-b797-4113f46415de.png)
+
+:paperclip: 회원가입
+1. 입력한 데이터를 ajax통신을 사용하여 실시간으로 중복 체크
+2. 중복값이 없는 경우에만 가입하기 버튼 활성화
+![image](https://user-images.githubusercontent.com/87313203/181678428-33e95bcf-6628-4911-a4d6-e250df7d3ed0.png)
+
+
+:paperclip: 이메일 인증
+1. 난수를 생성하여 사용자의 이메일로 인증번호를 전송
+2. 인증번호를 정확하게 입력할 경우 비밀번호 찾기 & 수정 가능
+![image](https://user-images.githubusercontent.com/87313203/181678237-ec327ab4-150d-46f7-a0ba-8dce101af56d.png)
+
+
+:paperclip: 전체 카드 모아보기 
+1. 카드 제목과 소개글
+2. 페이징 처리 
+3. 토글 방식의 추천
+4. 미리보기를 통해 카드에 내장된 전체 질문 & 답변 미리보기 
+5. 내 학습세트에 추가하여 학습하기
+![image](https://user-images.githubusercontent.com/87313203/181678565-915c4027-5d4b-49ec-bd76-d8af2546c64a.png)
+
+:paperclip: 학습세트 직접 만들기
+1. 주제 선택 
+2. 제목 & 소개글 작성
+3. 카드에 포함될 질문&답변 작성 -> 동적으로 행 추가  
+![image](https://user-images.githubusercontent.com/87313203/181678784-f9e9bcd7-7336-463b-8eea-7d6be1e73bc1.png)
+
+
+:paperclip: 나의 학습 세트 
+1. 카드 학습 공간으로 이동해서 카드를 학습할 수 있다. 
+2. 학습이 끝난 카드는 나의 학습세트에서 삭제 
+3. 내가 만든 카드는 수정가능 -> 기존 질문 내용 수정 및 새로운 질문 추가 가능 
+4. 타인이 만든 카드는 커스터마이징 가능 -> 기존 질문 내용 수정 및 새로운 질문 추가 가능
+![image](https://user-images.githubusercontent.com/87313203/181679153-49471271-7414-40a1-bc83-c1b5e67da065.png)
+
+:paperclip: 카드 학습하기(Main)
+1. 학습 방법 선택 -> 낱말카드 암기, 카드 시험보기, 틀린 질문 or 관심 질문만 모아서 보기 
+2. 카드 슬라이드 및 플립 기능 
+3. 학습전 전체 내용 확인하기(미리보기와 같은 기능)
+![image](https://user-images.githubusercontent.com/87313203/181679387-6bc698be-3bb5-4e74-acd8-08468a189c88.png)
+
+:paperclip: 카드 학습하기(Word)
+1. 토글 방식의 즐겨찾기 기능 
+2. 학습 진행을 나타내는 프로그래스 바
+3. 자동 슬라이드 기능 
+4. 질문의 순서 셔플 기능
+![image](https://user-images.githubusercontent.com/87313203/181679556-b087c52d-4b1f-4c11-b879-f502db692830.png)
+
+:paperclip: 카드 학습하기(Test)
+1. 3지 선다의 보기 
+2. 정답시 슬라이드 이동 
+3. 오답시 해당 질문을 틀린 문제로 자동 추가하고 슬라이드 이동
+
+[정답]
+![image](https://user-images.githubusercontent.com/87313203/181679889-a100d6e9-12ea-4cf2-9e00-cf293a4284b7.png)
+[오답]
+![image](https://user-images.githubusercontent.com/87313203/181679718-eb592386-58cc-46cb-9ac3-1d83363fdd4f.png)
+
+:paperclip: 마이페이지
+1. 캘린더 라이브러리를 사용한 출석체크 기능 
+2. 회원정보 수정
+3. 관리자 문의 기능
+![image](https://user-images.githubusercontent.com/87313203/181680071-c536ca02-879d-4196-90cc-abd426d78d5f.png)
